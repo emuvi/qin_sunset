@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import br.net.pin.qin_sunwiz.flow.Pace;
+import br.com.pointel.jarch.flow.Pace;
 
 public class Issued {
 

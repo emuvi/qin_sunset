@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import com.google.gson.Gson;
-import br.net.pin.qin_sunwiz.data.Registier;
-import br.net.pin.qin_sunwiz.data.Strain;
+import br.com.pointel.jarch.data.Registier;
+import br.com.pointel.jarch.data.Strain;
 
 public class Allow {
     public APP app;

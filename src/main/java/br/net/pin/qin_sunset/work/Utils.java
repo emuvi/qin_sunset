@@ -4,7 +4,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-import br.net.pin.qin_sunwiz.mage.WizArray;
+import br.com.pointel.jarch.mage.WizArray;
 
 public class Utils {
     public static String newRandomToken() {

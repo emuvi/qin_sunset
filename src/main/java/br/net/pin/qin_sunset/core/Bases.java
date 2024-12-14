@@ -2,8 +2,8 @@ package br.net.pin.qin_sunset.core;
 
 import java.util.ArrayList;
 import com.google.gson.Gson;
-import br.net.pin.qin_sunwiz.data.DataWays;
-import br.net.pin.qin_sunwiz.mage.WizChars;
+import br.com.pointel.jarch.data.DataWays;
+import br.com.pointel.jarch.mage.WizChars;
 
 public class Bases extends ArrayList<DataWays> {
     public void fixDefaults() throws Exception {

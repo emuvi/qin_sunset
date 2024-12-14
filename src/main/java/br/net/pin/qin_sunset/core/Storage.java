@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.dbcp2.BasicDataSource;
-import br.net.pin.qin_sunwiz.data.Helped;
-import br.net.pin.qin_sunwiz.data.Helper;
-import br.net.pin.qin_sunwiz.mage.WizChars;
+import br.com.pointel.jarch.data.Helped;
+import br.com.pointel.jarch.data.Helper;
+import br.com.pointel.jarch.mage.WizChars;
 
 public class Storage {
     private final Air air;

@@ -3,10 +3,10 @@ package br.net.pin.qin_sunset.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import br.net.pin.qin_sunwiz.data.Deed;
-import br.net.pin.qin_sunwiz.data.Pair;
-import br.net.pin.qin_sunwiz.data.Registier;
-import br.net.pin.qin_sunwiz.data.Strain;
+import br.com.pointel.jarch.data.Deed;
+import br.com.pointel.jarch.data.Pair;
+import br.com.pointel.jarch.data.Registier;
+import br.com.pointel.jarch.data.Strain;
 
 public class Authed {
     private final User user;

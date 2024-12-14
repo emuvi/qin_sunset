@@ -1,6 +1,6 @@
 package br.net.pin.qin_sunset.core;
 
-import br.net.pin.qin_sunwiz.data.Helped;
+import br.com.pointel.jarch.data.Helped;
 
 public class Giz {
 
