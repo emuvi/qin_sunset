@@ -1,5 +1,7 @@
 package br.com.pointel.qin_sunset.core;
 
+import br.com.pointel.jarch.data.Bases;
+
 public class AirCfg {
 
     public final Setup setup;
