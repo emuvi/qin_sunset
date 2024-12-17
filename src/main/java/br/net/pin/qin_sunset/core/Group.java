@@ -8,6 +8,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 
 public class Group {
+    
     public String name;
     public String home;
     public String lang;

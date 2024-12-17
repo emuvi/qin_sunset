@@ -9,7 +9,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import br.net.pin.qin_sunset.core.Air;
+import br.net.pin.qin_sunset.core.AirCfg;
 import br.net.pin.qin_sunset.core.Bases;
 import br.net.pin.qin_sunset.core.Groups;
 import br.net.pin.qin_sunset.core.Setup;
@@ -63,7 +63,7 @@ public class QinSunset {
         setup.fixDefaults();
         users.fixDefaults();
         bases.fixDefaults();
-        new Service(new Way(new Air(setup, users, groups, bases))).start();
+        new Service(new Way(new AirCfg(setup, users, groups, bases))).start();
     }
 
     public static Options cmdOptions() {

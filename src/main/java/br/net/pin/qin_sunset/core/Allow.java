@@ -1,111 +1,76 @@
 package br.net.pin.qin_sunset.core;
 
 import java.io.File;
-import java.util.List;
 import java.util.Objects;
 import com.google.gson.Gson;
-import br.com.pointel.jarch.data.Registier;
-import br.com.pointel.jarch.data.Strain;
 
 public class Allow {
-    public APP app;
-    public DIR dir;
-    public CMD cmd;
-    public BAS bas;
-    public REG reg;
-    public GIZ giz;
 
-    public static class APP {
-        public String name;
-    }
-
-    public static class DIR {
-        public String path;
-        public Boolean mutate;
-    }
-
-    public static class CMD {
-        public String name;
-        public List<String> args;
-    }
-
-    public static class BAS {
-        public String name;
-        public Boolean mutate;
-    }
-
-    public static class REG {
-        public Registier registier;
-        public Boolean all;
-        public Boolean insert;
-        public Boolean select;
-        public Boolean update;
-        public Boolean delete;
-        public Strain strain;
-    }
-
-    public static class GIZ {
-        public String path;
-    }
+    public AllowApp allowApp;
+    public AllowDir allowDir;
+    public AllowCmd allowCmd;
+    public AllowBas allowBas;
+    public AllowReg allowReg;
+    public AllowGiz allowGiz;
 
     public void fixDefaults() {
-        if (this.app != null) {
-            if (this.app.name == null || this.app.name.isEmpty()) {
-                this.app = null;
+        if (this.allowApp != null) {
+            if (this.allowApp.name == null || this.allowApp.name.isEmpty()) {
+                this.allowApp = null;
             }
         }
-        if (this.dir != null) {
-            if (this.dir.path == null || this.dir.path.isEmpty()) {
-                this.dir = null;
+        if (this.allowDir != null) {
+            if (this.allowDir.path == null || this.allowDir.path.isEmpty()) {
+                this.allowDir = null;
             } else {
-                this.dir.path = new File(this.dir.path).getAbsolutePath();
-                this.dir.mutate = this.dir.mutate != null ? this.dir.mutate : false;
+                this.allowDir.path = new File(this.allowDir.path).getAbsolutePath();
+                this.allowDir.mutate = this.allowDir.mutate != null ? this.allowDir.mutate : false;
             }
         }
-        if (this.cmd != null) {
-            if (this.cmd.name == null || this.cmd.name.isEmpty()) {
-                this.cmd = null;
+        if (this.allowCmd != null) {
+            if (this.allowCmd.name == null || this.allowCmd.name.isEmpty()) {
+                this.allowCmd = null;
             }
         }
-        if (this.bas != null) {
-            if (this.bas.name == null || this.bas.name.isEmpty()) {
-                this.bas = null;
+        if (this.allowBas != null) {
+            if (this.allowBas.name == null || this.allowBas.name.isEmpty()) {
+                this.allowBas = null;
             }
         }
-        if (this.reg != null) {
-            if (this.reg.registier == null) {
-                this.reg = null;
+        if (this.allowReg != null) {
+            if (this.allowReg.registry == null) {
+                this.allowReg = null;
             } else {
-                this.reg.all = this.reg.all != null ? this.reg.all : false;
-                this.reg.insert = this.reg.insert != null ? this.reg.insert : false;
-                this.reg.select = this.reg.select != null ? this.reg.select : false;
-                this.reg.update = this.reg.update != null ? this.reg.update : false;
-                this.reg.delete = this.reg.delete != null ? this.reg.delete : false;
+                this.allowReg.all = this.allowReg.all != null ? this.allowReg.all : false;
+                this.allowReg.insert = this.allowReg.insert != null ? this.allowReg.insert : false;
+                this.allowReg.select = this.allowReg.select != null ? this.allowReg.select : false;
+                this.allowReg.update = this.allowReg.update != null ? this.allowReg.update : false;
+                this.allowReg.delete = this.allowReg.delete != null ? this.allowReg.delete : false;
             }
         }
-        if (this.giz != null && this.giz.path.isEmpty()) {
-            this.giz = null;
+        if (this.allowGiz != null && this.allowGiz.path.isEmpty()) {
+            this.allowGiz = null;
         }
     }
 
     public boolean isOnSameResource(Allow than) {
-        if (this.app != null && than.app != null) {
-            return Objects.equals(this.app.name, than.app.name);
+        if (this.allowApp != null && than.allowApp != null) {
+            return Objects.equals(this.allowApp.name, than.allowApp.name);
         }
-        if (this.dir != null && than.dir != null) {
-            return Objects.equals(this.dir.path, than.dir.path);
+        if (this.allowDir != null && than.allowDir != null) {
+            return Objects.equals(this.allowDir.path, than.allowDir.path);
         }
-        if (this.cmd != null && than.cmd != null) {
-            return Objects.equals(this.cmd.name, than.cmd.name);
+        if (this.allowCmd != null && than.allowCmd != null) {
+            return Objects.equals(this.allowCmd.name, than.allowCmd.name);
         }
-        if (this.bas != null && than.bas != null) {
-            return Objects.equals(this.bas.name, than.bas.name);
+        if (this.allowBas != null && than.allowBas != null) {
+            return Objects.equals(this.allowBas.name, than.allowBas.name);
         }
-        if (this.reg != null && than.reg != null) {
-            return Objects.equals(this.reg.registier, than.reg.registier);
+        if (this.allowReg != null && than.allowReg != null) {
+            return Objects.equals(this.allowReg.registry, than.allowReg.registry);
         }
-        if (this.giz != null && than.giz != null) {
-            return Objects.equals(this.giz.path, than.giz.path);
+        if (this.allowGiz != null && than.allowGiz != null) {
+            return Objects.equals(this.allowGiz.path, than.allowGiz.path);
         }
         return false;
     }

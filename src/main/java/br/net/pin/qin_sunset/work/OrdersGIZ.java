@@ -18,9 +18,9 @@ public class OrdersGIZ {
         }
         var result = new StringBuilder();
         for (var access : forAuthed.getAccess()) {
-            if (access.giz != null) {
-                if (new File(gizDir, access.giz.path).exists()) {
-                    result.append(access.giz.path);
+            if (access.allowGiz != null) {
+                if (new File(gizDir, access.allowGiz.path).exists()) {
+                    result.append(access.allowGiz.path);
                     result.append("\n");
                 }
             }

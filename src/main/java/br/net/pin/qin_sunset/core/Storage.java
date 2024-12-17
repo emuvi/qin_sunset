@@ -9,10 +9,10 @@ import br.com.pointel.jarch.data.Helper;
 import br.com.pointel.jarch.mage.WizChars;
 
 public class Storage {
-    private final Air air;
+    private final AirCfg air;
     private final Map<String, Stored> stores;
 
-    public Storage(Air air) throws Exception {
+    public Storage(AirCfg air) throws Exception {
         this.air = air;
         if (this.air.setup.servesBAS) {
             this.stores = new ConcurrentHashMap<>();

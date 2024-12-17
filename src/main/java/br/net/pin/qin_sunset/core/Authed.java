@@ -3,9 +3,9 @@ package br.net.pin.qin_sunset.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import br.com.pointel.jarch.data.Deed;
+import br.com.pointel.jarch.data.DeedsCrud;
 import br.com.pointel.jarch.data.Pair;
-import br.com.pointel.jarch.data.Registier;
+import br.com.pointel.jarch.data.Registry;
 import br.com.pointel.jarch.data.Strain;
 
 public class Authed {
@@ -81,13 +81,13 @@ public class Authed {
             return true;
         }
         for (var access : this.user.access) {
-            if (access.app != null && access.app.name.equals(name)) {
+            if (access.allowApp != null && access.allowApp.name.equals(name)) {
                 return true;
             }
         }
         if (this.group != null) {
             for (var access : this.group.access) {
-                if (access.app != null && access.app.name.equals(name)) {
+                if (access.allowApp != null && access.allowApp.name.equals(name)) {
                     return true;
                 }
             }
@@ -100,9 +100,9 @@ public class Authed {
             return true;
         }
         for (var access : this.user.access) {
-            if (access.dir != null && fullPath.startsWith(access.dir.path)) {
+            if (access.allowDir != null && fullPath.startsWith(access.allowDir.path)) {
                 if (toMutate) {
-                    if (access.dir.mutate) {
+                    if (access.allowDir.mutate) {
                         return true;
                     }
                 } else {
@@ -112,9 +112,9 @@ public class Authed {
         }
         if (this.group != null) {
             for (var access : this.group.access) {
-                if (access.dir != null && fullPath.startsWith(access.dir.path)) {
+                if (access.allowDir != null && fullPath.startsWith(access.allowDir.path)) {
                     if (toMutate) {
-                        if (access.dir.mutate) {
+                        if (access.allowDir.mutate) {
                             return true;
                         }
                     } else {
@@ -131,13 +131,13 @@ public class Authed {
             return true;
         }
         for (var access : this.user.access) {
-            if (access.cmd != null && access.cmd.name.equals(name)) {
+            if (access.allowCmd != null && access.allowCmd.name.equals(name)) {
                 return true;
             }
         }
         if (this.group != null) {
             for (var access : this.group.access) {
-                if (access.cmd != null && access.cmd.name.equals(name)) {
+                if (access.allowCmd != null && access.allowCmd.name.equals(name)) {
                     return true;
                 }
             }
@@ -150,9 +150,9 @@ public class Authed {
             return true;
         }
         for (var access : this.user.access) {
-            if (access.bas != null && access.bas.name.equals(name)) {
+            if (access.allowBas != null && access.allowBas.name.equals(name)) {
                 if (toMutate) {
-                    if (access.bas.mutate) {
+                    if (access.allowBas.mutate) {
                         return true;
                     }
                 } else {
@@ -162,9 +162,9 @@ public class Authed {
         }
         if (this.group != null) {
             for (var access : this.group.access) {
-                if (access.bas != null && access.bas.name.equals(name)) {
+                if (access.allowBas != null && access.allowBas.name.equals(name)) {
                     if (toMutate) {
-                        if (access.bas.mutate) {
+                        if (access.allowBas.mutate) {
                             return true;
                         }
                     } else {
@@ -176,43 +176,43 @@ public class Authed {
         return false;
     }
 
-    public Pair<Boolean, Strain> allowREG(Registier registier, Deed deed) {
+    public Pair<Boolean, Strain> allowREG(Registry registry, DeedsCrud deed) {
         Pair<Boolean, Strain> result = new Pair<>(false, null);
-        if (!this.allowBAS(registier.base, deed.mutates)) {
+        if (!this.allowBAS(registry.base, deed.mutates)) {
             return result;
         }
         if (this.isMaster()) {
             result.head = true;
         }
         for (var allow : this.getAccess()) {
-            if (allow.reg != null && allow.reg.registier != null) {
-                if (canAllowResource(allow.reg.registier, registier)) {
-                    if (allow.reg.all != null && allow.reg.all) {
+            if (allow.allowReg != null && allow.allowReg.registry != null) {
+                if (canAllowResource(allow.allowReg.registry, registry)) {
+                    if (allow.allowReg.all != null && allow.allowReg.all) {
                         result.head = true;
                     }
                     switch (deed) {
                         case INSERT:
-                            if (allow.reg.insert != null && allow.reg.insert) {
+                            if (allow.allowReg.insert != null && allow.allowReg.insert) {
                                 result.head = true;
                             }
                             break;
                         case SELECT:
-                            if (allow.reg.select != null && allow.reg.select) {
+                            if (allow.allowReg.select != null && allow.allowReg.select) {
                                 result.head = true;
                             }
                             break;
                         case UPDATE:
-                            if (allow.reg.update != null && allow.reg.update) {
+                            if (allow.allowReg.update != null && allow.allowReg.update) {
                                 result.head = true;
                             }
                             break;
                         case DELETE:
-                            if (allow.reg.delete != null && allow.reg.delete) {
+                            if (allow.allowReg.delete != null && allow.allowReg.delete) {
                                 result.head = true;
                             }
                             break;
                     }
-                    result.tail = allow.reg.strain;
+                    result.tail = allow.allowReg.strain;
                 }
             }
         }
@@ -224,13 +224,13 @@ public class Authed {
             return true;
         }
         for (var access : this.user.access) {
-            if (access.giz != null && access.giz.path.equals(path)) {
+            if (access.allowGiz != null && access.allowGiz.path.equals(path)) {
                 return true;
             }
         }
         if (this.group != null) {
             for (var access : this.group.access) {
-                if (access.giz != null && access.giz.path.equals(path)) {
+                if (access.allowGiz != null && access.allowGiz.path.equals(path)) {
                     return true;
                 }
             }
@@ -238,15 +238,15 @@ public class Authed {
         return false;
     }
 
-    public static boolean canAllowResource(Registier guarantor, Registier requester) {
-        if (guarantor.registry != null && requester.registry != null
-                        && Objects.equals(guarantor.registry.name,
-                                        requester.registry.name)) {
+    public static boolean canAllowResource(Registry guarantor, Registry requester) {
+        if (guarantor.head != null && requester.head != null
+                        && Objects.equals(guarantor.head.name,
+                                        requester.head.name)) {
             if (checkWeighted(guarantor.base, requester.base) &&
-                            checkWeighted(guarantor.registry.catalog,
-                                            requester.registry.catalog) &&
-                            checkWeighted(guarantor.registry.schema,
-                                            requester.registry.schema)) {
+                            checkWeighted(guarantor.head.catalog,
+                                            requester.head.catalog) &&
+                            checkWeighted(guarantor.head.schema,
+                                            requester.head.schema)) {
                 return true;
             }
         }

@@ -24,9 +24,9 @@ public class OrdersAPP {
         }
         var result = new StringBuilder();
         for (var access : forAuthed.getAccess()) {
-            if (access.app != null) {
-                if (new File(appsDir, access.app.name).exists()) {
-                    result.append(access.app.name);
+            if (access.allowApp != null) {
+                if (new File(appsDir, access.allowApp.name).exists()) {
+                    result.append(access.allowApp.name);
                     result.append("\n");
                 }
             }

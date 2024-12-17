@@ -4,13 +4,13 @@ import java.io.PrintWriter;
 import org.apache.commons.io.FilenameUtils;
 
 public class Way {
-    public final Air air;
+    public final AirCfg air;
     public final AuthedMap authedMap;
     public final Storage stores;
 
     private final PrintWriter archive;
 
-    public Way(Air air) throws Exception {
+    public Way(AirCfg air) throws Exception {
         this.air = air;
         this.authedMap = new AuthedMap();
         this.stores = new Storage(air);

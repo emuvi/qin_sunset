@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 public class Groups extends ArrayList<Group> {
+    
     public void fixDefaults() {
         for (var group : this) {
             group.fixDefaults();
@@ -19,4 +20,5 @@ public class Groups extends ArrayList<Group> {
     public static Groups fromString(String json) {
         return new Gson().fromJson(json, Groups.class);
     }
+    
 }
