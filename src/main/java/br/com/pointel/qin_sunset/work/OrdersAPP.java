@@ -1,0 +1,36 @@
+package br.com.pointel.qin_sunset.work;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import org.apache.commons.io.IOUtils;
+import br.com.pointel.qin_sunset.core.Authed;
+import br.com.pointel.qin_sunset.core.WayToRun;
+import jakarta.servlet.http.HttpServletResponse;
+
+public class OrdersAPP {
+    public static void send(File file, HttpServletResponse resp) throws IOException {
+        resp.setContentType(Utils.getMimeType(file.getName()));
+        resp.setContentLength((int) file.length());
+        try (var input = new FileInputStream(file)) {
+            IOUtils.copy(input, resp.getOutputStream());
+        }
+    }
+
+    public static String list(WayToRun way, Authed forAuthed) {
+        var appsDir = new File(way.airCfg.setup.serverFolder, "app");
+        if (forAuthed.isMaster()) {
+            return Utils.listFolders(appsDir);
+        }
+        var result = new StringBuilder();
+        for (var access : forAuthed.getAccess()) {
+            if (access.allowApp != null) {
+                if (new File(appsDir, access.allowApp.name).exists()) {
+                    result.append(access.allowApp.name);
+                    result.append("\n");
+                }
+            }
+        }
+        return result.toString();
+    }
+}
