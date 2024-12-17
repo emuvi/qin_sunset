@@ -7,12 +7,12 @@ import br.net.pin.qin_sunset.core.Issued;
 import br.net.pin.qin_sunset.core.IssuedLogger;
 import br.net.pin.qin_sunset.core.IssuedWriter;
 import br.net.pin.qin_sunset.core.IssuedWriter.Destiny;
-import br.net.pin.qin_sunset.core.Way;
+import br.net.pin.qin_sunset.core.WayToRun;
 import br.net.pin.qin_sunset.swap.Execute;
 
 public class OrdersGIZ {
-    public static String list(Way way, Authed forAuthed) {
-        var gizDir = new File(way.air.setup.serverFolder, "giz");
+    public static String list(WayToRun way, Authed forAuthed) {
+        var gizDir = new File(way.airCfg.setup.serverFolder, "giz");
         if (forAuthed.isMaster()) {
             return Utils.listFilesWithExtension(gizDir, ".giz");
         }

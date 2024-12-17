@@ -11,7 +11,7 @@ import br.com.pointel.jarch.flow.CSVMaker;
 import br.com.pointel.jarch.flow.CSVWrite;
 import br.net.pin.qin_sunset.core.AllowReg;
 import br.net.pin.qin_sunset.core.Authed;
-import br.net.pin.qin_sunset.core.Way;
+import br.net.pin.qin_sunset.core.WayToRun;
 import jakarta.servlet.ServletException;
 
 public class OrdersREG {
@@ -56,7 +56,7 @@ public class OrdersREG {
         return result;
     }
 
-    public static String regNew(Way way, Insert insert, Strain strain)
+    public static String regNew(WayToRun way, Insert insert, Strain strain)
                     throws ServletException {
         try {
             var helped = way.stores.getHelp(insert.registry.base);
@@ -67,7 +67,7 @@ public class OrdersREG {
         }
     }
 
-    public static String regAsk(Way way, Select select, Strain strain)
+    public static String regAsk(WayToRun way, Select select, Strain strain)
                     throws ServletException {
         try {
             var helped = way.stores.getHelp(select.registry.base);
@@ -86,7 +86,7 @@ public class OrdersREG {
         }
     }
 
-    public static String regSet(Way way, Update update, Strain strain)
+    public static String regSet(WayToRun way, Update update, Strain strain)
                     throws ServletException {
         try {
             var helped = way.stores.getHelp(update.registry.base);
@@ -97,7 +97,7 @@ public class OrdersREG {
         }
     }
 
-    public static String regDel(Way way, Delete delete, Strain strain)
+    public static String regDel(WayToRun way, Delete delete, Strain strain)
                     throws ServletException {
         try {
             var helped = way.stores.getHelp(delete.registry.base);

@@ -4,9 +4,9 @@ import br.com.pointel.jarch.data.Helped;
 
 public class Giz {
 
-    private final Way way;
+    private final WayToRun way;
 
-    public Giz(Way way) {
+    public Giz(WayToRun way) {
         this.way = way;
     }
 

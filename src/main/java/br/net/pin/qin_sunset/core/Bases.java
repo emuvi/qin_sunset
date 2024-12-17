@@ -6,6 +6,7 @@ import br.com.pointel.jarch.data.DataWays;
 import br.com.pointel.jarch.mage.WizChars;
 
 public class Bases extends ArrayList<DataWays> {
+
     public void fixDefaults() throws Exception {
         for (var way : this) {
             way.fixNullsAndEnvs();
@@ -21,4 +22,5 @@ public class Bases extends ArrayList<DataWays> {
     public static Bases fromString(String json) {
         return new Gson().fromJson(json, Bases.class);
     }
+
 }

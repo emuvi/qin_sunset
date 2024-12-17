@@ -2,23 +2,23 @@ package br.net.pin.qin_sunset.work;
 
 import br.net.pin.qin_sunset.core.Authed;
 import br.net.pin.qin_sunset.core.Group;
-import br.net.pin.qin_sunset.core.Way;
+import br.net.pin.qin_sunset.core.WayToRun;
 import br.net.pin.qin_sunset.swap.Logged;
 import br.net.pin.qin_sunset.swap.TryAuth;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class Runner {
-    public static Way getWay(HttpServletRequest req) {
-        return (Way) req.getServletContext().getAttribute("QinSunset.Way");
+    public static WayToRun getWay(HttpServletRequest req) {
+        return (WayToRun) req.getServletContext().getAttribute("QinSunset.Way");
     }
 
-    public static Logged tryEnter(TryAuth tryAuth, Way way, HttpServletRequest req) {
-        for (var user : way.air.users) {
+    public static Logged tryEnter(TryAuth tryAuth, WayToRun way, HttpServletRequest req) {
+        for (var user : way.airCfg.users) {
             if (user.name.equals(tryAuth.name) && user.pass.equals(tryAuth.pass)) {
                 var token = req.getSession().getId();
                 Group group = null;
                 if (!user.group.isEmpty()) {
-                    for (var grouped : way.air.groups) {
+                    for (var grouped : way.airCfg.groups) {
                         if (user.group.equals(grouped.name)) {
                             group = grouped;
                             break;
@@ -33,7 +33,7 @@ public class Runner {
         return null;
     }
 
-    public static Authed getAuthed(Way way, HttpServletRequest req) {
+    public static Authed getAuthed(WayToRun way, HttpServletRequest req) {
         return way.authedMap.getAuthed(Runner.getToken(req));
     }
 

@@ -10,7 +10,9 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.QueuedThreadPool;
-import br.net.pin.qin_sunset.core.Way;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import br.net.pin.qin_sunset.core.WayToRun;
 import br.net.pin.qin_sunset.hook.ServerAuth;
 import br.net.pin.qin_sunset.hook.ServerUtils;
 import br.net.pin.qin_sunset.hook.ServesAPP;
@@ -23,7 +25,9 @@ import br.net.pin.qin_sunset.hook.ServesREG;
 
 public class Service {
 
-    private final Way runny;
+    private Logger logger = LoggerFactory.getLogger(Service.class);
+
+    private final WayToRun wayToRun;
     private final QueuedThreadPool threadPool;
     private final Server server;
     private final HttpConfiguration httpConfig;
@@ -31,60 +35,60 @@ public class Service {
     private final ServerConnector connector;
     private final ServletContextHandler context;
 
-    public Service(Way runny) throws Exception {
-        this.runny = runny;
-        this.threadPool = new QueuedThreadPool(this.runny.air.setup.threadsMax,
-                        this.runny.air.setup.threadsMin,
-                        this.runny.air.setup.threadsIdleTimeout);
+    public Service(WayToRun wayToRun) throws Exception {
+        this.wayToRun = wayToRun;
+        this.threadPool = new QueuedThreadPool(this.wayToRun.airCfg.setup.threadsMax,
+                        this.wayToRun.airCfg.setup.threadsMin,
+                        this.wayToRun.airCfg.setup.threadsIdleTimeout);
         this.server = new Server(this.threadPool);
         this.httpConfig = new HttpConfiguration();
         this.httpConfig.setSendDateHeader(false);
         this.httpConfig.setSendServerVersion(false);
         this.httpFactory = new HttpConnectionFactory(this.httpConfig);
         this.connector = new ServerConnector(this.server, httpFactory);
-        connector.setHost(this.runny.air.setup.serverHost);
-        connector.setPort(this.runny.air.setup.serverPort);
+        connector.setHost(this.wayToRun.airCfg.setup.serverHost);
+        connector.setPort(this.wayToRun.airCfg.setup.serverPort);
         this.server.setConnectors(new Connector[] {this.connector});
         this.context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         this.context.setContextPath("");
-        this.context.setAttribute("QinSunset.Way", this.runny);
+        this.context.setAttribute("QinSunset.Way", this.wayToRun);
         this.server.setHandler(this.context);
         this.init_serves();
     }
 
     private void init_serves() throws Exception {
         this.server_auth();
-        if (this.runny.air.setup.servesPUB) {
+        if (this.wayToRun.airCfg.setup.servesPub) {
             this.serves_pub();
         }
-        if (this.runny.air.setup.servesAPP) {
+        if (this.wayToRun.airCfg.setup.servesApp) {
             this.serves_app();
         }
-        if (this.runny.air.setup.servesDIR) {
+        if (this.wayToRun.airCfg.setup.servesDir) {
             this.serves_dir();
         }
-        if (this.runny.air.setup.servesCMD) {
+        if (this.wayToRun.airCfg.setup.servesCmd) {
             this.serves_cmd();
         }
-        if (this.runny.air.setup.servesBAS) {
+        if (this.wayToRun.airCfg.setup.servesBas) {
             this.serves_bas();
         }
-        if (this.runny.air.setup.servesBAS && this.runny.air.setup.servesREG) {
+        if (this.wayToRun.airCfg.setup.servesBas && this.wayToRun.airCfg.setup.servesReg) {
             this.serves_reg();
         }
-        if (this.runny.air.setup.servesGIZ) {
+        if (this.wayToRun.airCfg.setup.servesGiz) {
             this.serves_giz();
         }
         this.server_utils();
     }
 
     private void server_auth() {
-        this.runny.logInfo("Serving Auth...");
+        logger.info("Serving Auth...");
         ServerAuth.init(this.context);
     }
 
     private void serves_pub() throws Exception {
-        this.runny.logInfo("Serving PUB...");
+        logger.info("Serving Pub...");
         var holder = new ServletHolder(new ServesPUB());
         var pubDir = new File("pub");
         if (!pubDir.exists()) {
@@ -95,45 +99,45 @@ public class Service {
     }
 
     private void serves_app() {
-        this.runny.logInfo("Serving APP...");
+        logger.info("Serving App...");
         ServesAPP.init(this.context);
     }
 
     private void serves_dir() {
-        this.runny.logInfo("Serving DIR...");
+        logger.info("Serving Dir...");
         ServesDIR.init(this.context);
     }
 
     private void serves_cmd() {
-        this.runny.logInfo("Serving CMD...");
+        logger.info("Serving Cmd...");
         ServesCMD.init(this.context);
     }
 
     private void serves_bas() {
-        this.runny.logInfo("Serving BAS...");
+        logger.info("Serving Bas...");
         ServesBAS.init(this.context);
     }
 
     private void serves_reg() {
-        this.runny.logInfo("Serving REG...");
+        logger.info("Serving Reg...");
         ServesREG.init(this.context);
     }
 
     private void serves_giz() {
-        this.runny.logInfo("Serving GIZ...");
+        logger.info("Serving Giz...");
         ServesGIZ.init(this.context);
     }
 
     private void server_utils() {
-        this.runny.logInfo("Serving Utils...");
-        ServerUtils.init(this.context, this.runny.air.setup);
+        logger.info("Serving Utils...");
+        ServerUtils.init(this.context, this.wayToRun.airCfg.setup);
     }
 
     public void start() throws Exception {
-        this.runny.logInfo("Starting Server...");
-        this.runny.logInfo("Setup On-Air: " + this.runny.air.setup);
-        this.runny.logInfo("Users On-Air: " + this.runny.air.users);
-        this.runny.logInfo("Bases On-Air: " + this.runny.air.bases);
+        logger.info("Starting Server...");
+        logger.info("Setup On AirCfg: " + this.wayToRun.airCfg.setup);
+        logger.info("Users On AirCfg: " + this.wayToRun.airCfg.users);
+        logger.info("Bases On AirCfg: " + this.wayToRun.airCfg.bases);
         this.server.start();
         this.server.join();
     }

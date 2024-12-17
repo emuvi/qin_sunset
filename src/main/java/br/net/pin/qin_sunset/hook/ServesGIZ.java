@@ -62,7 +62,7 @@ public class ServesGIZ {
                                                     + execute.exec);
                     return;
                 }
-                var gizDir = new File(way.air.setup.serverFolder, "giz");
+                var gizDir = new File(way.airCfg.setup.serverFolder, "giz");
                 execute.exec = new File(gizDir, execute.exec).getAbsolutePath();
                 try {
                     var issued = OrdersGIZ.run(authed, execute);

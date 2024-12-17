@@ -6,21 +6,19 @@ import java.util.Map;
 import com.google.gson.Gson;
 
 public class Setup {
-    public Boolean serverDebug;
-    public Boolean serverVerbose;
-    public Boolean serverArchive;
+
     public String serverName;
     public String serverLang;
     public String serverHost;
     public Integer serverPort;
     public String serverFolder;
-    public Boolean servesPUB;
-    public Boolean servesAPP;
-    public Boolean servesDIR;
-    public Boolean servesCMD;
-    public Boolean servesBAS;
-    public Boolean servesREG;
-    public Boolean servesGIZ;
+    public Boolean servesPub;
+    public Boolean servesApp;
+    public Boolean servesDir;
+    public Boolean servesCmd;
+    public Boolean servesBas;
+    public Boolean servesReg;
+    public Boolean servesGiz;
 
     public Map<String, String> params;
     public Map<String, String> redirects;
@@ -30,20 +28,8 @@ public class Setup {
     public Integer threadsIdleTimeout;
     public Long cleanInterval;
     public Long tokenValidity;
-    public Integer storeMinIdle;
-    public Integer storeMaxIdle;
-    public Integer storeMaxTotal;
 
     public void fixDefaults() {
-        if (this.serverDebug == null) {
-            this.serverDebug = false;
-        }
-        if (this.serverVerbose == null) {
-            this.serverVerbose = false;
-        }
-        if (this.serverArchive == null) {
-            this.serverArchive = false;
-        }
         if (this.serverName == null || this.serverName.isEmpty()) {
             this.serverName = "QinSunset";
         }
@@ -60,26 +46,26 @@ public class Setup {
             this.serverFolder = "";
         }
         this.serverFolder = new File(this.serverFolder).getAbsolutePath();
-        if (this.servesPUB == null) {
-            this.servesPUB = false;
+        if (this.servesPub == null) {
+            this.servesPub = false;
         }
-        if (this.servesAPP == null) {
-            this.servesAPP = false;
+        if (this.servesApp == null) {
+            this.servesApp = false;
         }
-        if (this.servesDIR == null) {
-            this.servesDIR = false;
+        if (this.servesDir == null) {
+            this.servesDir = false;
         }
-        if (this.servesCMD == null) {
-            this.servesCMD = false;
+        if (this.servesCmd == null) {
+            this.servesCmd = false;
         }
-        if (this.servesBAS == null) {
-            this.servesBAS = false;
+        if (this.servesBas == null) {
+            this.servesBas = false;
         }
-        if (this.servesREG == null) {
-            this.servesREG = false;
+        if (this.servesReg == null) {
+            this.servesReg = false;
         }
-        if (this.servesGIZ == null) {
-            this.servesGIZ = false;
+        if (this.servesGiz == null) {
+            this.servesGiz = false;
         }
 
         if (this.params == null) {
@@ -104,15 +90,6 @@ public class Setup {
         if (this.tokenValidity == null) {
             this.tokenValidity = 24 * 60 * 60 * 1000L;
         }
-        if (this.storeMinIdle == null) {
-            this.storeMinIdle = 10;
-        }
-        if (this.storeMaxIdle == null) {
-            this.storeMaxIdle = 30;
-        }
-        if (this.storeMaxTotal == null) {
-            this.storeMaxTotal = 100;
-        }
     }
 
     @Override
@@ -123,4 +100,5 @@ public class Setup {
     public static Setup fromString(String source) {
         return new Gson().fromJson(source, Setup.class);
     }
+
 }

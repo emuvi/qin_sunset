@@ -15,7 +15,7 @@ public class Authed {
     private final IssuedMap issuedMap;
     private final List<Allow> access;
 
-    public Authed(User user, Group group, Way way) {
+    public Authed(User user, Group group, WayToRun way) {
         this.user = user;
         this.group = group;
         this.gizMap = new GizMap(way);

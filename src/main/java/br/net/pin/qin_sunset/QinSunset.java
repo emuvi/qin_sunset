@@ -14,7 +14,7 @@ import br.net.pin.qin_sunset.core.Bases;
 import br.net.pin.qin_sunset.core.Groups;
 import br.net.pin.qin_sunset.core.Setup;
 import br.net.pin.qin_sunset.core.Users;
-import br.net.pin.qin_sunset.core.Way;
+import br.net.pin.qin_sunset.core.WayToRun;
 
 public class QinSunset {
 
@@ -63,19 +63,13 @@ public class QinSunset {
         setup.fixDefaults();
         users.fixDefaults();
         bases.fixDefaults();
-        new Service(new Way(new AirCfg(setup, users, groups, bases))).start();
+        new Service(new WayToRun(new AirCfg(setup, users, groups, bases))).start();
     }
 
     public static Options cmdOptions() {
         var result = new Options();
         result.addOption(Option.builder("?").longOpt("help")
                         .desc("Print usage information.").build());
-        result.addOption(Option.builder("e").longOpt("debug")
-                        .desc("Should we call debug functions?").build());
-        result.addOption(Option.builder("v").longOpt("verbose")
-                        .desc("Should we print verbose messages?").build());
-        result.addOption(Option.builder("k").longOpt("archive")
-                        .desc("Should we archive all the messages?").build());
         result.addOption(Option.builder("n").longOpt("name").hasArg()
                         .desc("On behalf of what name should we serve?").build());
         result.addOption(Option.builder("l").longOpt("lang").hasArg()
@@ -99,20 +93,11 @@ public class QinSunset {
         result.addOption(Option.builder("r").longOpt("serves-reg")
                         .desc("Should we serve register actions?").build());
         result.addOption(Option.builder("g").longOpt("serves-giz")
-                        .desc("Should we serve GIZ executions?").build());
+                        .desc("Should we serve GIZ scripts?").build());
         return result;
     }
 
     public static void setFromCmd(CommandLine command, Setup setup) {
-        if (command.hasOption('e')) {
-            setup.serverDebug = true;
-        }
-        if (command.hasOption('v')) {
-            setup.serverVerbose = true;
-        }
-        if (command.hasOption('k')) {
-            setup.serverArchive = true;
-        }
         if (command.hasOption('n')) {
             setup.serverName = command.getOptionValue('n');
         }
@@ -129,25 +114,25 @@ public class QinSunset {
             setup.serverFolder = command.getOptionValue('f');
         }
         if (command.hasOption('u')) {
-            setup.servesPUB = true;
+            setup.servesPub = true;
         }
         if (command.hasOption('a')) {
-            setup.servesAPP = true;
+            setup.servesApp = true;
         }
         if (command.hasOption('d')) {
-            setup.servesDIR = true;
+            setup.servesDir = true;
         }
         if (command.hasOption('c')) {
-            setup.servesCMD = true;
+            setup.servesCmd = true;
         }
         if (command.hasOption('b')) {
-            setup.servesBAS = true;
+            setup.servesBas = true;
         }
         if (command.hasOption('r')) {
-            setup.servesREG = true;
+            setup.servesReg = true;
         }
         if (command.hasOption('g')) {
-            setup.servesGIZ = true;
+            setup.servesGiz = true;
         }
     }
 

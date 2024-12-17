@@ -9,12 +9,12 @@ import br.com.pointel.jarch.flow.Pace;
 import br.net.pin.qin_sunset.core.Authed;
 import br.net.pin.qin_sunset.core.Issued;
 import br.net.pin.qin_sunset.core.IssuedLogger;
-import br.net.pin.qin_sunset.core.Way;
+import br.net.pin.qin_sunset.core.WayToRun;
 import br.net.pin.qin_sunset.swap.Execute;
 
 public class OrdersCMD {
-    public static String list(Way way, Authed forAuthed) {
-        var cmdsDir = new File(way.air.setup.serverFolder, "cmd");
+    public static String list(WayToRun way, Authed forAuthed) {
+        var cmdsDir = new File(way.airCfg.setup.serverFolder, "cmd");
         if (forAuthed.isMaster()) {
             return Utils.listFolders(cmdsDir);
         }

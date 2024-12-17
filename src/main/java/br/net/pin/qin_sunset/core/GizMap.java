@@ -8,14 +8,14 @@ import groovy.lang.Script;
 
 public class GizMap extends HashMap<String, Script> {
 
-    private final Way way;
+    private final WayToRun way;
 
-    public GizMap(Way way) {
+    public GizMap(WayToRun way) {
         this.way = way;
     }
 
     public Script getScript(String exec) throws Exception {
-        if (!this.way.air.setup.serverDebug && this.containsKey(exec)) {
+        if (this.containsKey(exec)) {
             return this.get(exec);
         }
         var binding = new Binding();

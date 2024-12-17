@@ -15,7 +15,7 @@ import br.com.pointel.jarch.data.Select;
 import br.com.pointel.jarch.data.Update;
 import br.net.pin.qin_sunset.core.Authed;
 import br.net.pin.qin_sunset.core.Params;
-import br.net.pin.qin_sunset.core.Way;
+import br.net.pin.qin_sunset.core.WayToRun;
 import br.net.pin.qin_sunset.work.OrdersREG;
 import br.net.pin.qin_sunset.work.OrdersUtils;
 import br.net.pin.qin_sunset.work.Runner;
@@ -168,7 +168,7 @@ public class ServesREG {
                 resp.getWriter().print(OrdersREG.regAsk(way, select, allowed.tail));
             }
 
-            private void applyAlwaysOrderByIfHas(Way way, Authed authed, Select select) {
+            private void applyAlwaysOrderByIfHas(WayToRun way, Authed authed, Select select) {
                 var always_order = OrdersUtils.askParams(way, authed,
                                 Params.ALWAYS_ORDER_BY_IF_HAS.toString());
                 if (always_order != null && !always_order.isEmpty()) {

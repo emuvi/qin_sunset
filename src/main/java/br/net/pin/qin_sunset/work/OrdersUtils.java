@@ -2,18 +2,18 @@ package br.net.pin.qin_sunset.work;
 
 import br.net.pin.qin_sunset.core.Authed;
 import br.net.pin.qin_sunset.core.Issued;
-import br.net.pin.qin_sunset.core.Way;
+import br.net.pin.qin_sunset.core.WayToRun;
 import br.net.pin.qin_sunset.swap.AskIssued;
 import br.net.pin.qin_sunset.swap.AskIssuedAnswer;
 
 public class OrdersUtils {
-    public static String askParams(Way way, Authed authed, String name) {
+    public static String askParams(WayToRun way, Authed authed, String name) {
         String result = null;
         if (authed != null) {
             result = authed.getParam(name);
         }
         if (result == null) {
-            result = way.air.setup.params.get(name);
+            result = way.airCfg.setup.params.get(name);
         }
         if (result == null) {
             result = "";

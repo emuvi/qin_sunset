@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import br.net.pin.qin_sunset.core.Authed;
-import br.net.pin.qin_sunset.core.Way;
+import br.net.pin.qin_sunset.core.WayToRun;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class OrdersAPP {
@@ -17,8 +17,8 @@ public class OrdersAPP {
         }
     }
 
-    public static String list(Way way, Authed forAuthed) {
-        var appsDir = new File(way.air.setup.serverFolder, "app");
+    public static String list(WayToRun way, Authed forAuthed) {
+        var appsDir = new File(way.airCfg.setup.serverFolder, "app");
         if (forAuthed.isMaster()) {
             return Utils.listFolders(appsDir);
         }

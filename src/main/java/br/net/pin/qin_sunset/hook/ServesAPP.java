@@ -31,7 +31,7 @@ public class ServesAPP {
                 }
                 reqURL = URLDecoder.decode(reqURL, "UTF-8");
                 var way = Runner.getWay(req);
-                var reqFile = new File(way.air.setup.serverFolder, "app/" + reqURL);
+                var reqFile = new File(way.airCfg.setup.serverFolder, "app/" + reqURL);
                 if (!reqFile.exists()) {
                     resp.sendError(HttpServletResponse.SC_NOT_FOUND,
                                     "There is no file at: "

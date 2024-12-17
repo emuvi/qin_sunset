@@ -42,7 +42,7 @@ public class ServerUtils {
                             throws ServletException, IOException {
                 var way = Runner.getWay(req);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(way.air.setup.serverLang);
+                resp.getWriter().print(way.airCfg.setup.serverLang);
             }
         }), "/lang");
     }
