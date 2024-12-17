@@ -7,6 +7,8 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import br.net.pin.qin_sunset.core.Air;
 import br.net.pin.qin_sunset.core.Bases;
 import br.net.pin.qin_sunset.core.Groups;
@@ -15,6 +17,8 @@ import br.net.pin.qin_sunset.core.Users;
 import br.net.pin.qin_sunset.core.Way;
 
 public class QinSunset {
+
+    private static final Logger logger = LoggerFactory.getLogger(QinSunset.class);
 
     public static void main(String[] args) throws Exception {
         var options = cmdOptions();
@@ -26,6 +30,7 @@ public class QinSunset {
             formatter.printHelp("qin_sunset", options);
             return;
         }
+        logger.info("Started.");
         Setup setup;
         var setupFile = new File("setup.json");
         if (setupFile.exists()) {
