@@ -1,7 +1,4 @@
 {
-    "serverDebug": true,
-    "serverVerbose": true,
-    "serverArchive": true,
     "serverHost": "0.0.0.0",
     "serverPort": 5490,
     "servesPUB": true,
