@@ -20,7 +20,7 @@ public class ServesBAS {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,

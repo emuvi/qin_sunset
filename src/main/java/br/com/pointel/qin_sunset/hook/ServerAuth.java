@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class ServerAuth {
+
     public static void init(ServletContextHandler context) {
         initEnter(context);
     }
@@ -21,7 +22,7 @@ public class ServerAuth {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var body = IOUtils.toString(req.getReader());
                 var tryAuth = TryAuth.fromString(body);
                 var logged = Runner.tryEnter(tryAuth, way, req);

@@ -40,7 +40,7 @@ public class ServerUtils {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 resp.setContentType("text/plain");
                 resp.getWriter().print(way.airCfg.setup.serverLang);
             }
@@ -52,7 +52,7 @@ public class ServerUtils {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 resp.setContentType("text/plain");
                 if (authed != null) {
@@ -76,7 +76,7 @@ public class ServerUtils {
                     return;
                 }
                 name = URLDecoder.decode(name, "UTF-8");
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 resp.setContentType("text/plain");
                 resp.getWriter().print(OrdersUtils.askParams(way, authed, name));
@@ -101,7 +101,7 @@ public class ServerUtils {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,

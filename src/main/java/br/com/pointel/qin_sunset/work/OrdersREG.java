@@ -33,7 +33,7 @@ public class OrdersREG {
         result.select = false;
         result.update = false;
         result.delete = false;
-        for (var allow : authed.getAccess()) {
+        for (var allow : authed.getAllowList()) {
             if (allow.allowReg != null && allow.allowReg.registry != null) {
                 if (Authed.canAllowResource(allow.allowReg.registry, registry)) {
                     if (allow.allowReg.all != null) {

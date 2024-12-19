@@ -11,7 +11,7 @@ public class OrdersUtils {
     public static String askParams(WayToRun way, Authed authed, String name) {
         String result = null;
         if (authed != null) {
-            result = authed.getParam(name);
+            result = authed.getConfig(name);
         }
         if (result == null) {
             result = way.airCfg.setup.params.get(name);
@@ -64,5 +64,5 @@ public class OrdersUtils {
         }
         return answer.toString();
     }
-    
+
 }

@@ -39,6 +39,13 @@ public class QinSunset {
             setup = new Setup();
         }
         setFromCmd(command, setup);
+        Bases bases;
+        var basesFile = new File("bases.json");
+        if (basesFile.exists()) {
+            bases = Bases.fromString(Files.readString(basesFile.toPath()));
+        } else {
+            bases = new Bases();
+        }
         Users users;
         var usersFile = new File("users.json");
         if (usersFile.exists()) {
@@ -53,17 +60,11 @@ public class QinSunset {
         } else {
             groups = new Groups();
         }
-        Bases bases;
-        var basesFile = new File("bases.json");
-        if (basesFile.exists()) {
-            bases = Bases.fromString(Files.readString(basesFile.toPath()));
-        } else {
-            bases = new Bases();
-        }
         setup.fixDefaults();
-        users.fixDefaults();
         bases.fixDefaults();
-        new Service(new WayToRun(new AirCfg(setup, users, groups, bases))).start();
+        users.fixDefaults();
+        groups.fixDefaults();
+        new Service(new WayToRun(new AirCfg(setup, bases, users, groups))).start();
     }
 
     public static Options cmdOptions() {

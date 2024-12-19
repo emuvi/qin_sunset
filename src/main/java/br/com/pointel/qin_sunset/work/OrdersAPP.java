@@ -23,7 +23,7 @@ public class OrdersAPP {
             return Utils.listFolders(appsDir);
         }
         var result = new StringBuilder();
-        for (var access : forAuthed.getAccess()) {
+        for (var access : forAuthed.getAllowList()) {
             if (access.allowApp != null) {
                 if (new File(appsDir, access.allowApp.name).exists()) {
                     result.append(access.allowApp.name);

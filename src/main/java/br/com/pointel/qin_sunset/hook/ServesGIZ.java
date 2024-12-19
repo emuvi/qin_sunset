@@ -24,7 +24,7 @@ public class ServesGIZ {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -42,7 +42,7 @@ public class ServesGIZ {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -56,7 +56,7 @@ public class ServesGIZ {
                                     "You must provide a executable");
                     return;
                 }
-                if (!authed.allowGIZ(execute.exec)) {
+                if (!authed.isAllowedGiz(execute.exec)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to the command: "
                                                     + execute.exec);

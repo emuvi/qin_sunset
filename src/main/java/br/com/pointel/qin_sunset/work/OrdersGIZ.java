@@ -17,7 +17,7 @@ public class OrdersGIZ {
             return Utils.listFilesWithExtension(gizDir, ".giz");
         }
         var result = new StringBuilder();
-        for (var access : forAuthed.getAccess()) {
+        for (var access : forAuthed.getAllowList()) {
             if (access.allowGiz != null) {
                 if (new File(gizDir, access.allowGiz.path).exists()) {
                     result.append(access.allowGiz.path);

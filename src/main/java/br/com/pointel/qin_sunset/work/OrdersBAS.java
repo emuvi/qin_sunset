@@ -8,7 +8,7 @@ public class OrdersBAS {
         var result = new StringBuilder();
         for (var base : way.airCfg.bases) {
             var name = base.getName();
-            if (forAuthed.allowBAS(name, false)) {
+            if (forAuthed.isAllowedBas(name, false)) {
                 result.append(name).append("\n");
             }
         }

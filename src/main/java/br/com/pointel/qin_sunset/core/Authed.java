@@ -7,31 +7,32 @@ import br.com.pointel.jarch.data.CrudDeeds;
 import br.com.pointel.jarch.data.Registry;
 
 public class Authed {
+
     private final User user;
     private final Group group;
     private final GizMap gizMap;
     private final IssuedMap issuedMap;
-    private final List<Allow> access;
+    private final List<Allow> allowList;
 
-    public Authed(User user, Group group, WayToRun way) {
+    public Authed(User user, Group group, WayToRun wayToRun) {
         this.user = user;
         this.group = group;
-        this.gizMap = new GizMap(way);
+        this.gizMap = new GizMap(wayToRun);
         this.issuedMap = new IssuedMap();
-        this.access = new ArrayList<>();
-        this.initAccess();
+        this.allowList = new ArrayList<>();
+        this.initAllowList();
     }
 
-    private void initAccess() {
-        if (this.group != null) {
-            for (var allow : this.group.allowList) {
-                this.access.add(allow);
+    private void initAllowList() {
+        if (this.group != null && this.group.allowList != null) {
+            for (var allowFromGroup : this.group.allowList) {
+                this.allowList.add(allowFromGroup);
             }
         }
-        if (this.user.allowList != null) {
-            for (var allow : this.user.allowList) {
-                this.access.removeIf(onGroup -> onGroup.isOnSameResource(allow));
-                this.access.add(allow);
+        if (this.user != null && this.user.allowList != null) {
+            for (var allowFromUser : this.user.allowList) {
+                this.allowList.removeIf(onGroup -> onGroup.isOnSameResource(allowFromUser));
+                this.allowList.add(allowFromUser);
             }
         }
     }
@@ -60,47 +61,35 @@ public class Authed {
         }
     }
 
-    public Boolean isMaster() {
-        if (this.user.master) {
-            return true;
-        } else if (this.group != null) {
-            return this.group.master;
-        } else {
-            return false;
-        }
+    public boolean isMaster() {
+        return Boolean.TRUE.equals(this.user.master)
+                        || (this.group != null && Boolean.TRUE.equals(this.group.master));
     }
 
-    public List<Allow> getAccess() {
-        return this.access;
+    public List<Allow> getAllowList() {
+        return this.allowList;
     }
 
-    public boolean allowAPP(String name) {
+    public boolean isAllowedApp(String appName) {
         if (isMaster()) {
             return true;
         }
-        for (var allow : this.user.allowList) {
-            if (allow.allowApp != null && allow.allowApp.name.equals(name)) {
+        for (var allow : this.allowList) {
+            if (allow.allowApp != null && Objects.equals(allow.allowApp.name, appName)) {
                 return true;
-            }
-        }
-        if (this.group != null) {
-            for (var allow : this.group.allowList) {
-                if (allow.allowApp != null && allow.allowApp.name.equals(name)) {
-                    return true;
-                }
             }
         }
         return false;
     }
 
-    public boolean allowDIR(String fullPath, boolean toMutate) {
+    public boolean isAllowedDir(String fullPath, boolean toMutate) {
         if (this.isMaster()) {
             return true;
         }
-        for (var allow : this.user.allowList) {
+        for (var allow : this.allowList) {
             if (allow.allowDir != null && fullPath.startsWith(allow.allowDir.path)) {
                 if (toMutate) {
-                    if (allow.allowDir.mutate) {
+                    if (Boolean.TRUE.equals(allow.allowDir.mutate)) {
                         return true;
                     }
                 } else {
@@ -108,49 +97,29 @@ public class Authed {
                 }
             }
         }
-        if (this.group != null) {
-            for (var allow : this.group.allowList) {
-                if (allow.allowDir != null && fullPath.startsWith(allow.allowDir.path)) {
-                    if (toMutate) {
-                        if (allow.allowDir.mutate) {
-                            return true;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-            }
-        }
         return false;
     }
 
-    public boolean allowCMD(String name) {
+    public boolean isAllowedCmd(String cmdName) {
         if (isMaster()) {
             return true;
         }
-        for (var allow : this.user.allowList) {
-            if (allow.allowCmd != null && allow.allowCmd.name.equals(name)) {
+        for (var allow : this.allowList) {
+            if (allow.allowCmd != null && Objects.equals(allow.allowCmd.name, cmdName)) {
                 return true;
-            }
-        }
-        if (this.group != null) {
-            for (var allow : this.group.allowList) {
-                if (allow.allowCmd != null && allow.allowCmd.name.equals(name)) {
-                    return true;
-                }
             }
         }
         return false;
     }
 
-    public boolean allowBAS(String name, boolean toMutate) {
+    public boolean isAllowedBas(String baseName, boolean toMutate) {
         if (this.isMaster()) {
             return true;
         }
-        for (var allow : this.user.allowList) {
-            if (allow.allowBas != null && allow.allowBas.name.equals(name)) {
+        for (var allow : this.allowList) {
+            if (allow.allowBas != null && Objects.equals(allow.allowBas.name, baseName)) {
                 if (toMutate) {
-                    if (allow.allowBas.mutate) {
+                    if (Boolean.TRUE.equals(allow.allowBas.mutate)) {
                         return true;
                     }
                 } else {
@@ -158,97 +127,70 @@ public class Authed {
                 }
             }
         }
-        if (this.group != null) {
-            for (var allow : this.group.allowList) {
-                if (allow.allowBas != null && allow.allowBas.name.equals(name)) {
-                    if (toMutate) {
-                        if (allow.allowBas.mutate) {
-                            return true;
-                        }
-                    } else {
-                        return true;
-                    }
-                }
-            }
-        }
         return false;
     }
 
-    public AllowedReg allowREG(Registry registry, CrudDeeds deed) {
+    public AllowedReg isAllowedReg(Registry registry, CrudDeeds deed) {
         var result = new AllowedReg(false, null);
-        if (!this.allowBAS(registry.base, deed.mutates)) {
+        if (!this.isAllowedBas(registry.base, deed.mutates)) {
             return result;
         }
         if (this.isMaster()) {
             result.allowed = true;
+            return result;
         }
-        for (var allow : this.getAccess()) {
-            if (allow.allowReg != null && allow.allowReg.registry != null) {
-                if (canAllowResource(allow.allowReg.registry, registry)) {
-                    if (allow.allowReg.all != null && allow.allowReg.all) {
-                        result.allowed = true;
-                    }
-                    switch (deed) {
-                        case INSERT:
-                            if (allow.allowReg.insert != null && allow.allowReg.insert) {
-                                result.allowed = true;
-                            }
-                            break;
-                        case SELECT:
-                            if (allow.allowReg.select != null && allow.allowReg.select) {
-                                result.allowed = true;
-                            }
-                            break;
-                        case UPDATE:
-                            if (allow.allowReg.update != null && allow.allowReg.update) {
-                                result.allowed = true;
-                            }
-                            break;
-                        case DELETE:
-                            if (allow.allowReg.delete != null && allow.allowReg.delete) {
-                                result.allowed = true;
-                            }
-                            break;
-                    }
-                    result.strained = allow.allowReg.strain;
+        for (var allow : this.allowList) {
+            if (allow.allowReg != null && allow.allowReg.registry != null
+                            && canAllowResource(allow.allowReg.registry, registry)) {
+                if (allow.allowReg.all != null && allow.allowReg.all) {
+                    result.allowed = true;
                 }
+                switch (deed) {
+                    case INSERT:
+                        if (allow.allowReg.insert != null && allow.allowReg.insert) {
+                            result.allowed = true;
+                        }
+                        break;
+                    case SELECT:
+                        if (allow.allowReg.select != null && allow.allowReg.select) {
+                            result.allowed = true;
+                        }
+                        break;
+                    case UPDATE:
+                        if (allow.allowReg.update != null && allow.allowReg.update) {
+                            result.allowed = true;
+                        }
+                        break;
+                    case DELETE:
+                        if (allow.allowReg.delete != null && allow.allowReg.delete) {
+                            result.allowed = true;
+                        }
+                        break;
+                }
+                result.strained = allow.allowReg.strain;
             }
         }
         return result;
     }
 
-    public boolean allowGIZ(String path) {
+    public boolean isAllowedGiz(String path) {
         if (isMaster()) {
             return true;
         }
-        for (var allow : this.user.allowList) {
-            if (allow.allowGiz != null && allow.allowGiz.path.equals(path)) {
+        for (var allow : this.allowList) {
+            if (allow.allowGiz != null && Objects.equals(allow.allowGiz.path, path)) {
                 return true;
-            }
-        }
-        if (this.group != null) {
-            for (var allow : this.group.allowList) {
-                if (allow.allowGiz != null && allow.allowGiz.path.equals(path)) {
-                    return true;
-                }
             }
         }
         return false;
     }
 
     public static boolean canAllowResource(Registry guarantor, Registry requester) {
-        if (guarantor.tableHead != null && requester.tableHead != null
-                        && Objects.equals(guarantor.tableHead.name,
-                                        requester.tableHead.name)) {
-            if (checkWeighted(guarantor.base, requester.base) &&
-                            checkWeighted(guarantor.tableHead.catalog,
-                                            requester.tableHead.catalog) &&
-                            checkWeighted(guarantor.tableHead.schema,
-                                            requester.tableHead.schema)) {
-                return true;
-            }
-        }
-        return false;
+        return guarantor.tableHead != null && requester.tableHead != null
+                        && Objects.equals(guarantor.tableHead.name, requester.tableHead.name)
+                        && checkWeighted(guarantor.base, requester.base)
+                        && checkWeighted(guarantor.tableHead.catalog, requester.tableHead.catalog)
+                        && checkWeighted(guarantor.tableHead.schema, requester.tableHead.schema);
     }
 
     public static boolean checkWeighted(String strong, String weak) {
@@ -258,7 +200,7 @@ public class Authed {
         return strong.equals(weak);
     }
 
-    public String getParam(String name) {
+    public String getConfig(String name) {
         if (this.user.configMap.containsKey(name)) {
             return this.user.configMap.get(name);
         }

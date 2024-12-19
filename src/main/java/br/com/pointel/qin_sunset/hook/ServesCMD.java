@@ -23,7 +23,7 @@ public class ServesCMD {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -41,7 +41,7 @@ public class ServesCMD {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -55,7 +55,7 @@ public class ServesCMD {
                                     "You must provide a executable");
                     return;
                 }
-                if (!authed.allowCMD(execute.exec)) {
+                if (!authed.isAllowedCmd(execute.exec)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to the command: "
                                                     + execute.exec);

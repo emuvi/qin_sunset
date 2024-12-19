@@ -30,12 +30,11 @@ public class ServesAPP {
                     return;
                 }
                 reqURL = URLDecoder.decode(reqURL, "UTF-8");
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var reqFile = new File(way.airCfg.setup.serverFolder, "app/" + reqURL);
                 if (!reqFile.exists()) {
                     resp.sendError(HttpServletResponse.SC_NOT_FOUND,
-                                    "There is no file at: "
-                                                    + reqFile);
+                                    "There is no file at: " + reqFile);
                     return;
                 }
                 if (reqURL.startsWith("qinpel-app/")) {
@@ -53,10 +52,9 @@ public class ServesAPP {
                 if (idxSlash != -1) {
                     appName = appName.substring(0, idxSlash);
                 }
-                if (!authed.allowAPP(appName)) {
+                if (!authed.isAllowedApp(appName)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You don't have access to the application: "
-                                                    + appName);
+                                    "You don't have access to the application: " + appName);
                     return;
                 }
                 OrdersAPP.send(reqFile, resp);
@@ -69,7 +67,7 @@ public class ServesAPP {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,

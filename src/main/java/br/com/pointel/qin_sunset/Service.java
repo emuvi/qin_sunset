@@ -53,41 +53,42 @@ public class Service {
         this.context.setContextPath("");
         this.context.setAttribute("QinSunset.Way", this.wayToRun);
         this.server.setHandler(this.context);
-        this.init_serves();
+        this.initServes();
     }
 
-    private void init_serves() throws Exception {
-        this.server_auth();
-        if (this.wayToRun.airCfg.setup.servesPub) {
-            this.serves_pub();
+    private void initServes() throws Exception {
+        this.serverAuth();
+        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesPub)) {
+            this.servesPub();
         }
-        if (this.wayToRun.airCfg.setup.servesApp) {
-            this.serves_app();
+        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesApp)) {
+            this.servesApp();
         }
-        if (this.wayToRun.airCfg.setup.servesDir) {
-            this.serves_dir();
+        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesDir)) {
+            this.servesDir();
         }
-        if (this.wayToRun.airCfg.setup.servesCmd) {
-            this.serves_cmd();
+        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesCmd)) {
+            this.servesCmd();
         }
-        if (this.wayToRun.airCfg.setup.servesBas) {
-            this.serves_bas();
+        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesBas)) {
+            this.servesBas();
         }
-        if (this.wayToRun.airCfg.setup.servesBas && this.wayToRun.airCfg.setup.servesReg) {
-            this.serves_reg();
+        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesBas)
+                        && Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesReg)) {
+            this.servesReg();
         }
-        if (this.wayToRun.airCfg.setup.servesGiz) {
-            this.serves_giz();
+        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesGiz)) {
+            this.servesGiz();
         }
-        this.server_utils();
+        this.serverUtils();
     }
 
-    private void server_auth() {
+    private void serverAuth() {
         logger.info("Serving Auth...");
         ServerAuth.init(this.context);
     }
 
-    private void serves_pub() throws Exception {
+    private void servesPub() throws Exception {
         logger.info("Serving Pub...");
         var holder = new ServletHolder(new ServesPUB());
         var pubDir = new File("pub");
@@ -98,46 +99,47 @@ public class Service {
         this.context.addServlet(holder, "/pub/*");
     }
 
-    private void serves_app() {
+    private void servesApp() {
         logger.info("Serving App...");
         ServesAPP.init(this.context);
     }
 
-    private void serves_dir() {
+    private void servesDir() {
         logger.info("Serving Dir...");
         ServesDIR.init(this.context);
     }
 
-    private void serves_cmd() {
+    private void servesCmd() {
         logger.info("Serving Cmd...");
         ServesCMD.init(this.context);
     }
 
-    private void serves_bas() {
+    private void servesBas() {
         logger.info("Serving Bas...");
         ServesBAS.init(this.context);
     }
 
-    private void serves_reg() {
+    private void servesReg() {
         logger.info("Serving Reg...");
         ServesREG.init(this.context);
     }
 
-    private void serves_giz() {
+    private void servesGiz() {
         logger.info("Serving Giz...");
         ServesGIZ.init(this.context);
     }
 
-    private void server_utils() {
+    private void serverUtils() {
         logger.info("Serving Utils...");
         ServerUtils.init(this.context, this.wayToRun.airCfg.setup);
     }
 
     public void start() throws Exception {
         logger.info("Starting Server...");
-        logger.info("Setup On AirCfg: " + this.wayToRun.airCfg.setup);
-        logger.info("Users On AirCfg: " + this.wayToRun.airCfg.users);
-        logger.info("Bases On AirCfg: " + this.wayToRun.airCfg.bases);
+        logger.info("AirCfg Setup: {}", this.wayToRun.airCfg.setup);
+        logger.info("AirCfg Bases: {}", this.wayToRun.airCfg.bases);
+        logger.info("AirCfg Users: {}", this.wayToRun.airCfg.users);
+        logger.info("AirCfg Groups: {}", this.wayToRun.airCfg.groups);
         this.server.start();
         this.server.join();
     }

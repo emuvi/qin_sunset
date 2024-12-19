@@ -36,7 +36,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -49,7 +49,7 @@ public class ServesDIR {
                     onePath.path = ".";
                 }
                 var path = Utils.resolveFile(onePath.path, authed.getHome());
-                if (!authed.allowDIR(path.getAbsolutePath(), false)) {
+                if (!authed.isAllowedDir(path.getAbsolutePath(), false)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to the path: " + path);
                     return;
@@ -76,7 +76,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -91,7 +91,7 @@ public class ServesDIR {
                     return;
                 }
                 var path = Utils.resolveFile(onePath.path, authed.getHome());
-                if (!authed.allowDIR(path.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(path.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the path: " + path);
                     return;
@@ -107,7 +107,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -128,12 +128,12 @@ public class ServesDIR {
                 }
                 var origin = Utils.resolveFile(twoPath.origin, authed.getHome());
                 var destiny = Utils.resolveFile(twoPath.destiny, authed.getHome());
-                if (!authed.allowDIR(origin.getAbsolutePath(), false)) {
+                if (!authed.isAllowedDir(origin.getAbsolutePath(), false)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to the origin: " + origin);
                     return;
                 }
-                if (!authed.allowDIR(destiny.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(destiny.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the destiny: "
                                                     + destiny);
@@ -161,7 +161,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -182,13 +182,13 @@ public class ServesDIR {
                 }
                 var origin = Utils.resolveFile(twoPath.origin, authed.getHome());
                 var destiny = Utils.resolveFile(twoPath.destiny, authed.getHome());
-                if (!authed.allowDIR(origin.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(origin.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the origin: "
                                                     + origin);
                     return;
                 }
-                if (!authed.allowDIR(destiny.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(destiny.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the destiny: "
                                                     + destiny);
@@ -216,7 +216,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -231,7 +231,7 @@ public class ServesDIR {
                     return;
                 }
                 var path = Utils.resolveFile(onePath.path, authed.getHome());
-                if (!authed.allowDIR(path.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(path.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the path: " + path);
                     return;
@@ -258,7 +258,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -273,7 +273,7 @@ public class ServesDIR {
                     return;
                 }
                 var path = Utils.resolveFile(pathRead.path, authed.getHome());
-                if (!authed.allowDIR(path.getAbsolutePath(), false)) {
+                if (!authed.isAllowedDir(path.getAbsolutePath(), false)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to the path: " + path);
                     return;
@@ -291,7 +291,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -306,7 +306,7 @@ public class ServesDIR {
                     return;
                 }
                 var path = Utils.resolveFile(pathWrite.path, authed.getHome());
-                if (!authed.allowDIR(path.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(path.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the path: " + path);
                     return;
@@ -324,7 +324,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -339,7 +339,7 @@ public class ServesDIR {
                     return;
                 }
                 var path = Utils.resolveFile(pathWrite.path, authed.getHome());
-                if (!authed.allowDIR(path.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(path.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the path: " + path);
                     return;
@@ -357,7 +357,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -378,12 +378,12 @@ public class ServesDIR {
                 }
                 var origin = Utils.resolveFile(twoPath.origin, authed.getHome());
                 var destiny = Utils.resolveFile(twoPath.destiny, authed.getHome());
-                if (!authed.allowDIR(origin.getAbsolutePath(), false)) {
+                if (!authed.isAllowedDir(origin.getAbsolutePath(), false)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to the origin: " + origin);
                     return;
                 }
-                if (!authed.allowDIR(destiny.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(destiny.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the destiny: "
                                                     + destiny);
@@ -411,7 +411,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -432,13 +432,13 @@ public class ServesDIR {
                 }
                 var origin = Utils.resolveFile(twoPath.origin, authed.getHome());
                 var destiny = Utils.resolveFile(twoPath.destiny, authed.getHome());
-                if (!authed.allowDIR(origin.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(origin.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the origin: "
                                                     + origin);
                     return;
                 }
-                if (!authed.allowDIR(destiny.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(destiny.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the destiny: "
                                                     + destiny);
@@ -466,7 +466,7 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -481,7 +481,7 @@ public class ServesDIR {
                     return;
                 }
                 var path = Utils.resolveFile(onePath.path, authed.getHome());
-                if (!authed.allowDIR(path.getAbsolutePath(), true)) {
+                if (!authed.isAllowedDir(path.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to mutate the path: " + path);
                     return;

@@ -38,7 +38,7 @@ public class ServesREG {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -79,7 +79,7 @@ public class ServesREG {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -104,7 +104,7 @@ public class ServesREG {
                                     "You must provide a table head name");
                     return;
                 }
-                var allowedReg = authed.allowREG(toInsert.getRegistry(), CrudDeeds.INSERT);
+                var allowedReg = authed.isAllowedReg(toInsert.getRegistry(), CrudDeeds.INSERT);
                 if (!allowedReg.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access this operation");
@@ -121,7 +121,7 @@ public class ServesREG {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -146,7 +146,7 @@ public class ServesREG {
                                     "You must provide a table head name");
                     return;
                 }
-                var allowedReg = authed.allowREG(toSelect.getRegistry(), CrudDeeds.SELECT);
+                var allowedReg = authed.isAllowedReg(toSelect.getRegistry(), CrudDeeds.SELECT);
                 if (!allowedReg.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to this operation");
@@ -201,7 +201,7 @@ public class ServesREG {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -226,7 +226,7 @@ public class ServesREG {
                                     "You must provide a table head name");
                     return;
                 }
-                var allowed = authed.allowREG(toUpdate.getRegistry(), CrudDeeds.UPDATE);
+                var allowed = authed.isAllowedReg(toUpdate.getRegistry(), CrudDeeds.UPDATE);
                 if (!allowed.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to this operation");
@@ -243,7 +243,7 @@ public class ServesREG {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWay(req);
+                var way = Runner.getWayToRun(req);
                 var authed = Runner.getAuthed(way, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -268,7 +268,7 @@ public class ServesREG {
                                     "You must provide a table head name");
                     return;
                 }
-                var allowed = authed.allowREG(toDelete.getRegistry(), CrudDeeds.DELETE);
+                var allowed = authed.isAllowedReg(toDelete.getRegistry(), CrudDeeds.DELETE);
                 if (!allowed.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You don't have access to this operation");
