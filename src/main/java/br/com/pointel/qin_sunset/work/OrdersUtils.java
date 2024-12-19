@@ -7,6 +7,7 @@ import br.com.pointel.qin_sunset.swap.AskIssued;
 import br.com.pointel.qin_sunset.swap.AskIssuedAnswer;
 
 public class OrdersUtils {
+
     public static String askParams(WayToRun way, Authed authed, String name) {
         String result = null;
         if (authed != null) {
@@ -63,4 +64,5 @@ public class OrdersUtils {
         }
         return answer.toString();
     }
+    
 }

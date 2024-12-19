@@ -1,12 +1,13 @@
 package br.com.pointel.qin_sunset.work;
 
 import java.io.StringWriter;
-import br.com.pointel.jarch.data.Delete;
-import br.com.pointel.jarch.data.Insert;
+import java.util.Objects;
 import br.com.pointel.jarch.data.Registry;
-import br.com.pointel.jarch.data.Select;
 import br.com.pointel.jarch.data.Strain;
-import br.com.pointel.jarch.data.Update;
+import br.com.pointel.jarch.data.ToDelete;
+import br.com.pointel.jarch.data.ToInsert;
+import br.com.pointel.jarch.data.ToSelect;
+import br.com.pointel.jarch.data.ToUpdate;
 import br.com.pointel.jarch.flow.CSVMaker;
 import br.com.pointel.jarch.flow.CSVWrite;
 import br.com.pointel.qin_sunset.core.AllowReg;
@@ -56,23 +57,18 @@ public class OrdersREG {
         return result;
     }
 
-    public static String regNew(WayToRun way, Insert insert, Strain strain)
-                    throws ServletException {
-        try {
-            var helped = way.stores.getHelp(insert.registry.base);
-            var resultID = helped.helper.insert(helped.link, insert, strain);
-            return resultID;
+    public static String regNew(WayToRun way, ToInsert toInsert, Strain strain) throws ServletException {
+        try (var eOrm = way.stores.getEOrm(toInsert.base)) {
+            return eOrm.insert(toInsert.insert, strain);
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
 
-    public static String regAsk(WayToRun way, Select select, Strain strain)
-                    throws ServletException {
-        try {
-            var helped = way.stores.getHelp(select.registry.base);
-            var result = helped.helper.select(helped.link, select, strain);
-            var maker = new CSVMaker(result, select.fields);
+    public static String regAsk(WayToRun way, ToSelect toSelect, Strain strain) throws ServletException {
+        try (var eOrm = way.stores.getEOrm(toSelect.base)) {
+            var result = eOrm.select(toSelect.select, strain);
+            var maker = new CSVMaker(result, toSelect.select.fieldList);
             var build = new StringWriter();
             try (var write = new CSVWrite(build)) {
                 String[] line;
@@ -86,23 +82,17 @@ public class OrdersREG {
         }
     }
 
-    public static String regSet(WayToRun way, Update update, Strain strain)
-                    throws ServletException {
-        try {
-            var helped = way.stores.getHelp(update.registry.base);
-            var result = helped.helper.update(helped.link, update, strain);
-            return result.toString();
+    public static String regSet(WayToRun way, ToUpdate toUpdate, Strain strain) throws ServletException {
+        try (var eOrm = way.stores.getEOrm(toUpdate.base)) {
+            return Objects.toString(eOrm.update(toUpdate.update, strain));
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
 
-    public static String regDel(WayToRun way, Delete delete, Strain strain)
-                    throws ServletException {
-        try {
-            var helped = way.stores.getHelp(delete.registry.base);
-            var result = helped.helper.delete(helped.link, delete, strain);
-            return result.toString();
+    public static String regDel(WayToRun way, ToDelete toDelete, Strain strain) throws ServletException {
+        try (var eOrm = way.stores.getEOrm(toDelete.base)) {
+            return Objects.toString(eOrm.delete(toDelete.delete, strain));
         } catch (Exception e) {
             throw new ServletException(e);
         }

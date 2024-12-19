@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import com.google.gson.Gson;
-import br.com.pointel.jarch.data.DeedsCrud;
-import br.com.pointel.jarch.data.Delete;
-import br.com.pointel.jarch.data.Insert;
+import br.com.pointel.jarch.data.CrudDeeds;
 import br.com.pointel.jarch.data.Order;
 import br.com.pointel.jarch.data.Registry;
-import br.com.pointel.jarch.data.Select;
-import br.com.pointel.jarch.data.Update;
+import br.com.pointel.jarch.data.ToDelete;
+import br.com.pointel.jarch.data.ToInsert;
+import br.com.pointel.jarch.data.ToSelect;
+import br.com.pointel.jarch.data.ToUpdate;
 import br.com.pointel.qin_sunset.core.Authed;
 import br.com.pointel.qin_sunset.core.Params;
 import br.com.pointel.qin_sunset.core.WayToRun;
@@ -25,6 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class ServesREG {
+
     public static void init(ServletContextHandler context) {
         initRegCan(context);
         initRegNew(context);
@@ -57,20 +57,19 @@ public class ServesREG {
                                     "You must provide a registry base");
                     return;
                 }
-                if (registry.head == null) {
+                if (registry.tableHead == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry head");
+                                    "You must provide a registry table head");
                     return;
                 }
-                if (registry.head.name == null || registry.head.name
+                if (registry.tableHead.name == null || registry.tableHead.name
                                 .isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry head name");
+                                    "You must provide a registry table head name");
                     return;
                 }
                 resp.setContentType("application/json");
-                resp.getWriter().print(new Gson().toJson(OrdersREG.regCan(authed,
-                                registry)));
+                resp.getWriter().print(OrdersREG.regCan(authed, registry).toString());
             }
         }), "/reg/can");
     }
@@ -88,36 +87,31 @@ public class ServesREG {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var insert = Insert.fromString(body);
-                if (insert.registry == null) {
+                var toInsert = ToInsert.fromString(body);
+                if (toInsert.base == null || toInsert.base.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry");
+                                    "You must provide a base");
                     return;
                 }
-                if (insert.registry.base == null || insert.registry.base.isEmpty()) {
+                if (toInsert.insert.tableHead == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry base");
+                                    "You must provide a table head");
                     return;
                 }
-                if (insert.registry.head == null) {
+                if (toInsert.insert.tableHead.name == null
+                                || toInsert.insert.tableHead.name.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry registry");
+                                    "You must provide a table head name");
                     return;
                 }
-                if (insert.registry.head.name == null
-                                || insert.registry.head.name.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry registry name");
-                    return;
-                }
-                var allowed = authed.allowREG(insert.registry, DeedsCrud.INSERT);
-                if (!allowed.head) {
+                var allowedReg = authed.allowREG(toInsert.getRegistry(), CrudDeeds.INSERT);
+                if (!allowedReg.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You don't have access to deed this registry");
+                                    "You don't have access this operation");
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersREG.regNew(way, insert, allowed.tail));
+                resp.getWriter().print(OrdersREG.regNew(way, toInsert, allowedReg.strained));
             }
         }), "/reg/new");
     }
@@ -135,65 +129,59 @@ public class ServesREG {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var select = Select.fromString(body);
-                if (select.registry == null) {
+                var toSelect = ToSelect.fromString(body);
+                if (toSelect.base == null || toSelect.base.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry");
+                                    "You must provide a base");
                     return;
                 }
-                if (select.registry.base == null || select.registry.base.isEmpty()) {
+                if (toSelect.select.tableHead == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry base");
+                                    "You must provide a table head");
                     return;
                 }
-                if (select.registry.head == null) {
+                if (toSelect.select.tableHead.name == null
+                                || toSelect.select.tableHead.name.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry registry");
+                                    "You must provide a table head name");
                     return;
                 }
-                if (select.registry.head.name == null
-                                || select.registry.head.name.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry registry name");
-                    return;
-                }
-                var allowed = authed.allowREG(select.registry, DeedsCrud.SELECT);
-                if (!allowed.head) {
+                var allowedReg = authed.allowREG(toSelect.getRegistry(), CrudDeeds.SELECT);
+                if (!allowedReg.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You don't have access to deed this registry");
+                                    "You don't have access to this operation");
                     return;
                 }
-                applyAlwaysOrderByIfHas(way, authed, select);
+                applyAlwaysOrderByIfHas(way, authed, toSelect);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersREG.regAsk(way, select, allowed.tail));
+                resp.getWriter().print(OrdersREG.regAsk(way, toSelect, allowedReg.strained));
             }
 
-            private void applyAlwaysOrderByIfHas(WayToRun way, Authed authed, Select select) {
-                var always_order = OrdersUtils.askParams(way, authed,
-                                Params.ALWAYS_ORDER_BY_IF_HAS.toString());
+            private void applyAlwaysOrderByIfHas(WayToRun way, Authed authed, ToSelect toSelect) {
+                var always_order = OrdersUtils.askParams(way, authed, Params.ALWAYS_ORDER_BY_IF_HAS
+                                .toString());
                 if (always_order != null && !always_order.isEmpty()) {
-                    var source = select.registry.head.getSource();
+                    var source = toSelect.select.tableHead.getSource();
                     for (var always_order_by : always_order.split(",")) {
                         var always_order_by_parts = always_order_by.split(" ");
                         var always_order_by_name = always_order_by_parts[0].trim();
                         var always_order_by_desc = false;
                         if (always_order_by_parts.length > 1) {
-                            if (always_order_by_parts[1].trim().toUpperCase().equals(
-                                            "DESC")) {
+                            if (always_order_by_parts[1].trim().toUpperCase().equals("DESC")) {
                                 always_order_by_desc = true;
                             }
                         }
                         var found = false;
-                        for (var field : select.fields) {
+                        for (var field : toSelect.select.fieldList) {
                             if (always_order_by_name.equals(field.name)) {
-                                if (select.orders == null) {
-                                    select.orders = new ArrayList<>();
+                                if (toSelect.select.orderList == null) {
+                                    toSelect.select.orderList = new ArrayList<>();
                                 }
                                 var sourceAndName = always_order_by_name;
                                 if (!sourceAndName.contains(".")) {
                                     sourceAndName = source + "." + sourceAndName;
                                 }
-                                select.orders.add(new Order(sourceAndName,
+                                toSelect.select.orderList.add(new Order(sourceAndName,
                                                 always_order_by_desc));
                                 found = true;
                                 break;
@@ -221,36 +209,31 @@ public class ServesREG {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var update = Update.fromString(body);
-                if (update.registry == null) {
+                var toUpdate = ToUpdate.fromString(body);
+                if (toUpdate.base == null || toUpdate.base.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry");
+                                    "You must provide a base");
                     return;
                 }
-                if (update.registry.base == null || update.registry.base.isEmpty()) {
+                if (toUpdate.update.tableHead == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry base");
+                                    "You must provide a table head");
                     return;
                 }
-                if (update.registry.head == null) {
+                if (toUpdate.update.tableHead.name == null
+                                || toUpdate.update.tableHead.name.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry registry");
+                                    "You must provide a table head name");
                     return;
                 }
-                if (update.registry.head.name == null
-                                || update.registry.head.name.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry registry name");
-                    return;
-                }
-                var allowed = authed.allowREG(update.registry, DeedsCrud.UPDATE);
-                if (!allowed.head) {
+                var allowed = authed.allowREG(toUpdate.getRegistry(), CrudDeeds.UPDATE);
+                if (!allowed.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You don't have access to deed this registry");
+                                    "You don't have access to this operation");
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersREG.regSet(way, update, allowed.tail));
+                resp.getWriter().print(OrdersREG.regSet(way, toUpdate, allowed.strained));
             }
         }), "/reg/set");
     }
@@ -268,36 +251,31 @@ public class ServesREG {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var delete = Delete.fromString(body);
-                if (delete.registry == null) {
+                var toDelete = ToDelete.fromString(body);
+                if (toDelete.base == null || toDelete.base.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry");
+                                    "You must provide a base");
                     return;
                 }
-                if (delete.registry.base == null || delete.registry.base.isEmpty()) {
+                if (toDelete.delete.tableHead == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry base");
+                                    "You must provide a table head");
                     return;
                 }
-                if (delete.registry.head == null) {
+                if (toDelete.delete.tableHead.name == null
+                                || toDelete.delete.tableHead.name.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry registry");
+                                    "You must provide a table head name");
                     return;
                 }
-                if (delete.registry.head.name == null
-                                || delete.registry.head.name.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry registry name");
-                    return;
-                }
-                var allowed = authed.allowREG(delete.registry, DeedsCrud.DELETE);
-                if (!allowed.head) {
+                var allowed = authed.allowREG(toDelete.getRegistry(), CrudDeeds.DELETE);
+                if (!allowed.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You don't have access to deed this registry");
+                                    "You don't have access to this operation");
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersREG.regDel(way, delete, allowed.tail));
+                resp.getWriter().print(OrdersREG.regDel(way, toDelete, allowed.strained));
             }
         }), "/reg/del");
     }

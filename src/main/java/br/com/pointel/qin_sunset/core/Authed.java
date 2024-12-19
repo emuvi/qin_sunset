@@ -3,10 +3,8 @@ package br.com.pointel.qin_sunset.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import br.com.pointel.jarch.data.DeedsCrud;
-import br.com.pointel.jarch.data.Pair;
+import br.com.pointel.jarch.data.CrudDeeds;
 import br.com.pointel.jarch.data.Registry;
-import br.com.pointel.jarch.data.Strain;
 
 public class Authed {
     private final User user;
@@ -176,43 +174,43 @@ public class Authed {
         return false;
     }
 
-    public Pair<Boolean, Strain> allowREG(Registry registry, DeedsCrud deed) {
-        Pair<Boolean, Strain> result = new Pair<>(false, null);
+    public AllowedReg allowREG(Registry registry, CrudDeeds deed) {
+        var result = new AllowedReg(false, null);
         if (!this.allowBAS(registry.base, deed.mutates)) {
             return result;
         }
         if (this.isMaster()) {
-            result.head = true;
+            result.allowed = true;
         }
         for (var allow : this.getAccess()) {
             if (allow.allowReg != null && allow.allowReg.registry != null) {
                 if (canAllowResource(allow.allowReg.registry, registry)) {
                     if (allow.allowReg.all != null && allow.allowReg.all) {
-                        result.head = true;
+                        result.allowed = true;
                     }
                     switch (deed) {
                         case INSERT:
                             if (allow.allowReg.insert != null && allow.allowReg.insert) {
-                                result.head = true;
+                                result.allowed = true;
                             }
                             break;
                         case SELECT:
                             if (allow.allowReg.select != null && allow.allowReg.select) {
-                                result.head = true;
+                                result.allowed = true;
                             }
                             break;
                         case UPDATE:
                             if (allow.allowReg.update != null && allow.allowReg.update) {
-                                result.head = true;
+                                result.allowed = true;
                             }
                             break;
                         case DELETE:
                             if (allow.allowReg.delete != null && allow.allowReg.delete) {
-                                result.head = true;
+                                result.allowed = true;
                             }
                             break;
                     }
-                    result.tail = allow.allowReg.strain;
+                    result.strained = allow.allowReg.strain;
                 }
             }
         }
@@ -239,14 +237,14 @@ public class Authed {
     }
 
     public static boolean canAllowResource(Registry guarantor, Registry requester) {
-        if (guarantor.head != null && requester.head != null
-                        && Objects.equals(guarantor.head.name,
-                                        requester.head.name)) {
+        if (guarantor.tableHead != null && requester.tableHead != null
+                        && Objects.equals(guarantor.tableHead.name,
+                                        requester.tableHead.name)) {
             if (checkWeighted(guarantor.base, requester.base) &&
-                            checkWeighted(guarantor.head.catalog,
-                                            requester.head.catalog) &&
-                            checkWeighted(guarantor.head.schema,
-                                            requester.head.schema)) {
+                            checkWeighted(guarantor.tableHead.catalog,
+                                            requester.tableHead.catalog) &&
+                            checkWeighted(guarantor.tableHead.schema,
+                                            requester.tableHead.schema)) {
                 return true;
             }
         }
@@ -289,4 +287,5 @@ public class Authed {
     public void delIssued(String token) {
         this.issuedMap.remove(token);
     }
+
 }
