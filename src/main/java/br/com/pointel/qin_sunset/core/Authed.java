@@ -24,14 +24,14 @@ public class Authed {
 
     private void initAccess() {
         if (this.group != null) {
-            for (var group_allow : this.group.access) {
-                this.access.add(group_allow);
+            for (var allow : this.group.allowList) {
+                this.access.add(allow);
             }
         }
-        if (this.user.access != null) {
-            for (var user_allow : this.user.access) {
-                this.access.removeIf(on_group -> on_group.isOnSameResource(user_allow));
-                this.access.add(user_allow);
+        if (this.user.allowList != null) {
+            for (var allow : this.user.allowList) {
+                this.access.removeIf(onGroup -> onGroup.isOnSameResource(allow));
+                this.access.add(allow);
             }
         }
     }
@@ -78,14 +78,14 @@ public class Authed {
         if (isMaster()) {
             return true;
         }
-        for (var access : this.user.access) {
-            if (access.allowApp != null && access.allowApp.name.equals(name)) {
+        for (var allow : this.user.allowList) {
+            if (allow.allowApp != null && allow.allowApp.name.equals(name)) {
                 return true;
             }
         }
         if (this.group != null) {
-            for (var access : this.group.access) {
-                if (access.allowApp != null && access.allowApp.name.equals(name)) {
+            for (var allow : this.group.allowList) {
+                if (allow.allowApp != null && allow.allowApp.name.equals(name)) {
                     return true;
                 }
             }
@@ -97,10 +97,10 @@ public class Authed {
         if (this.isMaster()) {
             return true;
         }
-        for (var access : this.user.access) {
-            if (access.allowDir != null && fullPath.startsWith(access.allowDir.path)) {
+        for (var allow : this.user.allowList) {
+            if (allow.allowDir != null && fullPath.startsWith(allow.allowDir.path)) {
                 if (toMutate) {
-                    if (access.allowDir.mutate) {
+                    if (allow.allowDir.mutate) {
                         return true;
                     }
                 } else {
@@ -109,10 +109,10 @@ public class Authed {
             }
         }
         if (this.group != null) {
-            for (var access : this.group.access) {
-                if (access.allowDir != null && fullPath.startsWith(access.allowDir.path)) {
+            for (var allow : this.group.allowList) {
+                if (allow.allowDir != null && fullPath.startsWith(allow.allowDir.path)) {
                     if (toMutate) {
-                        if (access.allowDir.mutate) {
+                        if (allow.allowDir.mutate) {
                             return true;
                         }
                     } else {
@@ -128,14 +128,14 @@ public class Authed {
         if (isMaster()) {
             return true;
         }
-        for (var access : this.user.access) {
-            if (access.allowCmd != null && access.allowCmd.name.equals(name)) {
+        for (var allow : this.user.allowList) {
+            if (allow.allowCmd != null && allow.allowCmd.name.equals(name)) {
                 return true;
             }
         }
         if (this.group != null) {
-            for (var access : this.group.access) {
-                if (access.allowCmd != null && access.allowCmd.name.equals(name)) {
+            for (var allow : this.group.allowList) {
+                if (allow.allowCmd != null && allow.allowCmd.name.equals(name)) {
                     return true;
                 }
             }
@@ -147,10 +147,10 @@ public class Authed {
         if (this.isMaster()) {
             return true;
         }
-        for (var access : this.user.access) {
-            if (access.allowBas != null && access.allowBas.name.equals(name)) {
+        for (var allow : this.user.allowList) {
+            if (allow.allowBas != null && allow.allowBas.name.equals(name)) {
                 if (toMutate) {
-                    if (access.allowBas.mutate) {
+                    if (allow.allowBas.mutate) {
                         return true;
                     }
                 } else {
@@ -159,10 +159,10 @@ public class Authed {
             }
         }
         if (this.group != null) {
-            for (var access : this.group.access) {
-                if (access.allowBas != null && access.allowBas.name.equals(name)) {
+            for (var allow : this.group.allowList) {
+                if (allow.allowBas != null && allow.allowBas.name.equals(name)) {
                     if (toMutate) {
-                        if (access.allowBas.mutate) {
+                        if (allow.allowBas.mutate) {
                             return true;
                         }
                     } else {
@@ -221,14 +221,14 @@ public class Authed {
         if (isMaster()) {
             return true;
         }
-        for (var access : this.user.access) {
-            if (access.allowGiz != null && access.allowGiz.path.equals(path)) {
+        for (var allow : this.user.allowList) {
+            if (allow.allowGiz != null && allow.allowGiz.path.equals(path)) {
                 return true;
             }
         }
         if (this.group != null) {
-            for (var access : this.group.access) {
-                if (access.allowGiz != null && access.allowGiz.path.equals(path)) {
+            for (var allow : this.group.allowList) {
+                if (allow.allowGiz != null && allow.allowGiz.path.equals(path)) {
                     return true;
                 }
             }
@@ -259,11 +259,11 @@ public class Authed {
     }
 
     public String getParam(String name) {
-        if (this.user.params.containsKey(name)) {
-            return this.user.params.get(name);
+        if (this.user.configMap.containsKey(name)) {
+            return this.user.configMap.get(name);
         }
-        if (this.group != null && this.group.params.containsKey(name)) {
-            return this.group.params.get(name);
+        if (this.group != null && this.group.configMap.containsKey(name)) {
+            return this.group.configMap.get(name);
         }
         return null;
     }

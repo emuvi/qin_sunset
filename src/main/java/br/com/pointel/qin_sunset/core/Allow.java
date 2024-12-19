@@ -13,6 +13,18 @@ public class Allow {
     public AllowReg allowReg;
     public AllowGiz allowGiz;
 
+    public Allow() {}
+
+    public Allow(AllowApp allowApp, AllowDir allowDir, AllowCmd allowCmd, AllowBas allowBas,
+                    AllowReg allowReg, AllowGiz allowGiz) {
+        this.allowApp = allowApp;
+        this.allowDir = allowDir;
+        this.allowCmd = allowCmd;
+        this.allowBas = allowBas;
+        this.allowReg = allowReg;
+        this.allowGiz = allowGiz;
+    }
+
     public void fixDefaults() {
         if (this.allowApp != null) {
             if (this.allowApp.name == null || this.allowApp.name.isEmpty()) {
@@ -73,6 +85,27 @@ public class Allow {
             return Objects.equals(this.allowGiz.path, than.allowGiz.path);
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Allow)) {
+            return false;
+        }
+        Allow allow = (Allow) o;
+        return Objects.equals(allowApp, allow.allowApp)
+                        && Objects.equals(allowDir, allow.allowDir)
+                        && Objects.equals(allowCmd, allow.allowCmd)
+                        && Objects.equals(allowBas, allow.allowBas)
+                        && Objects.equals(allowReg, allow.allowReg)
+                        && Objects.equals(allowGiz, allow.allowGiz);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(allowApp, allowDir, allowCmd, allowBas, allowReg, allowGiz);
     }
 
     @Override
