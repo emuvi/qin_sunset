@@ -22,10 +22,10 @@ public class ServerAuth {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
+                var wayToRun = Runner.getWayToRun(req);
                 var body = IOUtils.toString(req.getReader());
                 var tryAuth = TryAuth.fromString(body);
-                var logged = Runner.tryEnter(tryAuth, way, req);
+                var logged = Runner.tryEnter(tryAuth, wayToRun, req);
                 if (logged == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "The user and/or pass is incorrect.");

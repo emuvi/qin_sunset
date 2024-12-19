@@ -10,9 +10,9 @@ import br.com.pointel.qin_sunset.core.IssuedWriter.Destiny;
 import br.com.pointel.qin_sunset.core.WayToRun;
 import br.com.pointel.qin_sunset.swap.Execute;
 
-public class OrdersGIZ {
-    public static String list(WayToRun way, Authed forAuthed) {
-        var gizDir = new File(way.airCfg.setup.serverFolder, "giz");
+public class OrdersGiz {
+    public static String list(WayToRun wayToRun, Authed forAuthed) {
+        var gizDir = new File(wayToRun.airWays.setup.serverFolder, "giz");
         if (forAuthed.isMaster()) {
             return Utils.listFilesWithExtension(gizDir, ".giz");
         }

@@ -15,7 +15,7 @@ import br.com.pointel.qin_sunset.core.Authed;
 import br.com.pointel.qin_sunset.core.WayToRun;
 import jakarta.servlet.ServletException;
 
-public class OrdersREG {
+public class OrdersReg {
 
     public static AllowReg regCan(Authed authed, Registry registry) {
         var result = new AllowReg();
@@ -57,16 +57,18 @@ public class OrdersREG {
         return result;
     }
 
-    public static String regNew(WayToRun way, ToInsert toInsert, Strain strain) throws ServletException {
-        try (var eOrm = way.stores.getEOrm(toInsert.base)) {
+    public static String regNew(WayToRun wayToRun, ToInsert toInsert, Strain strain)
+                    throws ServletException {
+        try (var eOrm = wayToRun.stores.getEOrm(toInsert.base)) {
             return eOrm.insert(toInsert.insert, strain);
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
 
-    public static String regAsk(WayToRun way, ToSelect toSelect, Strain strain) throws ServletException {
-        try (var eOrm = way.stores.getEOrm(toSelect.base)) {
+    public static String regAsk(WayToRun wayToRun, ToSelect toSelect, Strain strain)
+                    throws ServletException {
+        try (var eOrm = wayToRun.stores.getEOrm(toSelect.base)) {
             var result = eOrm.select(toSelect.select, strain);
             var maker = new CSVMaker(result, toSelect.select.fieldList);
             var build = new StringWriter();
@@ -82,16 +84,18 @@ public class OrdersREG {
         }
     }
 
-    public static String regSet(WayToRun way, ToUpdate toUpdate, Strain strain) throws ServletException {
-        try (var eOrm = way.stores.getEOrm(toUpdate.base)) {
+    public static String regSet(WayToRun wayToRun, ToUpdate toUpdate, Strain strain)
+                    throws ServletException {
+        try (var eOrm = wayToRun.stores.getEOrm(toUpdate.base)) {
             return Objects.toString(eOrm.update(toUpdate.update, strain));
         } catch (Exception e) {
             throw new ServletException(e);
         }
     }
 
-    public static String regDel(WayToRun way, ToDelete toDelete, Strain strain) throws ServletException {
-        try (var eOrm = way.stores.getEOrm(toDelete.base)) {
+    public static String regDel(WayToRun wayToRun, ToDelete toDelete, Strain strain)
+                    throws ServletException {
+        try (var eOrm = wayToRun.stores.getEOrm(toDelete.base)) {
             return Objects.toString(eOrm.delete(toDelete.delete, strain));
         } catch (Exception e) {
             throw new ServletException(e);

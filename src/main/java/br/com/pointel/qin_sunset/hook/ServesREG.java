@@ -12,10 +12,10 @@ import br.com.pointel.jarch.data.ToDelete;
 import br.com.pointel.jarch.data.ToInsert;
 import br.com.pointel.jarch.data.ToSelect;
 import br.com.pointel.jarch.data.ToUpdate;
+import br.com.pointel.qin_sunset.core.AllConfigs;
 import br.com.pointel.qin_sunset.core.Authed;
-import br.com.pointel.qin_sunset.core.Params;
 import br.com.pointel.qin_sunset.core.WayToRun;
-import br.com.pointel.qin_sunset.work.OrdersREG;
+import br.com.pointel.qin_sunset.work.OrdersReg;
 import br.com.pointel.qin_sunset.work.OrdersUtils;
 import br.com.pointel.qin_sunset.work.Runner;
 import jakarta.servlet.ServletException;
@@ -23,7 +23,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ServesREG {
+public class ServesReg {
 
     public static void init(ServletContextHandler context) {
         initRegCan(context);
@@ -38,8 +38,8 @@ public class ServesREG {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -69,7 +69,7 @@ public class ServesREG {
                     return;
                 }
                 resp.setContentType("application/json");
-                resp.getWriter().print(OrdersREG.regCan(authed, registry).toString());
+                resp.getWriter().print(OrdersReg.regCan(authed, registry).toString());
             }
         }), "/reg/can");
     }
@@ -79,8 +79,8 @@ public class ServesREG {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -111,7 +111,7 @@ public class ServesREG {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersREG.regNew(way, toInsert, allowedReg.strained));
+                resp.getWriter().print(OrdersReg.regNew(wayToRun, toInsert, allowedReg.strained));
             }
         }), "/reg/new");
     }
@@ -121,8 +121,8 @@ public class ServesREG {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -152,13 +152,13 @@ public class ServesREG {
                                     "You don't have access to this operation");
                     return;
                 }
-                applyAlwaysOrderByIfHas(way, authed, toSelect);
+                applyAlwaysOrderByIfHas(wayToRun, authed, toSelect);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersREG.regAsk(way, toSelect, allowedReg.strained));
+                resp.getWriter().print(OrdersReg.regAsk(wayToRun, toSelect, allowedReg.strained));
             }
 
-            private void applyAlwaysOrderByIfHas(WayToRun way, Authed authed, ToSelect toSelect) {
-                var always_order = OrdersUtils.askParams(way, authed, Params.ALWAYS_ORDER_BY_IF_HAS
+            private void applyAlwaysOrderByIfHas(WayToRun wayToRun, Authed authed, ToSelect toSelect) {
+                var always_order = OrdersUtils.askParams(wayToRun, authed, AllConfigs.ALWAYS_ORDER_BY_IF_HAS
                                 .toString());
                 if (always_order != null && !always_order.isEmpty()) {
                     var source = toSelect.select.tableHead.getSource();
@@ -201,8 +201,8 @@ public class ServesREG {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -233,7 +233,7 @@ public class ServesREG {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersREG.regSet(way, toUpdate, allowed.strained));
+                resp.getWriter().print(OrdersReg.regSet(wayToRun, toUpdate, allowed.strained));
             }
         }), "/reg/set");
     }
@@ -243,8 +243,8 @@ public class ServesREG {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -275,7 +275,7 @@ public class ServesREG {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersREG.regDel(way, toDelete, allowed.strained));
+                resp.getWriter().print(OrdersReg.regDel(wayToRun, toDelete, allowed.strained));
             }
         }), "/reg/del");
     }

@@ -40,9 +40,9 @@ public class ServerUtils {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
+                var wayToRun = Runner.getWayToRun(req);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(way.airCfg.setup.serverLang);
+                resp.getWriter().print(wayToRun.airWays.setup.serverLang);
             }
         }), "/lang");
     }
@@ -52,8 +52,8 @@ public class ServerUtils {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 resp.setContentType("text/plain");
                 if (authed != null) {
                     resp.getWriter().print(authed.getUserName());
@@ -76,10 +76,10 @@ public class ServerUtils {
                     return;
                 }
                 name = URLDecoder.decode(name, "UTF-8");
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersUtils.askParams(way, authed, name));
+                resp.getWriter().print(OrdersUtils.askParams(wayToRun, authed, name));
             }
         }), "/param/*");
     }
@@ -101,8 +101,8 @@ public class ServerUtils {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");

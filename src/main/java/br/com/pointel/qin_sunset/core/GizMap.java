@@ -8,10 +8,10 @@ import groovy.lang.Script;
 
 public class GizMap extends HashMap<String, Script> {
 
-    private final WayToRun way;
+    private final WayToRun wayToRun;
 
-    public GizMap(WayToRun way) {
-        this.way = way;
+    public GizMap(WayToRun wayToRun) {
+        this.wayToRun = wayToRun;
     }
 
     public Script getScript(String exec) throws Exception {
@@ -19,7 +19,7 @@ public class GizMap extends HashMap<String, Script> {
             return this.get(exec);
         }
         var binding = new Binding();
-        var giz = new Giz(this.way);
+        var giz = new Giz(this.wayToRun);
         binding.setVariable("giz", giz);
         var shell = new GroovyShell(binding);
         var script = shell.parse(new FileReader(exec));

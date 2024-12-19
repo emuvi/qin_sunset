@@ -8,7 +8,7 @@ import br.com.pointel.qin_sunset.core.Authed;
 import br.com.pointel.qin_sunset.core.WayToRun;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class OrdersAPP {
+public class OrdersApp {
     public static void send(File file, HttpServletResponse resp) throws IOException {
         resp.setContentType(Utils.getMimeType(file.getName()));
         resp.setContentLength((int) file.length());
@@ -17,8 +17,8 @@ public class OrdersAPP {
         }
     }
 
-    public static String list(WayToRun way, Authed forAuthed) {
-        var appsDir = new File(way.airCfg.setup.serverFolder, "app");
+    public static String list(WayToRun wayToRun, Authed forAuthed) {
+        var appsDir = new File(wayToRun.airWays.setup.serverFolder, "app");
         if (forAuthed.isMaster()) {
             return Utils.listFolders(appsDir);
         }

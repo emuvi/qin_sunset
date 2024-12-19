@@ -8,7 +8,7 @@ import br.com.pointel.qin_sunset.swap.OnePath;
 import br.com.pointel.qin_sunset.swap.PathRead;
 import br.com.pointel.qin_sunset.swap.PathWrite;
 import br.com.pointel.qin_sunset.swap.TwoPath;
-import br.com.pointel.qin_sunset.work.OrdersDIR;
+import br.com.pointel.qin_sunset.work.OrdersDir;
 import br.com.pointel.qin_sunset.work.Runner;
 import br.com.pointel.qin_sunset.work.Utils;
 import jakarta.servlet.ServletException;
@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ServesDIR {
+public class ServesDir {
     public static void init(ServletContextHandler context) {
         initDirList(context);
         initDirNew(context);
@@ -36,8 +36,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -66,7 +66,7 @@ public class ServesDIR {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.dirList(path));
+                resp.getWriter().print(OrdersDir.dirList(path));
             }
         }), "/dir/list");
     }
@@ -76,8 +76,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -97,7 +97,7 @@ public class ServesDIR {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.dirNew(path));
+                resp.getWriter().print(OrdersDir.dirNew(path));
             }
         }), "/dir/new");
     }
@@ -107,8 +107,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -151,7 +151,7 @@ public class ServesDIR {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.dirCopy(origin, destiny));
+                resp.getWriter().print(OrdersDir.dirCopy(origin, destiny));
             }
         }), "/dir/copy");
     }
@@ -161,8 +161,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -206,7 +206,7 @@ public class ServesDIR {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.dirMove(origin, destiny));
+                resp.getWriter().print(OrdersDir.dirMove(origin, destiny));
             }
         }), "/dir/move");
     }
@@ -216,8 +216,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -248,7 +248,7 @@ public class ServesDIR {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.dirDel(path));
+                resp.getWriter().print(OrdersDir.dirDel(path));
             }
         }), "/dir/del");
     }
@@ -258,8 +258,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -280,7 +280,7 @@ public class ServesDIR {
                 }
                 pathRead.base64 = pathRead.base64 != null ? pathRead.base64 : false;
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.fileRead(path, pathRead.base64,
+                resp.getWriter().print(OrdersDir.fileRead(path, pathRead.base64,
                                 pathRead.rangeStart, pathRead.rangeLength));
             }
         }), "/file/read");
@@ -291,8 +291,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -313,7 +313,7 @@ public class ServesDIR {
                 }
                 pathWrite.base64 = pathWrite.base64 != null ? pathWrite.base64 : false;
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.fileWrite(path, pathWrite.base64,
+                resp.getWriter().print(OrdersDir.fileWrite(path, pathWrite.base64,
                                 pathWrite.data, pathWrite.rangeStart));
             }
         }), "/file/write");
@@ -324,8 +324,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -346,7 +346,7 @@ public class ServesDIR {
                 }
                 pathWrite.base64 = pathWrite.base64 != null ? pathWrite.base64 : false;
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.fileAppend(path, pathWrite.base64,
+                resp.getWriter().print(OrdersDir.fileAppend(path, pathWrite.base64,
                                 pathWrite.data));
             }
         }), "/file/append");
@@ -357,8 +357,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -401,7 +401,7 @@ public class ServesDIR {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.fileCopy(origin, destiny));
+                resp.getWriter().print(OrdersDir.fileCopy(origin, destiny));
             }
         }), "/file/copy");
     }
@@ -411,8 +411,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -456,7 +456,7 @@ public class ServesDIR {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.fileMove(origin, destiny));
+                resp.getWriter().print(OrdersDir.fileMove(origin, destiny));
             }
         }), "/file/move");
     }
@@ -466,8 +466,8 @@ public class ServesDIR {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -499,7 +499,7 @@ public class ServesDIR {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDIR.fileDel(path));
+                resp.getWriter().print(OrdersDir.fileDel(path));
             }
         }), "/file/del");
     }

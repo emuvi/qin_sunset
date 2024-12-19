@@ -15,13 +15,13 @@ import org.slf4j.LoggerFactory;
 import br.com.pointel.qin_sunset.core.WayToRun;
 import br.com.pointel.qin_sunset.hook.ServerAuth;
 import br.com.pointel.qin_sunset.hook.ServerUtils;
-import br.com.pointel.qin_sunset.hook.ServesAPP;
-import br.com.pointel.qin_sunset.hook.ServesBAS;
-import br.com.pointel.qin_sunset.hook.ServesCMD;
-import br.com.pointel.qin_sunset.hook.ServesDIR;
-import br.com.pointel.qin_sunset.hook.ServesGIZ;
-import br.com.pointel.qin_sunset.hook.ServesPUB;
-import br.com.pointel.qin_sunset.hook.ServesREG;
+import br.com.pointel.qin_sunset.hook.ServesApp;
+import br.com.pointel.qin_sunset.hook.ServesBas;
+import br.com.pointel.qin_sunset.hook.ServesCmd;
+import br.com.pointel.qin_sunset.hook.ServesDir;
+import br.com.pointel.qin_sunset.hook.ServesGiz;
+import br.com.pointel.qin_sunset.hook.ServesPub;
+import br.com.pointel.qin_sunset.hook.ServesReg;
 
 public class Service {
 
@@ -37,17 +37,17 @@ public class Service {
 
     public Service(WayToRun wayToRun) throws Exception {
         this.wayToRun = wayToRun;
-        this.threadPool = new QueuedThreadPool(this.wayToRun.airCfg.setup.threadsMax,
-                        this.wayToRun.airCfg.setup.threadsMin,
-                        this.wayToRun.airCfg.setup.threadsIdleTimeout);
+        this.threadPool = new QueuedThreadPool(this.wayToRun.airWays.setup.threadsMax,
+                        this.wayToRun.airWays.setup.threadsMin,
+                        this.wayToRun.airWays.setup.threadsIdleTimeout);
         this.server = new Server(this.threadPool);
         this.httpConfig = new HttpConfiguration();
         this.httpConfig.setSendDateHeader(false);
         this.httpConfig.setSendServerVersion(false);
         this.httpFactory = new HttpConnectionFactory(this.httpConfig);
         this.connector = new ServerConnector(this.server, httpFactory);
-        connector.setHost(this.wayToRun.airCfg.setup.serverHost);
-        connector.setPort(this.wayToRun.airCfg.setup.serverPort);
+        connector.setHost(this.wayToRun.airWays.setup.serverHost);
+        connector.setPort(this.wayToRun.airWays.setup.serverPort);
         this.server.setConnectors(new Connector[] {this.connector});
         this.context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         this.context.setContextPath("");
@@ -58,26 +58,26 @@ public class Service {
 
     private void initServes() throws Exception {
         this.serverAuth();
-        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesPub)) {
+        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesPub)) {
             this.servesPub();
         }
-        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesApp)) {
+        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesApp)) {
             this.servesApp();
         }
-        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesDir)) {
+        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesDir)) {
             this.servesDir();
         }
-        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesCmd)) {
+        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesCmd)) {
             this.servesCmd();
         }
-        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesBas)) {
+        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesBas)) {
             this.servesBas();
         }
-        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesBas)
-                        && Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesReg)) {
+        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesBas)
+                        && Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesReg)) {
             this.servesReg();
         }
-        if (Boolean.TRUE.equals(this.wayToRun.airCfg.setup.servesGiz)) {
+        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesGiz)) {
             this.servesGiz();
         }
         this.serverUtils();
@@ -90,7 +90,7 @@ public class Service {
 
     private void servesPub() throws Exception {
         logger.info("Serving Pub...");
-        var holder = new ServletHolder(new ServesPUB());
+        var holder = new ServletHolder(new ServesPub());
         var pubDir = new File("pub");
         if (!pubDir.exists()) {
             Files.createDirectories(pubDir.toPath());
@@ -101,45 +101,45 @@ public class Service {
 
     private void servesApp() {
         logger.info("Serving App...");
-        ServesAPP.init(this.context);
+        ServesApp.init(this.context);
     }
 
     private void servesDir() {
         logger.info("Serving Dir...");
-        ServesDIR.init(this.context);
+        ServesDir.init(this.context);
     }
 
     private void servesCmd() {
         logger.info("Serving Cmd...");
-        ServesCMD.init(this.context);
+        ServesCmd.init(this.context);
     }
 
     private void servesBas() {
         logger.info("Serving Bas...");
-        ServesBAS.init(this.context);
+        ServesBas.init(this.context);
     }
 
     private void servesReg() {
         logger.info("Serving Reg...");
-        ServesREG.init(this.context);
+        ServesReg.init(this.context);
     }
 
     private void servesGiz() {
         logger.info("Serving Giz...");
-        ServesGIZ.init(this.context);
+        ServesGiz.init(this.context);
     }
 
     private void serverUtils() {
         logger.info("Serving Utils...");
-        ServerUtils.init(this.context, this.wayToRun.airCfg.setup);
+        ServerUtils.init(this.context, this.wayToRun.airWays.setup);
     }
 
     public void start() throws Exception {
         logger.info("Starting Server...");
-        logger.info("AirCfg Setup: {}", this.wayToRun.airCfg.setup);
-        logger.info("AirCfg Bases: {}", this.wayToRun.airCfg.bases);
-        logger.info("AirCfg Users: {}", this.wayToRun.airCfg.users);
-        logger.info("AirCfg Groups: {}", this.wayToRun.airCfg.groups);
+        logger.info("AirCfg Setup: {}", this.wayToRun.airWays.setup);
+        logger.info("AirCfg Bases: {}", this.wayToRun.airWays.bases);
+        logger.info("AirCfg Users: {}", this.wayToRun.airWays.users);
+        logger.info("AirCfg Groups: {}", this.wayToRun.airWays.groups);
         this.server.start();
         this.server.join();
     }

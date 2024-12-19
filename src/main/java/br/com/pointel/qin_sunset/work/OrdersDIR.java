@@ -11,7 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
-public class OrdersDIR {
+public class OrdersDir {
     public static String dirList(File path) {
         var result = new StringBuilder();
         result.append("P: ");

@@ -5,14 +5,14 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import br.com.pointel.qin_sunset.swap.Execute;
-import br.com.pointel.qin_sunset.work.OrdersCMD;
+import br.com.pointel.qin_sunset.work.OrdersCmd;
 import br.com.pointel.qin_sunset.work.Runner;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ServesCMD {
+public class ServesCmd {
     public static void init(ServletContextHandler context) {
         initList(context);
         initRun(context);
@@ -23,15 +23,15 @@ public class ServesCMD {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersCMD.list(way, authed));
+                resp.getWriter().print(OrdersCmd.list(wayToRun, authed));
             }
         }), "/list/cmd");
     }
@@ -41,8 +41,8 @@ public class ServesCMD {
             @Override
             protected void doPost(HttpServletRequest req, HttpServletResponse resp)
                             throws ServletException, IOException {
-                var way = Runner.getWayToRun(req);
-                var authed = Runner.getAuthed(way, req);
+                var wayToRun = Runner.getWayToRun(req);
+                var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                                     "You must be logged");
@@ -62,7 +62,7 @@ public class ServesCMD {
                     return;
                 }
                 try {
-                    var issued = OrdersCMD.run(execute);
+                    var issued = OrdersCmd.run(execute);
                     var issuedToken = authed.newIssued(issued);
                     resp.setContentType("text/plain");
                     resp.getWriter().print(issuedToken);

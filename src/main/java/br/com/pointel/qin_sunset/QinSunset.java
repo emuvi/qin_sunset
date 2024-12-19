@@ -10,7 +10,7 @@ import org.apache.commons.cli.Options;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.jarch.data.Bases;
-import br.com.pointel.qin_sunset.core.AirCfg;
+import br.com.pointel.qin_sunset.core.AirWays;
 import br.com.pointel.qin_sunset.core.Groups;
 import br.com.pointel.qin_sunset.core.Setup;
 import br.com.pointel.qin_sunset.core.Users;
@@ -64,7 +64,7 @@ public class QinSunset {
         bases.fixDefaults();
         users.fixDefaults();
         groups.fixDefaults();
-        new Service(new WayToRun(new AirCfg(setup, bases, users, groups))).start();
+        new Service(new WayToRun(new AirWays(setup, bases, users, groups))).start();
     }
 
     public static Options cmdOptions() {

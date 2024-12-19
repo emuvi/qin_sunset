@@ -3,15 +3,17 @@ package br.com.pointel.qin_sunset.core;
 import br.com.pointel.jarch.data.Storage;
 
 public class WayToRun {
-    
-    public final AirCfg airCfg;
+
+    public final AirWays airWays;
     public final AuthedMap authedMap;
     public final Storage stores;
 
-    public WayToRun(AirCfg airCfg) {
-        this.airCfg = airCfg;
+    public WayToRun(AirWays airWays) {
+        this.airWays = airWays;
         this.authedMap = new AuthedMap();
-        this.stores = airCfg.setup.servesBas ? new Storage(airCfg.bases) : new Storage();
+        this.stores = Boolean.TRUE.equals(airWays.setup.servesBas)
+            ? new Storage(airWays.bases)
+            : new Storage();
     }
 
 }

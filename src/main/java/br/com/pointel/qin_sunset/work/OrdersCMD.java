@@ -12,9 +12,9 @@ import br.com.pointel.qin_sunset.core.IssuedLogger;
 import br.com.pointel.qin_sunset.core.WayToRun;
 import br.com.pointel.qin_sunset.swap.Execute;
 
-public class OrdersCMD {
-    public static String list(WayToRun way, Authed forAuthed) {
-        var cmdsDir = new File(way.airCfg.setup.serverFolder, "cmd");
+public class OrdersCmd {
+    public static String list(WayToRun wayToRun, Authed forAuthed) {
+        var cmdsDir = new File(wayToRun.airWays.setup.serverFolder, "cmd");
         if (forAuthed.isMaster()) {
             return Utils.listFolders(cmdsDir);
         }

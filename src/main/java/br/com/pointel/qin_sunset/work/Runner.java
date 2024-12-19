@@ -16,13 +16,13 @@ public class Runner {
     }
 
     public static Logged tryEnter(TryAuth tryAuth, WayToRun wayToRun, HttpServletRequest req) {
-        for (var user : wayToRun.airCfg.users) {
+        for (var user : wayToRun.airWays.users) {
             if (Objects.equals(user.name, tryAuth.name)
                             && Objects.equals(user.pass, tryAuth.pass)) {
                 var token = req.getSession().getId();
                 Group group = null;
                 if (WizChars.isNotEmpty(user.group)) {
-                    for (var airCfgGroup : wayToRun.airCfg.groups) {
+                    for (var airCfgGroup : wayToRun.airWays.groups) {
                         if (Objects.equals(user.group, airCfgGroup.name)) {
                             group = airCfgGroup;
                             break;
@@ -37,8 +37,8 @@ public class Runner {
         return null;
     }
 
-    public static Authed getAuthed(WayToRun way, HttpServletRequest req) {
-        return way.authedMap.getAuthed(Runner.getToken(req));
+    public static Authed getAuthed(WayToRun wayToRun, HttpServletRequest req) {
+        return wayToRun.authedMap.getAuthed(Runner.getToken(req));
     }
 
     public static String getToken(HttpServletRequest req) {

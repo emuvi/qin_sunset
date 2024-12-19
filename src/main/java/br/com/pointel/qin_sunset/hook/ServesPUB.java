@@ -3,13 +3,13 @@ package br.com.pointel.qin_sunset.hook;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
-import br.com.pointel.qin_sunset.work.OrdersPUB;
+import br.com.pointel.qin_sunset.work.OrdersPub;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ServesPUB extends HttpServlet {
+public class ServesPub extends HttpServlet {
 
     private String basePath;
 
@@ -50,7 +50,7 @@ public class ServesPUB extends HttpServlet {
                             + file);
             return;
         }
-        OrdersPUB.send(req, resp, file, false);
+        OrdersPub.send(req, resp, file, false);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ServesPUB extends HttpServlet {
                             + file);
             return;
         }
-        OrdersPUB.send(req, resp, file, true);
+        OrdersPub.send(req, resp, file, true);
     }
 
 }

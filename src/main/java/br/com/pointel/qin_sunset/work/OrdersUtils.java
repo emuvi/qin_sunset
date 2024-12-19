@@ -8,13 +8,13 @@ import br.com.pointel.qin_sunset.swap.AskIssuedAnswer;
 
 public class OrdersUtils {
 
-    public static String askParams(WayToRun way, Authed authed, String name) {
+    public static String askParams(WayToRun wayToRun, Authed authed, String name) {
         String result = null;
         if (authed != null) {
             result = authed.getConfig(name);
         }
         if (result == null) {
-            result = way.airCfg.setup.params.get(name);
+            result = wayToRun.airWays.setup.params.get(name);
         }
         if (result == null) {
             result = "";
