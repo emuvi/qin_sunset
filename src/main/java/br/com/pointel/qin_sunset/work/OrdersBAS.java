@@ -4,6 +4,9 @@ import br.com.pointel.qin_sunset.core.Authed;
 import br.com.pointel.qin_sunset.core.WayToRun;
 
 public class OrdersBas {
+
+    private OrdersBas() {}
+    
     public static String list(WayToRun wayToRun, Authed forAuthed) {
         var result = new StringBuilder();
         for (var base : wayToRun.airWays.bases) {
@@ -14,4 +17,5 @@ public class OrdersBas {
         }
         return result.toString();
     }
+
 }

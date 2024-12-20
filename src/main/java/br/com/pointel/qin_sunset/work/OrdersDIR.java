@@ -12,6 +12,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 
 public class OrdersDir {
+
+    private OrdersDir() {}
+
     public static String dirList(File path) {
         var result = new StringBuilder();
         result.append("P: ");
@@ -51,7 +54,7 @@ public class OrdersDir {
                     Integer rangeLength) throws IOException {
         if (rangeStart != null) {
             try (var input = new FileInputStream(path);
-                            var output = new ByteArrayOutputStream();) {
+                var output = new ByteArrayOutputStream();) {
                 IOUtils.copyLarge(input, output, rangeStart, rangeLength);
                 if (base64) {
                     return Base64.getEncoder().encodeToString(output.toByteArray());
@@ -117,4 +120,5 @@ public class OrdersDir {
         FileUtils.delete(path);
         return "File deleted: " + path.getAbsolutePath();
     }
+
 }

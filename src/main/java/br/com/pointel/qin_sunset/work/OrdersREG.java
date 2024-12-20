@@ -17,6 +17,8 @@ import jakarta.servlet.ServletException;
 
 public class OrdersReg {
 
+    private OrdersReg() {}
+
     public static AllowReg regCan(Authed authed, Registry registry) {
         var result = new AllowReg();
         result.registry = registry;
@@ -101,4 +103,5 @@ public class OrdersReg {
             throw new ServletException(e);
         }
     }
+
 }

@@ -13,6 +13,9 @@ import br.com.pointel.qin_sunset.core.WayToRun;
 import br.com.pointel.qin_sunset.swap.Execute;
 
 public class OrdersCmd {
+
+    private OrdersCmd() {}
+
     public static String list(WayToRun wayToRun, Authed forAuthed) {
         var cmdsDir = new File(wayToRun.airWays.setup.serverFolder, "cmd");
         if (forAuthed.isMaster()) {
@@ -103,4 +106,5 @@ public class OrdersCmd {
         }.start();
         return issued;
     }
+
 }

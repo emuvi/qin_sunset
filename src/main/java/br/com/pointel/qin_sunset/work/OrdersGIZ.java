@@ -11,6 +11,9 @@ import br.com.pointel.qin_sunset.core.WayToRun;
 import br.com.pointel.qin_sunset.swap.Execute;
 
 public class OrdersGiz {
+
+    private OrdersGiz() {}
+    
     public static String list(WayToRun wayToRun, Authed forAuthed) {
         var gizDir = new File(wayToRun.airWays.setup.serverFolder, "giz");
         if (forAuthed.isMaster()) {
@@ -65,4 +68,5 @@ public class OrdersGiz {
         }.start();
         return issued;
     }
+    
 }

@@ -9,6 +9,9 @@ import br.com.pointel.qin_sunset.core.WayToRun;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class OrdersApp {
+
+    private OrdersApp() {}
+
     public static void send(File file, HttpServletResponse resp) throws IOException {
         resp.setContentType(Utils.getMimeType(file.getName()));
         resp.setContentLength((int) file.length());
@@ -33,4 +36,5 @@ public class OrdersApp {
         }
         return result.toString();
     }
+
 }

@@ -8,6 +8,8 @@ import br.com.pointel.qin_sunset.swap.AskIssuedAnswer;
 
 public class OrdersUtils {
 
+    private OrdersUtils() {}
+
     public static String askParams(WayToRun wayToRun, Authed authed, String name) {
         String result = null;
         if (authed != null) {

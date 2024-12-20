@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class OrdersPub {
+
+    private OrdersPub() {}
+    
     private static final int DEFAULT_BUFFER_SIZE = 10240; // ..bytes = 10KB.
     private static final long DEFAULT_EXPIRE_TIME = 86400000L; // ..ms = 1 day.
     private static final String MULTIPART_BOUNDARY = "MULTIPART_BYTERANGES";
@@ -225,4 +228,5 @@ public class OrdersPub {
             this.total = total;
         }
     }
+    
 }
