@@ -136,10 +136,7 @@ public class Service {
 
     public void start() throws Exception {
         logger.info("Starting Server...");
-        logger.info("AirCfg Setup: {}", this.wayToRun.airWays.setup);
-        logger.info("AirCfg Bases: {}", this.wayToRun.airWays.bases);
-        logger.info("AirCfg Users: {}", this.wayToRun.airWays.users);
-        logger.info("AirCfg Groups: {}", this.wayToRun.airWays.groups);
+        logger.info("Server AirWays Setup: {}", this.wayToRun.airWays.setup);
         this.server.start();
         this.server.join();
     }
