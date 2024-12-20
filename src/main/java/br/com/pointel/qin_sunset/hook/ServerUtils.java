@@ -6,7 +6,7 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import br.com.pointel.qin_sunset.core.Setup;
-import br.com.pointel.qin_sunset.swap.AskIssued;
+import br.com.pointel.qin_sunset.swap.IssuedQuestion;
 import br.com.pointel.qin_sunset.work.OrdersUtils;
 import br.com.pointel.qin_sunset.work.Runner;
 import jakarta.servlet.ServletException;
@@ -109,7 +109,7 @@ public class ServerUtils {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var question = AskIssued.fromString(body);
+                var question = IssuedQuestion.fromString(body);
                 if (question.token == null || question.token.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
                                     "You must provide the issued token");

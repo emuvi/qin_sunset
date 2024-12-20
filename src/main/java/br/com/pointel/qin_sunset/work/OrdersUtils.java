@@ -3,8 +3,8 @@ package br.com.pointel.qin_sunset.work;
 import br.com.pointel.qin_sunset.core.Authed;
 import br.com.pointel.qin_sunset.core.Issued;
 import br.com.pointel.qin_sunset.core.WayToRun;
-import br.com.pointel.qin_sunset.swap.AskIssued;
-import br.com.pointel.qin_sunset.swap.AskIssuedAnswer;
+import br.com.pointel.qin_sunset.swap.IssuedAnswer;
+import br.com.pointel.qin_sunset.swap.IssuedQuestion;
 
 public class OrdersUtils {
 
@@ -24,8 +24,8 @@ public class OrdersUtils {
         return result;
     }
 
-    public static String askIssued(Issued issued, AskIssued question) throws Exception {
-        var answer = new AskIssuedAnswer();
+    public static String askIssued(Issued issued, IssuedQuestion question) throws Exception {
+        var answer = new IssuedAnswer();
         if (question.askIsDone != null && question.askIsDone) {
             answer.isDone = issued.isDone();
         }

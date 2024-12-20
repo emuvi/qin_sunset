@@ -2,7 +2,7 @@ package br.com.pointel.qin_sunset.swap;
 
 import com.google.gson.Gson;
 
-public class AskIssuedAnswer {
+public class IssuedAnswer {
     public Long createdAt;
     public String outLines;
     public String[] outLinesFrom;
@@ -21,7 +21,7 @@ public class AskIssuedAnswer {
         return new Gson().toJson(this);
     }
 
-    public static AskIssuedAnswer fromString(String json) {
-        return new Gson().fromJson(json, AskIssuedAnswer.class);
+    public static IssuedAnswer fromString(String json) {
+        return new Gson().fromJson(json, IssuedAnswer.class);
     }
 }
