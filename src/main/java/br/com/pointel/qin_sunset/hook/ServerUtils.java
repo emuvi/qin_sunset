@@ -80,7 +80,7 @@ public class ServerUtils {
                 if (authed != null) {
                     resp.getWriter().print(authed.getUserName());
                 } else {
-                    resp.getWriter().print("<-- No user is logged. -->");
+                    resp.getWriter().print("<--NO_USER_LOGGED-->");
                 }
             }
         }), "/logged");
