@@ -7,6 +7,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import br.com.pointel.qin_sunset.core.Setup;
 import br.com.pointel.qin_sunset.swap.IssuedQuestion;
+import br.com.pointel.qin_sunset.swap.TryAuth;
 import br.com.pointel.qin_sunset.work.OrdersUtils;
 import br.com.pointel.qin_sunset.work.Runner;
 import jakarta.servlet.ServletException;
@@ -18,6 +19,7 @@ public class ServerUtils {
     public static void init(ServletContextHandler context, Setup setup) {
         initPing(context);
         initLang(context);
+        initEnter(context);
         initLogged(context);
         initParams(context);
         initRedirects(context, setup);
@@ -45,6 +47,26 @@ public class ServerUtils {
                 resp.getWriter().print(wayToRun.airWays.setup.serverLang);
             }
         }), "/lang");
+    }
+
+    private static void initEnter(ServletContextHandler context) {
+        context.addServlet(new ServletHolder(new HttpServlet() {
+            @Override
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+                            throws ServletException, IOException {
+                var wayToRun = Runner.getWayToRun(req);
+                var body = IOUtils.toString(req.getReader());
+                var tryAuth = TryAuth.fromString(body);
+                var logged = Runner.tryEnter(tryAuth, wayToRun, req);
+                if (logged == null) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
+                                    "The user and/or pass is incorrect.");
+                    return;
+                }
+                resp.setContentType("application/json");
+                resp.getWriter().print(logged.toString());
+            }
+        }), "/enter");
     }
 
     private static void initLogged(ServletContextHandler context) {

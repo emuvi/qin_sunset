@@ -13,7 +13,6 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.qin_sunset.core.WayToRun;
-import br.com.pointel.qin_sunset.hook.ServerAuth;
 import br.com.pointel.qin_sunset.hook.ServerUtils;
 import br.com.pointel.qin_sunset.hook.ServesApp;
 import br.com.pointel.qin_sunset.hook.ServesBas;
@@ -57,7 +56,7 @@ public class Service {
     }
 
     private void initServes() throws Exception {
-        this.serverAuth();
+        this.serverUtils();
         if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesPub)) {
             this.servesPub();
         }
@@ -80,12 +79,6 @@ public class Service {
         if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesGiz)) {
             this.servesGiz();
         }
-        this.serverUtils();
-    }
-
-    private void serverAuth() {
-        logger.info("Serving Auth...");
-        ServerAuth.init(this.context);
     }
 
     private void servesPub() throws Exception {
