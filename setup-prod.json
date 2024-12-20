@@ -1,13 +1,13 @@
 {
     "serverHost": "0.0.0.0",
     "serverPort": 5488,
-    "servesPUB": true,
-    "servesAPP": true,
-    "servesDIR": true,
-    "servesCMD": true,
-    "servesBAS": true,
-    "servesREG": true,
-    "servesGIZ": true,
+    "servesPub": true,
+    "servesApp": true,
+    "servesDir": true,
+    "servesCmd": true,
+    "servesBas": true,
+    "servesReg": true,
+    "servesGiz": true,
     "params": {
         "ALWAYS_ORDER_BY_IF_HAS": "ordem,codigo DESC"
     }

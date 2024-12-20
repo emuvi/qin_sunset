@@ -1,16 +1,16 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "java",
-      "name": "Launch QinSunset",
-      "request": "launch",
-      "mainClass": "br.net.pin.qin_sunset.QinSunset",
-      "projectName": "qin_sunset",
-      "cwd": "C:\\Users\\emuvi\\Work\\Pointel\\Test"
-    }
-  ]
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "QinSunset",
+            "request": "launch",
+            "mainClass": "br.com.pointel.qin_sunset.QinSunset",
+            "projectName": "qin_sunset",
+            "cwd": "C:\\Users\\emuvi\\coder\\Pointel\\Test"
+        }
+    ]
 }
