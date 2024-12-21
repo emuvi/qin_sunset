@@ -10,7 +10,7 @@ public enum QinConstants {
 
     QIN_SETUP("QinSetup"),
 
-    LANG_PT_BR("pt-br");
+    LANG_PT_BR("pt-BR");
 
     private final String name;
 
