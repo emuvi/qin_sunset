@@ -1,4 +1,6 @@
 {
+    "serverName": "QinSunset Test",
+    "serverLang": "pt-br",
     "serverHost": "0.0.0.0",
     "serverPort": 5490,
     "servesPub": true,
