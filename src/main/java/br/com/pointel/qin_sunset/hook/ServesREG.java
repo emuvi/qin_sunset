@@ -161,7 +161,7 @@ public class ServesReg {
                 var always_order = OrdersUtils.askParams(wayToRun, authed, AllConfigs.ALWAYS_ORDER_BY_IF_HAS
                                 .toString());
                 if (always_order != null && !always_order.isEmpty()) {
-                    var source = toSelect.select.tableHead.getSource();
+                    var source = toSelect.select.tableHead.getCatalogSchemaName();
                     for (var always_order_by : always_order.split(",")) {
                         var always_order_by_parts = always_order_by.split(" ");
                         var always_order_by_name = always_order_by_parts[0].trim();
