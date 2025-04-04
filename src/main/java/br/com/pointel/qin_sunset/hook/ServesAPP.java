@@ -37,10 +37,6 @@ public class ServesApp {
                                     "There is no file at: " + reqFile);
                     return;
                 }
-                if (reqURL.startsWith("qinpel-app/")) {
-                    OrdersApp.send(reqFile, resp);
-                    return;
-                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
