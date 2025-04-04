@@ -28,6 +28,10 @@ public class ServesGiz {
                     resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
                     return;
                 }
+                if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesGiz)) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow script access");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
@@ -46,6 +50,10 @@ public class ServesGiz {
                 var wayToRun = Runner.getWayToRun(req);
                 if (wayToRun == null) {
                     resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
+                if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesGiz)) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow script access");
                     return;
                 }
                 var authed = Runner.getAuthed(wayToRun, req);

@@ -116,6 +116,9 @@ public class ServesUtils {
     }
 
     private static void initRedirects(ServletContextHandler context, Setup setup) {
+        if (setup.redirects == null || setup.redirects.isEmpty()) {
+            return;
+        }
         for (var entry : setup.redirects.entrySet()) {
             context.addServlet(new ServletHolder(new HttpServlet() {
                 @Override

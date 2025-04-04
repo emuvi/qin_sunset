@@ -44,6 +44,10 @@ public class ServesPub extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
             return;
         }
+        if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesPub)) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow public access");
+            return;
+        }
         var reqFile = req.getPathInfo();
         if (reqFile == null || reqFile.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
@@ -62,6 +66,10 @@ public class ServesPub extends HttpServlet {
         var wayToRun = Runner.getWayToRun(req);
         if (wayToRun == null) {
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+            return;
+        }
+        if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesPub)) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow public access");
             return;
         }
         var reqFile = req.getPathInfo();

@@ -56,29 +56,14 @@ public class Service {
     }
 
     private void initServes() throws Exception {
-        this.serverUtils();
-        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesPub)) {
-            this.servesPub();
-        }
-        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesApp)) {
-            this.servesApp();
-        }
-        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesDir)) {
-            this.servesDir();
-        }
-        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesCmd)) {
-            this.servesCmd();
-        }
-        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesBas)) {
-            this.servesBas();
-        }
-        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesBas)
-                        && Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesReg)) {
-            this.servesReg();
-        }
-        if (Boolean.TRUE.equals(this.wayToRun.airWays.setup.servesGiz)) {
-            this.servesGiz();
-        }
+        this.servesPub();
+        this.servesApp();
+        this.servesDir();
+        this.servesCmd();
+        this.servesBas();
+        this.servesReg();
+        this.servesGiz();
+        this.servesUtils();
     }
 
     private void servesPub() throws Exception {
@@ -122,7 +107,7 @@ public class Service {
         ServesGiz.init(this.context);
     }
 
-    private void serverUtils() {
+    private void servesUtils() {
         logger.info("Serving Utils...");
         ServesUtils.init(this.context, this.wayToRun.airWays.setup);
     }

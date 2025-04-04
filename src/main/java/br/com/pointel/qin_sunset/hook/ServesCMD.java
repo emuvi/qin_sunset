@@ -27,6 +27,10 @@ public class ServesCmd {
                     resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
                     return;
                 }
+                if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesCmd)) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow command access");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
@@ -45,6 +49,10 @@ public class ServesCmd {
                 var wayToRun = Runner.getWayToRun(req);
                 if (wayToRun == null) {
                     resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
+                if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesCmd)) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow command access");
                     return;
                 }
                 var authed = Runner.getAuthed(wayToRun, req);
