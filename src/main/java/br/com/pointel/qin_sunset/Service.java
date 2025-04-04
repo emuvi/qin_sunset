@@ -13,7 +13,7 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.qin_sunset.core.WayToRun;
-import br.com.pointel.qin_sunset.hook.ServerUtils;
+import br.com.pointel.qin_sunset.hook.ServesUtils;
 import br.com.pointel.qin_sunset.hook.ServesApp;
 import br.com.pointel.qin_sunset.hook.ServesBas;
 import br.com.pointel.qin_sunset.hook.ServesCmd;
@@ -124,7 +124,7 @@ public class Service {
 
     private void serverUtils() {
         logger.info("Serving Utils...");
-        ServerUtils.init(this.context, this.wayToRun.airWays.setup);
+        ServesUtils.init(this.context, this.wayToRun.airWays.setup);
     }
 
     public void start() throws Exception {
