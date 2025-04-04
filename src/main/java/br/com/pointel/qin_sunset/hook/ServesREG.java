@@ -36,36 +36,33 @@ public class ServesReg {
     private static void initRegCan(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You must be logged");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
                 var registry = Registry.fromString(body);
                 if (registry == null) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry");
                     return;
                 }
                 if (registry.base == null || registry.base.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry base");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry base");
                     return;
                 }
                 if (registry.tableHead == null) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry table head");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry table head");
                     return;
                 }
-                if (registry.tableHead.name == null || registry.tableHead.name
-                                .isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a registry table head name");
+                if (registry.tableHead.name == null || registry.tableHead.name.isEmpty()) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry table head name");
                     return;
                 }
                 resp.setContentType("application/json");
@@ -77,37 +74,34 @@ public class ServesReg {
     private static void initRegNew(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You must be logged");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
                 var toInsert = ToInsert.fromString(body);
                 if (toInsert.base == null || toInsert.base.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a base");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a base");
                     return;
                 }
                 if (toInsert.insert.tableHead == null) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a table head");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head");
                     return;
                 }
-                if (toInsert.insert.tableHead.name == null
-                                || toInsert.insert.tableHead.name.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a table head name");
+                if (toInsert.insert.tableHead.name == null || toInsert.insert.tableHead.name.isEmpty()) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head name");
                     return;
                 }
                 var allowedReg = authed.isAllowedReg(toInsert.getRegistry(), CrudDeeds.INSERT);
                 if (!allowedReg.allowed) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You don't have access this operation");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access this operation");
                     return;
                 }
                 resp.setContentType("text/plain");
@@ -119,37 +113,34 @@ public class ServesReg {
     private static void initRegAsk(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You must be logged");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
                 var toSelect = ToSelect.fromString(body);
                 if (toSelect.base == null || toSelect.base.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a base");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a base");
                     return;
                 }
                 if (toSelect.select.tableHead == null) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a table head");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head");
                     return;
                 }
-                if (toSelect.select.tableHead.name == null
-                                || toSelect.select.tableHead.name.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a table head name");
+                if (toSelect.select.tableHead.name == null || toSelect.select.tableHead.name.isEmpty()) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head name");
                     return;
                 }
                 var allowedReg = authed.isAllowedReg(toSelect.getRegistry(), CrudDeeds.SELECT);
                 if (!allowedReg.allowed) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You don't have access to this operation");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to this operation");
                     return;
                 }
                 applyAlwaysOrderByIfHas(wayToRun, authed, toSelect);
@@ -199,37 +190,34 @@ public class ServesReg {
     private static void initRegSet(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You must be logged");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
                 var toUpdate = ToUpdate.fromString(body);
                 if (toUpdate.base == null || toUpdate.base.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a base");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a base");
                     return;
                 }
                 if (toUpdate.update.tableHead == null) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a table head");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head");
                     return;
                 }
-                if (toUpdate.update.tableHead.name == null
-                                || toUpdate.update.tableHead.name.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a table head name");
+                if (toUpdate.update.tableHead.name == null || toUpdate.update.tableHead.name.isEmpty()) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head name");
                     return;
                 }
                 var allowed = authed.isAllowedReg(toUpdate.getRegistry(), CrudDeeds.UPDATE);
                 if (!allowed.allowed) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You don't have access to this operation");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to this operation");
                     return;
                 }
                 resp.setContentType("text/plain");
@@ -241,37 +229,35 @@ public class ServesReg {
     private static void initRegDel(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You must be logged");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
                 var toDelete = ToDelete.fromString(body);
                 if (toDelete.base == null || toDelete.base.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a base");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a base");
                     return;
                 }
                 if (toDelete.delete.tableHead == null) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a table head");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head");
                     return;
                 }
                 if (toDelete.delete.tableHead.name == null
                                 || toDelete.delete.tableHead.name.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a table head name");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head name");
                     return;
                 }
                 var allowed = authed.isAllowedReg(toDelete.getRegistry(), CrudDeeds.DELETE);
                 if (!allowed.allowed) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You don't have access to this operation");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to this operation");
                     return;
                 }
                 resp.setContentType("text/plain");

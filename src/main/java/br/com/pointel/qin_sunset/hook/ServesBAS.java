@@ -18,13 +18,15 @@ public class ServesBas {
     private static void initList(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You must be logged");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
                     return;
                 }
                 resp.setContentType("text/plain");

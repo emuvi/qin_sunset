@@ -29,8 +29,7 @@ public class ServesUtils {
     private static void initPing(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 resp.setContentType("text/plain");
                 resp.getWriter().print("pong");
             }
@@ -40,9 +39,12 @@ public class ServesUtils {
     private static void initLang(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 resp.setContentType("text/plain");
                 resp.getWriter().print(wayToRun.airWays.setup.serverLang);
             }
@@ -52,15 +54,17 @@ public class ServesUtils {
     private static void initEnter(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var body = IOUtils.toString(req.getReader());
                 var tryAuth = TryAuth.fromString(body);
                 var logged = Runner.tryEnter(tryAuth, wayToRun, req);
                 if (logged == null) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "The user and/or pass is incorrect.");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "The user and/or pass is incorrect.");
                     return;
                 }
                 resp.setContentType("application/json");
@@ -72,9 +76,12 @@ public class ServesUtils {
     private static void initLogged(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 resp.setContentType("text/plain");
                 if (authed != null) {
@@ -89,16 +96,18 @@ public class ServesUtils {
     private static void initParams(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var name = req.getPathInfo().substring(1);
                 if (name.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide a parameter name");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a parameter name");
                     return;
                 }
                 name = URLDecoder.decode(name, "UTF-8");
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 resp.setContentType("text/plain");
                 resp.getWriter().print(OrdersUtils.askParams(wayToRun, authed, name));
@@ -110,8 +119,7 @@ public class ServesUtils {
         for (var entry : setup.redirects.entrySet()) {
             context.addServlet(new ServletHolder(new HttpServlet() {
                 @Override
-                protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                                throws ServletException, IOException {
+                protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                     resp.sendRedirect(entry.getValue());
                 }
             }), entry.getKey());
@@ -121,26 +129,26 @@ public class ServesUtils {
     private static void initIssued(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You must be logged");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
                 var question = IssuedQuestion.fromString(body);
                 if (question.token == null || question.token.isEmpty()) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "You must provide the issued token");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide the issued token");
                     return;
                 }
                 var issued = authed.getIssued(question.token);
                 if (issued == null) {
-                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                                    "Couldn't found a issued with the token");
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Couldn't found a issued with the token");
                     return;
                 }
                 try {

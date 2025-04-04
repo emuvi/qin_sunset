@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import br.com.pointel.qin_sunset.work.OrdersPub;
+import br.com.pointel.qin_sunset.work.Runner;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,8 +38,12 @@ public class ServesPub extends HttpServlet {
     }
 
     @Override
-    protected void doHead(HttpServletRequest req, HttpServletResponse resp)
-                    throws ServletException, IOException {
+    protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var wayToRun = Runner.getWayToRun(req);
+        if (wayToRun == null) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+            return;
+        }
         var reqFile = req.getPathInfo();
         if (reqFile == null || reqFile.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
@@ -46,16 +51,19 @@ public class ServesPub extends HttpServlet {
         }
         var file = new File(basePath, URLDecoder.decode(reqFile, "UTF-8"));
         if (!file.exists()) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "There is no file at: "
-                            + file);
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "There is no file at: " + file);
             return;
         }
         OrdersPub.send(req, resp, file, false);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                    throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var wayToRun = Runner.getWayToRun(req);
+        if (wayToRun == null) {
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+            return;
+        }
         var reqFile = req.getPathInfo();
         if (reqFile == null || reqFile.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");

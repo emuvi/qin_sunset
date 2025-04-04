@@ -21,8 +21,7 @@ public class ServesApp {
     private static void initGet(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var reqURL = req.getPathInfo().substring(1);
                 if (reqURL == null || reqURL.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST,
@@ -31,16 +30,18 @@ public class ServesApp {
                 }
                 reqURL = URLDecoder.decode(reqURL, "UTF-8");
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var reqFile = new File(wayToRun.airWays.setup.serverFolder, "app/" + reqURL);
                 if (!reqFile.exists()) {
-                    resp.sendError(HttpServletResponse.SC_NOT_FOUND,
-                                    "There is no file at: " + reqFile);
+                    resp.sendError(HttpServletResponse.SC_NOT_FOUND, "There is no file at: " + reqFile);
                     return;
                 }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You must be logged");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
                     return;
                 }
                 var appName = reqURL;
@@ -49,8 +50,7 @@ public class ServesApp {
                     appName = appName.substring(0, idxSlash);
                 }
                 if (!authed.isAllowedApp(appName)) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You don't have access to the application: " + appName);
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to the application: " + appName);
                     return;
                 }
                 OrdersApp.send(reqFile, resp);
@@ -61,13 +61,15 @@ public class ServesApp {
     private static void initList(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
-            protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-                            throws ServletException, IOException {
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
                 var authed = Runner.getAuthed(wayToRun, req);
                 if (authed == null) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                    "You must be logged");
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
                     return;
                 }
                 resp.setContentType("text/plain");
