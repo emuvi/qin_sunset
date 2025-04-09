@@ -10,7 +10,7 @@
     "servesBas": true,
     "servesReg": true,
     "servesGiz": true,
-    "params": {
+    "configMap": {
         "ALWAYS_ORDER_BY_IF_HAS": "ordem,codigo DESC"
     }
 }

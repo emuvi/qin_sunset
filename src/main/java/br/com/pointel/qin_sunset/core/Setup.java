@@ -20,8 +20,8 @@ public class Setup {
     public Boolean servesReg;
     public Boolean servesGiz;
 
-    public Map<String, String> params;
-    public Map<String, String> redirects;
+    public Map<String, String> configMap;
+    public Map<String, String> redirectMap;
 
     public Integer threadsMin;
     public Integer threadsMax;
@@ -68,11 +68,11 @@ public class Setup {
             this.servesGiz = false;
         }
 
-        if (this.params == null) {
-            this.params = new HashMap<>();
+        if (this.configMap == null) {
+            this.configMap = new HashMap<>();
         }
-        if (this.redirects == null) {
-            this.redirects = new HashMap<>();
+        if (this.redirectMap == null) {
+            this.redirectMap = new HashMap<>();
         }
 
         if (this.threadsMin == null) {

@@ -21,7 +21,7 @@ public class ServesUtils {
         initLang(context);
         initEnter(context);
         initLogged(context);
-        initParam(context);
+        initConfig(context);
         initRedirects(context, setup);
         initIssued(context);
     }
@@ -93,7 +93,7 @@ public class ServesUtils {
         }), "/logged");
     }
 
-    private static void initParam(ServletContextHandler context) {
+    private static void initConfig(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -110,16 +110,16 @@ public class ServesUtils {
                 }
                 var authed = Runner.getAuthed(wayToRun, req);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersUtils.askParam(wayToRun, authed, name));
+                resp.getWriter().print(OrdersUtils.askConfig(wayToRun, authed, name));
             }
-        }), "/param/*");
+        }), "/config/*");
     }
 
     private static void initRedirects(ServletContextHandler context, Setup setup) {
-        if (setup.redirects == null || setup.redirects.isEmpty()) {
+        if (setup.redirectMap == null || setup.redirectMap.isEmpty()) {
             return;
         }
-        for (var entry : setup.redirects.entrySet()) {
+        for (var entry : setup.redirectMap.entrySet()) {
             context.addServlet(new ServletHolder(new HttpServlet() {
                 @Override
                 protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

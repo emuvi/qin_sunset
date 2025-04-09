@@ -10,13 +10,13 @@ public class OrdersUtils {
 
     private OrdersUtils() {}
 
-    public static String askParam(WayToRun wayToRun, Authed authed, String name) {
+    public static String askConfig(WayToRun wayToRun, Authed authed, String name) {
         String result = null;
         if (authed != null) {
             result = authed.getConfig(name);
         }
         if (result == null) {
-            result = wayToRun.airWays.setup.params.get(name);
+            result = wayToRun.airWays.setup.configMap.get(name);
         }
         if (result == null) {
             result = "";
