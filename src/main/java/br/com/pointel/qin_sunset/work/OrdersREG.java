@@ -59,8 +59,7 @@ public class OrdersReg {
         return result;
     }
 
-    public static String regNew(WayToRun wayToRun, ToInsert toInsert, Strain strain)
-                    throws ServletException {
+    public static String regNew(WayToRun wayToRun, ToInsert toInsert, Strain strain) throws ServletException {
         try (var eOrm = wayToRun.stores.getEOrm(toInsert.base)) {
             return eOrm.insert(toInsert.insert, strain);
         } catch (Exception e) {
@@ -68,8 +67,7 @@ public class OrdersReg {
         }
     }
 
-    public static String regAsk(WayToRun wayToRun, ToSelect toSelect, Strain strain)
-                    throws ServletException {
+    public static String regAsk(WayToRun wayToRun, ToSelect toSelect, Strain strain) throws ServletException {
         try (var eOrm = wayToRun.stores.getEOrm(toSelect.base)) {
             var result = eOrm.select(toSelect.select, strain);
             var maker = new CSVMaker(result, toSelect.select.fieldList);
@@ -86,8 +84,7 @@ public class OrdersReg {
         }
     }
 
-    public static String regSet(WayToRun wayToRun, ToUpdate toUpdate, Strain strain)
-                    throws ServletException {
+    public static String regSet(WayToRun wayToRun, ToUpdate toUpdate, Strain strain) throws ServletException {
         try (var eOrm = wayToRun.stores.getEOrm(toUpdate.base)) {
             return Objects.toString(eOrm.update(toUpdate.update, strain));
         } catch (Exception e) {
@@ -95,8 +92,7 @@ public class OrdersReg {
         }
     }
 
-    public static String regDel(WayToRun wayToRun, ToDelete toDelete, Strain strain)
-                    throws ServletException {
+    public static String regDel(WayToRun wayToRun, ToDelete toDelete, Strain strain) throws ServletException {
         try (var eOrm = wayToRun.stores.getEOrm(toDelete.base)) {
             return Objects.toString(eOrm.delete(toDelete.delete, strain));
         } catch (Exception e) {
