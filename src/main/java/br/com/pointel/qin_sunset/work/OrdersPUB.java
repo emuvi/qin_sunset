@@ -20,8 +20,7 @@ public class OrdersPub {
     private static final long DEFAULT_EXPIRE_TIME = 86400000L; // ..ms = 1 day.
     private static final String MULTIPART_BOUNDARY = "MULTIPART_BYTERANGES";
 
-    public static void send(HttpServletRequest req, HttpServletResponse resp,
-                    File file, boolean content) throws IOException {
+    public static void send(HttpServletRequest req, HttpServletResponse resp, File file, boolean content) throws IOException {
         var fileName = file.getName();
         long length = file.length();
         long lastModified = file.lastModified();
@@ -36,8 +35,7 @@ public class OrdersPub {
             return;
         }
         var ifModifiedSince = req.getDateHeader("If-Modified-Since");
-        if (ifNoneMatch == null && ifModifiedSince != -1 && ifModifiedSince
-                        + 1000 > lastModified) {
+        if (ifNoneMatch == null && ifModifiedSince != -1 && ifModifiedSince + 1000 > lastModified) {
             resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             resp.setHeader("ETag", eTag);
             resp.setDateHeader("Expires", expires);
@@ -78,8 +76,8 @@ public class OrdersPub {
 
             if (ranges.isEmpty()) {
                 for (String part : range.substring(6).split(",")) {
-                    var start = sublong(part, 0, part.indexOf("-"));
-                    var end = sublong(part, part.indexOf("-") + 1, part.length());
+                    var start = subLong(part, 0, part.indexOf("-"));
+                    var end = subLong(part, part.indexOf("-") + 1, part.length());
                     if (start == -1) {
                         start = length - end;
                         end = length - 1;
@@ -175,26 +173,24 @@ public class OrdersPub {
     private static boolean accepts(String acceptHeader, String toAccept) {
         var acceptValues = acceptHeader.split("\\s*(,|;)\\s*");
         Arrays.sort(acceptValues);
-        return Arrays.binarySearch(acceptValues, toAccept) > -1 || Arrays.binarySearch(
-                        acceptValues, toAccept.replaceAll("/.*$", "/*")) > -1 || Arrays
-                                        .binarySearch(
-                                                        acceptValues, "*/*") > -1;
+        return Arrays.binarySearch(acceptValues, toAccept) > -1
+                        || Arrays.binarySearch(acceptValues, toAccept.replaceAll("/.*$", "/*")) > -1
+                        || Arrays.binarySearch(acceptValues, "*/*") > -1;
     }
 
     private static boolean matches(String matchHeader, String toMatch) {
         var matchValues = matchHeader.split("\\s*,\\s*");
         Arrays.sort(matchValues);
-        return Arrays.binarySearch(matchValues, toMatch) > -1 || Arrays.binarySearch(
-                        matchValues, "*") > -1;
+        return Arrays.binarySearch(matchValues, toMatch) > -1
+                        || Arrays.binarySearch(matchValues, "*") > -1;
     }
 
-    private static long sublong(String value, int beginIndex, int endIndex) {
+    private static long subLong(String value, int beginIndex, int endIndex) {
         var substring = value.substring(beginIndex, endIndex);
         return (substring.length() > 0) ? Long.parseLong(substring) : -1;
     }
 
-    private static void copy(RandomAccessFile input, OutputStream output, long start,
-                    long length) throws IOException {
+    private static void copy(RandomAccessFile input, OutputStream output, long start, long length) throws IOException {
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         int read;
         if (input.length() == length) {

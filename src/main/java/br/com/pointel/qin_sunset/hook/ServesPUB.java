@@ -12,31 +12,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ServesPub extends HttpServlet {
 
-    private String basePath;
-
-    @Override
-    public void init() throws ServletException {
-        this.basePath = getInitParameter("basePath");
-        if (this.basePath == null) {
-            throw new ServletException("ServesPub init param 'basePath' is required.");
-        } else {
-            var path = new File(this.basePath);
-            if (!path.exists()) {
-                throw new ServletException("ServesPub init param 'basePath' value '"
-                                + this.basePath
-                                + "' does actually not exist in file system.");
-            } else if (!path.isDirectory()) {
-                throw new ServletException("ServesPub init param 'basePath' value '"
-                                + this.basePath
-                                + "' is actually not a directory in file system.");
-            } else if (!path.canRead()) {
-                throw new ServletException("ServesPub init param 'basePath' value '"
-                                + this.basePath
-                                + "' is actually not readable in file system.");
-            }
-        }
-    }
-
     @Override
     protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         var wayToRun = Runner.getWayToRun(req);
@@ -46,6 +21,11 @@ public class ServesPub extends HttpServlet {
         }
         if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesPub)) {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow public access");
+            return;
+        }
+        var basePath = new File(wayToRun.airWays.setup.serverFolder, "pub");
+        if (!basePath.exists()) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "There is no folder at: " + basePath);
             return;
         }
         var reqFile = req.getPathInfo();
@@ -72,6 +52,11 @@ public class ServesPub extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow public access");
             return;
         }
+        var basePath = new File(wayToRun.airWays.setup.serverFolder, "pub");
+        if (!basePath.exists()) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "There is no folder at: " + basePath);
+            return;
+        }
         var reqFile = req.getPathInfo();
         if (reqFile == null || reqFile.isEmpty()) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
@@ -79,8 +64,7 @@ public class ServesPub extends HttpServlet {
         }
         var file = new File(basePath, URLDecoder.decode(reqFile, "UTF-8"));
         if (!file.exists()) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "There is no file at: "
-                            + file);
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "There is no file at: " + file);
             return;
         }
         OrdersPub.send(req, resp, file, true);

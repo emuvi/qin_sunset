@@ -69,11 +69,6 @@ public class Service {
     private void servesPub() throws Exception {
         logger.info("Serving Pub...");
         var holder = new ServletHolder(new ServesPub());
-        var pubDir = new File("pub");
-        if (!pubDir.exists()) {
-            Files.createDirectories(pubDir.toPath());
-        }
-        holder.setInitParameter("basePath", pubDir.getAbsolutePath());
         this.context.addServlet(holder, "/pub/*");
     }
 
