@@ -16,4 +16,10 @@ public class WayToRun {
             : new Storage();
     }
 
+    public WayToRun(AirWays airWays, AuthedMap authedMap, Storage stores) {
+        this.airWays = airWays;
+        this.authedMap = authedMap;
+        this.stores = stores;
+    }
+
 }

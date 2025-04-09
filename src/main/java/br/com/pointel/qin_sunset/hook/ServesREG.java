@@ -173,7 +173,7 @@ public class ServesReg {
             }
 
             private void applyAlwaysOrderByIfHas(WayToRun wayToRun, Authed authed, ToSelect toSelect) {
-                var always_order = OrdersUtils.askParams(wayToRun, authed, AllConfigs.ALWAYS_ORDER_BY_IF_HAS
+                var always_order = OrdersUtils.askParam(wayToRun, authed, AllConfigs.ALWAYS_ORDER_BY_IF_HAS
                                 .toString());
                 if (always_order != null && !always_order.isEmpty()) {
                     var source = toSelect.select.tableHead.getCatalogSchemaName();

@@ -10,7 +10,7 @@ public class OrdersUtils {
 
     private OrdersUtils() {}
 
-    public static String askParams(WayToRun wayToRun, Authed authed, String name) {
+    public static String askParam(WayToRun wayToRun, Authed authed, String name) {
         String result = null;
         if (authed != null) {
             result = authed.getConfig(name);

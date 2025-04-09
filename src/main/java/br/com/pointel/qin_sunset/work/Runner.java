@@ -2,6 +2,7 @@ package br.com.pointel.qin_sunset.work;
 
 import java.util.Objects;
 import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.qin_sunset.Service;
 import br.com.pointel.qin_sunset.core.Authed;
 import br.com.pointel.qin_sunset.core.Group;
 import br.com.pointel.qin_sunset.core.WayToRun;
@@ -11,8 +12,12 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class Runner {
 
+    public static Service getService(HttpServletRequest req) {
+        return (Service) req.getServletContext().getAttribute(Service.KEY_QIN_SUNSET_SERVICE);
+    }
+
     public static WayToRun getWayToRun(HttpServletRequest req) {
-        return (WayToRun) req.getServletContext().getAttribute("QinSunset.Way");
+        return (WayToRun) req.getServletContext().getAttribute(Service.KEY_QIN_SUNSET_WAY_TO_RUN);
     }
 
     public static Logged tryEnter(TryAuth tryAuth, WayToRun wayToRun, HttpServletRequest req) {

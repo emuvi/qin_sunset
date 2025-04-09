@@ -21,7 +21,7 @@ public class ServesUtils {
         initLang(context);
         initEnter(context);
         initLogged(context);
-        initParams(context);
+        initParam(context);
         initRedirects(context, setup);
         initIssued(context);
     }
@@ -93,7 +93,7 @@ public class ServesUtils {
         }), "/logged");
     }
 
-    private static void initParams(ServletContextHandler context) {
+    private static void initParam(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
             protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -110,7 +110,7 @@ public class ServesUtils {
                 }
                 var authed = Runner.getAuthed(wayToRun, req);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersUtils.askParams(wayToRun, authed, name));
+                resp.getWriter().print(OrdersUtils.askParam(wayToRun, authed, name));
             }
         }), "/param/*");
     }
