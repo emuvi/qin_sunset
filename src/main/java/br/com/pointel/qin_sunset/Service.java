@@ -18,7 +18,7 @@ import br.com.pointel.qin_sunset.hook.ServesDir;
 import br.com.pointel.qin_sunset.hook.ServesGiz;
 import br.com.pointel.qin_sunset.hook.ServesPub;
 import br.com.pointel.qin_sunset.hook.ServesReg;
-import br.com.pointel.qin_sunset.hook.ServesUtils;
+import br.com.pointel.qin_sunset.hook.ServesUtl;
 import br.com.pointel.qin_sunset.hook.ServesWay;
 
 public class Service {
@@ -108,7 +108,7 @@ public class Service {
 
     private void servesUtils() {
         logger.info("Initializing Serves Utils...");
-        ServesUtils.init(this.context, this.wayToRun.airWays.setup);
+        ServesUtl.init(this.context, this.wayToRun.airWays.setup);
     }
 
     private void servesWays() {

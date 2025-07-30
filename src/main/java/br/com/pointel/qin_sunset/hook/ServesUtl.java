@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ServesUtils {
+public class ServesUtl {
     public static void init(ServletContextHandler context, Setup setup) {
         initPing(context);
         initLang(context);
