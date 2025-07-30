@@ -24,7 +24,7 @@ public class OrdersUtils {
         return result;
     }
 
-    public static IssuedAnswer askIssued(Issued issued, IssuedQuestion question) throws Exception {
+    public static IssuedAnswer askIssued(Issued issued, IssuedQuestion question) {
         var answer = new IssuedAnswer();
         if (question.askIsDone != null && question.askIsDone) {
             answer.isDone = issued.isDone();

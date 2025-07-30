@@ -140,13 +140,9 @@ public class ServesUtils {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Couldn't found a issued with the token");
                     return;
                 }
-                try {
-                    var results = OrdersUtils.askIssued(issued, question);
-                    resp.setContentType("application/json");
-                    resp.getWriter().print(results.toString());
-                } catch (Exception e) {
-                    throw new ServletException(e);
-                }
+                var results = OrdersUtils.askIssued(issued, question);
+                resp.setContentType("application/json");
+                resp.getWriter().print(results.toString());
             }
         }), "/issued");
     }
