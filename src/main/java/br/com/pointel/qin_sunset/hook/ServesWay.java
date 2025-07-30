@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ServesWays {
+public class ServesWay {
     public static void init(ServletContextHandler context) {
         initSetup(context);
     }
@@ -70,6 +70,6 @@ public class ServesWays {
                 resp.getWriter().print(OrdersWays.newSetup(service, wayToRun, newSetup));
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
-        }), "/ways/setup");
+        }), "/way/setup");
     }
 }

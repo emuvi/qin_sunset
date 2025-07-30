@@ -19,7 +19,7 @@ import br.com.pointel.qin_sunset.hook.ServesGiz;
 import br.com.pointel.qin_sunset.hook.ServesPub;
 import br.com.pointel.qin_sunset.hook.ServesReg;
 import br.com.pointel.qin_sunset.hook.ServesUtils;
-import br.com.pointel.qin_sunset.hook.ServesWays;
+import br.com.pointel.qin_sunset.hook.ServesWay;
 
 public class Service {
 
@@ -113,7 +113,7 @@ public class Service {
 
     private void servesWays() {
         logger.info("Initializing Serves Ways...");
-        ServesWays.init(this.context);
+        ServesWay.init(this.context);
     }
 
     public void start() throws Exception {
