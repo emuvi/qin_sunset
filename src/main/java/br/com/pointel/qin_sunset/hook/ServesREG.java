@@ -73,8 +73,9 @@ public class ServesReg {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry table head name");
                     return;
                 }
+                var result = OrdersReg.regCan(authed, registry);
                 resp.setContentType("application/json");
-                resp.getWriter().print(OrdersReg.regCan(authed, registry).toString());
+                resp.getWriter().print(result.toString());
             }
         }), "/reg/can");
     }
@@ -120,8 +121,9 @@ public class ServesReg {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access this operation");
                     return;
                 }
+                var result = OrdersReg.regNew(wayToRun, toInsert, allowedReg.strained);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersReg.regNew(wayToRun, toInsert, allowedReg.strained));
+                resp.getWriter().print(result);
             }
         }), "/reg/new");
     }
@@ -168,8 +170,9 @@ public class ServesReg {
                     return;
                 }
                 applyAlwaysOrderByIfHas(wayToRun, authed, toSelect);
+                var result = OrdersReg.regAsk(wayToRun, toSelect, allowedReg.strained);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersReg.regAsk(wayToRun, toSelect, allowedReg.strained));
+                resp.getWriter().print(result);
             }
 
             private void applyAlwaysOrderByIfHas(WayToRun wayToRun, Authed authed, ToSelect toSelect) {
@@ -252,8 +255,9 @@ public class ServesReg {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to this operation");
                     return;
                 }
+                var result = OrdersReg.regSet(wayToRun, toUpdate, allowed.strained);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersReg.regSet(wayToRun, toUpdate, allowed.strained));
+                resp.getWriter().print(result);
             }
         }), "/reg/set");
     }
@@ -300,8 +304,9 @@ public class ServesReg {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to this operation");
                     return;
                 }
+                var result = OrdersReg.regDel(wayToRun, toDelete, allowed.strained);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersReg.regDel(wayToRun, toDelete, allowed.strained));
+                resp.getWriter().print(result);
             }
         }), "/reg/del");
     }
