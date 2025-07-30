@@ -40,7 +40,7 @@ public class OrdersCmd {
         var pace = new Pace(logger);
         issued.setPace(pace);
         var builder = new ProcessBuilder();
-        builder.command().add(execution.exec);
+        builder.command().add(execution.name);
         if (execution.args != null) {
             builder.command().addAll(execution.args);
         }

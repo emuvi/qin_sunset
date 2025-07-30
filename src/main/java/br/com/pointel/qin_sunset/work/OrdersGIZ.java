@@ -31,12 +31,12 @@ public class OrdersGiz {
         return result.toString();
     }
 
-    public static Issued run(Authed forAuthed, Execute execution) throws Exception {
+    public static Issued run(Authed forAuthed, Execute execute) throws Exception {
         var gizMap = forAuthed.getGizMap();
-        var script = gizMap.getScript(execution.exec);
-        var joinErrs = execution.joinErrs != null ? execution.joinErrs : false;
+        var script = gizMap.getScript(execute.name);
+        var joinErrs = execute.joinErrs != null ? execute.joinErrs : false;
         var issued = new Issued(joinErrs);
-        var logger = new IssuedLogger(issued, execution.logLevel);
+        var logger = new IssuedLogger(issued, execute.logLevel);
         var pace = new Pace(logger);
         issued.setPace(pace);
         new Thread() {
@@ -45,7 +45,7 @@ public class OrdersGiz {
                 synchronized (script) {
                     try {
                         var binding = script.getBinding();
-                        binding.setVariable("args", execution.args);
+                        binding.setVariable("args", execute.args);
                         var out = new IssuedWriter(issued, Destiny.OUT);
                         var err = new IssuedWriter(issued, Destiny.ERR);
                         binding.setProperty("out", out);

@@ -63,16 +63,16 @@ public class ServesGiz {
                 }
                 var body = IOUtils.toString(req.getReader());
                 var execute = Execute.fromString(body);
-                if (execute.exec == null || execute.exec.isEmpty()) {
+                if (execute.name == null || execute.name.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a executable");
                     return;
                 }
-                if (!authed.isAllowedGiz(execute.exec)) {
-                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to the command: " + execute.exec);
+                if (!authed.isAllowedGiz(execute.name)) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to the command: " + execute.name);
                     return;
                 }
                 var gizDir = new File(wayToRun.airWays.setup.serverFolder, "giz");
-                execute.exec = new File(gizDir, execute.exec).getAbsolutePath();
+                execute.name = new File(gizDir, execute.name).getAbsolutePath();
                 try {
                     var issued = OrdersGiz.run(authed, execute);
                     var issuedToken = authed.newIssued(issued);
