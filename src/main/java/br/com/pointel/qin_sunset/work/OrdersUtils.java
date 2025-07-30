@@ -24,7 +24,7 @@ public class OrdersUtils {
         return result;
     }
 
-    public static String askIssued(Issued issued, IssuedQuestion question) throws Exception {
+    public static IssuedAnswer askIssued(Issued issued, IssuedQuestion question) throws Exception {
         var answer = new IssuedAnswer();
         if (question.askIsDone != null && question.askIsDone) {
             answer.isDone = issued.isDone();
@@ -64,7 +64,7 @@ public class OrdersUtils {
         if (question.askErrLinesSize != null && question.askErrLinesSize) {
             answer.errLinesSize = issued.getErrLinesSize();
         }
-        return answer.toString();
+        return answer;
     }
 
 }

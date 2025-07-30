@@ -143,7 +143,7 @@ public class ServesUtils {
                 try {
                     var results = OrdersUtils.askIssued(issued, question);
                     resp.setContentType("application/json");
-                    resp.getWriter().print(results);
+                    resp.getWriter().print(results.toString());
                 } catch (Exception e) {
                     throw new ServletException(e);
                 }
