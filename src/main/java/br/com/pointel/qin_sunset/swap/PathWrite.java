@@ -8,6 +8,13 @@ public class PathWrite {
     public String data;
     public Integer rangeStart;
 
+    public PathWrite(String path, Boolean base64, String data, Integer rangeStart) {
+        this.path = path;
+        this.base64 = base64;
+        this.data = data;
+        this.rangeStart = rangeStart;
+    }
+
     @Override
     public String toString() {
         return new Gson().toJson(this);

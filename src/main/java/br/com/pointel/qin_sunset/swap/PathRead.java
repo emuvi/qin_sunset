@@ -8,6 +8,13 @@ public class PathRead {
     public Integer rangeStart;
     public Integer rangeLength;
 
+    public PathRead(String path, Boolean base64, Integer rangeStart, Integer rangeLength) {
+        this.path = path;
+        this.base64 = base64;
+        this.rangeStart = rangeStart;
+        this.rangeLength = rangeLength;
+    }
+
     @Override
     public String toString() {
         return new Gson().toJson(this);

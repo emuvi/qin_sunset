@@ -4,10 +4,10 @@ import java.io.IOException;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import br.com.pointel.qin_sunset.swap.OnePath;
+import br.com.pointel.qin_sunset.swap.Where;
 import br.com.pointel.qin_sunset.swap.PathRead;
 import br.com.pointel.qin_sunset.swap.PathWrite;
-import br.com.pointel.qin_sunset.swap.TwoPath;
+import br.com.pointel.qin_sunset.swap.Transfer;
 import br.com.pointel.qin_sunset.work.OrdersDir;
 import br.com.pointel.qin_sunset.work.Runner;
 import br.com.pointel.qin_sunset.work.Utils;
@@ -50,11 +50,11 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var onePath = OnePath.fromString(body);
-                if (onePath.path == null || onePath.path.isEmpty()) {
-                    onePath.path = ".";
+                var where = Where.fromString(body);
+                if (where.path == null || where.path.isEmpty()) {
+                    where.path = ".";
                 }
-                var path = Utils.resolveFile(onePath.path, authed.getHome());
+                var path = Utils.resolveFile(where.path, authed.getHome());
                 if (!authed.isAllowedDir(path.getAbsolutePath(), false)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to the path: " + path);
                     return;
@@ -67,8 +67,9 @@ public class ServesDir {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "It is not a directory the path: " + path);
                     return;
                 }
-                resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.dirList(path));
+                var results = OrdersDir.dirList(path);
+                resp.setContentType("application/json");
+                resp.getWriter().print(results.toString());
             }
         }), "/dir/list");
     }
@@ -92,18 +93,19 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var onePath = OnePath.fromString(body);
-                if (onePath.path == null || onePath.path.isEmpty()) {
+                var where = Where.fromString(body);
+                if (where.path == null || where.path.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
                     return;
                 }
-                var path = Utils.resolveFile(onePath.path, authed.getHome());
+                var path = Utils.resolveFile(where.path, authed.getHome());
                 if (!authed.isAllowedDir(path.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to mutate the path: " + path);
                     return;
                 }
-                resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.dirNew(path));
+                var result = OrdersDir.dirNew(path);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
             }
         }), "/dir/new");
     }
@@ -127,17 +129,17 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var twoPath = TwoPath.fromString(body);
-                if (twoPath.origin == null || twoPath.origin.isEmpty()) {
+                var transfer = Transfer.fromString(body);
+                if (transfer.origin == null || transfer.origin.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a origin");
                     return;
                 }
-                if (twoPath.destiny == null || twoPath.destiny.isEmpty()) {
+                if (transfer.destiny == null || transfer.destiny.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a destiny");
                     return;
                 }
-                var origin = Utils.resolveFile(twoPath.origin, authed.getHome());
-                var destiny = Utils.resolveFile(twoPath.destiny, authed.getHome());
+                var origin = Utils.resolveFile(transfer.origin, authed.getHome());
+                var destiny = Utils.resolveFile(transfer.destiny, authed.getHome());
                 if (!authed.isAllowedDir(origin.getAbsolutePath(), false)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to the origin: " + origin);
                     return;
@@ -154,8 +156,9 @@ public class ServesDir {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "It is not a directory the origin: " + origin);
                     return;
                 }
-                resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.dirCopy(origin, destiny));
+                var result = OrdersDir.dirCopy(origin, destiny);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
             }
         }), "/dir/copy");
     }
@@ -179,17 +182,17 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var twoPath = TwoPath.fromString(body);
-                if (twoPath.origin == null || twoPath.origin.isEmpty()) {
+                var transfer = Transfer.fromString(body);
+                if (transfer.origin == null || transfer.origin.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a origin");
                     return;
                 }
-                if (twoPath.destiny == null || twoPath.destiny.isEmpty()) {
+                if (transfer.destiny == null || transfer.destiny.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a destiny");
                     return;
                 }
-                var origin = Utils.resolveFile(twoPath.origin, authed.getHome());
-                var destiny = Utils.resolveFile(twoPath.destiny, authed.getHome());
+                var origin = Utils.resolveFile(transfer.origin, authed.getHome());
+                var destiny = Utils.resolveFile(transfer.destiny, authed.getHome());
                 if (!authed.isAllowedDir(origin.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to mutate the origin: " + origin);
                     return;
@@ -206,8 +209,9 @@ public class ServesDir {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "It is not a directory the origin: " + origin);
                     return;
                 }
-                resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.dirMove(origin, destiny));
+                var result = OrdersDir.dirMove(origin, destiny);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
             }
         }), "/dir/move");
     }
@@ -231,12 +235,12 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var onePath = OnePath.fromString(body);
-                if (onePath.path == null || onePath.path.isEmpty()) {
+                var where = Where.fromString(body);
+                if (where.path == null || where.path.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
                     return;
                 }
-                var path = Utils.resolveFile(onePath.path, authed.getHome());
+                var path = Utils.resolveFile(where.path, authed.getHome());
                 if (!authed.isAllowedDir(path.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to mutate the path: " + path);
                     return;
@@ -249,8 +253,9 @@ public class ServesDir {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "It is not a directory the path: " + path);
                     return;
                 }
-                resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.dirDel(path));
+                var result = OrdersDir.dirDel(path);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
             }
         }), "/dir/del");
     }
@@ -286,8 +291,7 @@ public class ServesDir {
                 }
                 pathRead.base64 = pathRead.base64 != null ? pathRead.base64 : false;
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.fileRead(path, pathRead.base64,
-                                pathRead.rangeStart, pathRead.rangeLength));
+                resp.getWriter().print(OrdersDir.fileRead(path, pathRead.base64, pathRead.rangeStart, pathRead.rangeLength));
             }
         }), "/file/read");
     }
@@ -322,9 +326,9 @@ public class ServesDir {
                     return;
                 }
                 pathWrite.base64 = pathWrite.base64 != null ? pathWrite.base64 : false;
-                resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.fileWrite(path, pathWrite.base64,
-                                pathWrite.data, pathWrite.rangeStart));
+                var result = OrdersDir.fileWrite(path, pathWrite.base64, pathWrite.data, pathWrite.rangeStart);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
             }
         }), "/file/write");
     }
@@ -359,9 +363,9 @@ public class ServesDir {
                     return;
                 }
                 pathWrite.base64 = pathWrite.base64 != null ? pathWrite.base64 : false;
-                resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.fileAppend(path, pathWrite.base64,
-                                pathWrite.data));
+                var result = OrdersDir.fileAppend(path, pathWrite.base64, pathWrite.data);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
             }
         }), "/file/append");
     }
@@ -385,17 +389,17 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var twoPath = TwoPath.fromString(body);
-                if (twoPath.origin == null || twoPath.origin.isEmpty()) {
+                var transfer = Transfer.fromString(body);
+                if (transfer.origin == null || transfer.origin.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a origin");
                     return;
                 }
-                if (twoPath.destiny == null || twoPath.destiny.isEmpty()) {
+                if (transfer.destiny == null || transfer.destiny.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a destiny");
                     return;
                 }
-                var origin = Utils.resolveFile(twoPath.origin, authed.getHome());
-                var destiny = Utils.resolveFile(twoPath.destiny, authed.getHome());
+                var origin = Utils.resolveFile(transfer.origin, authed.getHome());
+                var destiny = Utils.resolveFile(transfer.destiny, authed.getHome());
                 if (!authed.isAllowedDir(origin.getAbsolutePath(), false)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to the origin: " + origin);
                     return;
@@ -412,8 +416,9 @@ public class ServesDir {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "It is not a file the origin: " + origin);
                     return;
                 }
-                resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.fileCopy(origin, destiny));
+                var result = OrdersDir.fileCopy(origin, destiny);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
             }
         }), "/file/copy");
     }
@@ -437,17 +442,17 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var twoPath = TwoPath.fromString(body);
-                if (twoPath.origin == null || twoPath.origin.isEmpty()) {
+                var transfer = Transfer.fromString(body);
+                if (transfer.origin == null || transfer.origin.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a origin");
                     return;
                 }
-                if (twoPath.destiny == null || twoPath.destiny.isEmpty()) {
+                if (transfer.destiny == null || transfer.destiny.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a destiny");
                     return;
                 }
-                var origin = Utils.resolveFile(twoPath.origin, authed.getHome());
-                var destiny = Utils.resolveFile(twoPath.destiny, authed.getHome());
+                var origin = Utils.resolveFile(transfer.origin, authed.getHome());
+                var destiny = Utils.resolveFile(transfer.destiny, authed.getHome());
                 if (!authed.isAllowedDir(origin.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to mutate the origin: " + origin);
                     return;
@@ -464,8 +469,9 @@ public class ServesDir {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "It is not a file the origin: " + origin);
                     return;
                 }
-                resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.fileMove(origin, destiny));
+                var result = OrdersDir.fileMove(origin, destiny);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
             }
         }), "/file/move");
     }
@@ -489,12 +495,12 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var onePath = OnePath.fromString(body);
-                if (onePath.path == null || onePath.path.isEmpty()) {
+                var where = Where.fromString(body);
+                if (where.path == null || where.path.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
                     return;
                 }
-                var path = Utils.resolveFile(onePath.path, authed.getHome());
+                var path = Utils.resolveFile(where.path, authed.getHome());
                 if (!authed.isAllowedDir(path.getAbsolutePath(), true)) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to mutate the path: " + path);
                     return;
@@ -507,8 +513,9 @@ public class ServesDir {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "It is not a file the path: " + path);
                     return;
                 }
-                resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersDir.fileDel(path));
+                var result = OrdersDir.fileDel(path);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
             }
         }), "/file/del");
     }

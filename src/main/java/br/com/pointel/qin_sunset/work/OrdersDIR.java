@@ -10,44 +10,42 @@ import java.util.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import br.com.pointel.qin_sunset.swap.PathKind;
+import br.com.pointel.qin_sunset.swap.PathKindList;
+import br.com.pointel.qin_sunset.swap.PathKindName;
+import br.com.pointel.qin_sunset.swap.Transfer;
+import br.com.pointel.qin_sunset.swap.Where;
 
 public class OrdersDir {
 
     private OrdersDir() {}
 
-    public static String dirList(File path) {
-        var result = new StringBuilder();
-        result.append("P: ");
-        result.append(path.getAbsolutePath());
-        result.append("\n");
+    public static PathKindList dirList(File path) {
+        var results = new PathKindList();
         for (var inside : path.listFiles()) {
-            result.append(inside.isDirectory() ? "D: " : "F: ");
-            result.append(inside.getName());
-            result.append("\n");
+            results.add(new PathKindName(inside.isDirectory() ? PathKind.FOLDER : PathKind.FILE, inside.getName()));
         }
-        return result.toString();
+        return results;
     }
 
-    public static String dirNew(File path) throws IOException {
+    public static Where dirNew(File path) throws IOException {
         Files.createDirectories(path.toPath());
-        return "Folder created: " + path.getAbsolutePath();
+        return new Where(path.getAbsolutePath());
     }
 
-    public static String dirCopy(File origin, File destiny) throws IOException {
+    public static Transfer dirCopy(File origin, File destiny) throws IOException {
         FileUtils.copyDirectory(origin, destiny);
-        return "Folder copied: " + origin.getAbsolutePath() + " to: " + destiny
-                        .getAbsolutePath();
+        return new Transfer(origin.getAbsolutePath(), destiny.getAbsolutePath());
     }
 
-    public static String dirMove(File origin, File destiny) throws IOException {
+    public static Transfer dirMove(File origin, File destiny) throws IOException {
         FileUtils.moveDirectory(origin, destiny);
-        return "Folder moved: " + origin.getAbsolutePath() + " to: " + destiny
-                        .getAbsolutePath();
+        return new Transfer(origin.getAbsolutePath(), destiny.getAbsolutePath());
     }
 
-    public static String dirDel(File path) throws IOException {
+    public static Where dirDel(File path) throws IOException {
         FileUtils.deleteDirectory(path);
-        return "Folder deleted: " + path.getAbsolutePath();
+        return new Where(path.getAbsolutePath());
     }
 
     public static String fileRead(File path, boolean base64, Integer rangeStart,
@@ -64,15 +62,14 @@ public class OrdersDir {
             }
         } else {
             if (base64) {
-                return Base64.getEncoder().encodeToString(Files.readAllBytes(path
-                                .toPath()));
+                return Base64.getEncoder().encodeToString(Files.readAllBytes(path.toPath()));
             } else {
                 return Files.readString(path.toPath());
             }
         }
     }
 
-    public static String fileWrite(File path, boolean base64, String data,
+    public static Where fileWrite(File path, boolean base64, String data,
                     Integer rangeStart) throws IOException {
         if (rangeStart != null) {
             try (var writer = new RandomAccessFile(path, "rw")) {
@@ -91,34 +88,32 @@ public class OrdersDir {
                 FileUtils.writeStringToFile(path, data, StandardCharsets.UTF_8, false);
             }
         }
-        return "File written: " + path.getAbsolutePath();
+        return new Where(path.getAbsolutePath());
     }
 
-    public static String fileAppend(File path, boolean base64, String data)
+    public static Where fileAppend(File path, boolean base64, String data)
                     throws IOException {
         if (base64) {
             FileUtils.writeByteArrayToFile(path, Base64.getDecoder().decode(data), true);
         } else {
             FileUtils.writeStringToFile(path, data, StandardCharsets.UTF_8, true);
         }
-        return "File appended: " + path.getAbsolutePath();
+        return new Where(path.getAbsolutePath());
     }
 
-    public static String fileCopy(File origin, File destiny) throws IOException {
+    public static Transfer fileCopy(File origin, File destiny) throws IOException {
         FileUtils.copyFile(origin, destiny);
-        return "File copied: " + origin.getAbsolutePath() + " to: " + destiny
-                        .getAbsolutePath();
+        return new Transfer(origin.getAbsolutePath(), destiny.getAbsolutePath());
     }
 
-    public static String fileMove(File origin, File destiny) throws IOException {
+    public static Transfer fileMove(File origin, File destiny) throws IOException {
         FileUtils.moveFile(origin, destiny);
-        return "File moved: " + origin.getAbsolutePath() + " to: " + destiny
-                        .getAbsolutePath();
+        return new Transfer(origin.getAbsolutePath(), destiny.getAbsolutePath());
     }
 
-    public static String fileDel(File path) throws IOException {
+    public static Where fileDel(File path) throws IOException {
         FileUtils.delete(path);
-        return "File deleted: " + path.getAbsolutePath();
+        return new Where(path.getAbsolutePath());
     }
 
 }
