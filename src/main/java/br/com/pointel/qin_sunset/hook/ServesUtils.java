@@ -22,8 +22,8 @@ public class ServesUtils {
         initEnter(context);
         initLogged(context);
         initConfig(context);
-        initRedirects(context, setup);
         initIssued(context);
+        initRedirects(context, setup);
     }
 
     private static void initPing(ServletContextHandler context) {
@@ -115,20 +115,6 @@ public class ServesUtils {
         }), "/config/*");
     }
 
-    private static void initRedirects(ServletContextHandler context, Setup setup) {
-        if (setup.redirectMap == null || setup.redirectMap.isEmpty()) {
-            return;
-        }
-        for (var entry : setup.redirectMap.entrySet()) {
-            context.addServlet(new ServletHolder(new HttpServlet() {
-                @Override
-                protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                    resp.sendRedirect(entry.getValue());
-                }
-            }), entry.getKey());
-        }
-    }
-
     private static void initIssued(ServletContextHandler context) {
         context.addServlet(new ServletHolder(new HttpServlet() {
             @Override
@@ -163,5 +149,19 @@ public class ServesUtils {
                 }
             }
         }), "/issued");
+    }
+
+    private static void initRedirects(ServletContextHandler context, Setup setup) {
+        if (setup.redirectMap == null || setup.redirectMap.isEmpty()) {
+            return;
+        }
+        for (var entry : setup.redirectMap.entrySet()) {
+            context.addServlet(new ServletHolder(new HttpServlet() {
+                @Override
+                protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                    resp.sendRedirect(entry.getValue());
+                }
+            }), entry.getKey());
+        }
     }
 }
