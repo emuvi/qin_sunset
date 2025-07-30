@@ -4,6 +4,8 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import br.com.pointel.jarch.mage.WizArray;
 
 public class Utils {
@@ -12,14 +14,19 @@ public class Utils {
     }
 
     public static String listFolders(File onDir) {
-        var result = new StringBuilder();
+        var list = new ArrayList<String>();
         if (onDir.exists()) {
             for (var inside : onDir.listFiles()) {
                 if (inside.isDirectory()) {
-                    result.append(inside.getName());
-                    result.append("\n");
+                    list.add(inside.getName());
                 }
             }
+        }
+        Collections.sort(list);
+        var result = new StringBuilder();
+        for (var inside : list) {
+            result.append(inside);
+            result.append("\n");
         }
         return result.toString();
     }
