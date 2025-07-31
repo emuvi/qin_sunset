@@ -67,9 +67,9 @@ public class ServesDir {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "It is not a directory the path: " + path);
                     return;
                 }
-                var results = OrdersDir.dirList(path);
+                var result = OrdersDir.dirList(path);
                 resp.setContentType("application/json");
-                resp.getWriter().print(results.toString());
+                resp.getWriter().print(result.toString());
             }
         }), "/dir/list");
     }

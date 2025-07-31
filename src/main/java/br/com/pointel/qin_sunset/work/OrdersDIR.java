@@ -6,12 +6,13 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import br.com.pointel.qin_sunset.swap.PathKind;
-import br.com.pointel.qin_sunset.swap.PathKindList;
+import br.com.pointel.qin_sunset.swap.PathList;
 import br.com.pointel.qin_sunset.swap.PathKindName;
 import br.com.pointel.qin_sunset.swap.Transfer;
 import br.com.pointel.qin_sunset.swap.Where;
@@ -20,12 +21,12 @@ public class OrdersDir {
 
     private OrdersDir() {}
 
-    public static PathKindList dirList(File path) {
-        var results = new PathKindList();
+    public static PathList dirList(File path) {
+        var list = new ArrayList<PathKindName>();
         for (var inside : path.listFiles()) {
-            results.add(new PathKindName(inside.isDirectory() ? PathKind.FOLDER : PathKind.FILE, inside.getName()));
+            list.add(new PathKindName(inside.isDirectory() ? PathKind.FOLDER : PathKind.FILE, inside.getName()));
         }
-        return results;
+        return new PathList(path.getAbsolutePath(), list);
     }
 
     public static Where dirNew(File path) throws IOException {
