@@ -17,6 +17,20 @@ public class WayToRun {
             : new Storage(new Bases());
     }
 
+    public WayToRun(AirWays airWays, AuthedMap authedMap) {
+        this.airWays = airWays;
+        this.authedMap = authedMap;
+        this.stores = Boolean.TRUE.equals(airWays.setup.servesBas)
+            ? new Storage(airWays.bases)
+            : new Storage(new Bases());
+    }
+
+    public WayToRun(AirWays airWays, Storage stores) {
+        this.airWays = airWays;
+        this.authedMap = new AuthedMap();
+        this.stores = stores;
+    }
+
     public WayToRun(AirWays airWays, AuthedMap authedMap, Storage stores) {
         this.airWays = airWays;
         this.authedMap = authedMap;
