@@ -23,7 +23,7 @@ import br.com.pointel.qin_sunset.hook.ServesWay;
 
 public class Service {
 
-    private Logger logger = LoggerFactory.getLogger(Service.class);
+    private static Logger LOG = LoggerFactory.getLogger(Service.class);
 
     public static final String KEY_QIN_SUNSET_SERVICE = "QinSunset.Service";
     public static final String KEY_QIN_SUNSET_WAY_TO_RUN = "QinSunset.WayToRun";
@@ -71,63 +71,63 @@ public class Service {
     }
 
     private void servesPub() throws Exception {
-        logger.info("Initializing Serves Pub...");
+        LOG.info("Initializing Serves Pub...");
         var holder = new ServletHolder(new ServesPub());
         this.context.addServlet(holder, "/pub/*");
     }
 
     private void servesApp() {
-        logger.info("Initializing Serves App...");
+        LOG.info("Initializing Serves App...");
         ServesApp.init(this.context);
     }
 
     private void servesDir() {
-        logger.info("Initializing Serves Dir...");
+        LOG.info("Initializing Serves Dir...");
         ServesDir.init(this.context);
     }
 
     private void servesCmd() {
-        logger.info("Initializing Serves Cmd...");
+        LOG.info("Initializing Serves Cmd...");
         ServesCmd.init(this.context);
     }
 
     private void servesBas() {
-        logger.info("Initializing Serves Bas...");
+        LOG.info("Initializing Serves Bas...");
         ServesBas.init(this.context);
     }
 
     private void servesReg() {
-        logger.info("Initializing Serves Reg...");
+        LOG.info("Initializing Serves Reg...");
         ServesReg.init(this.context);
     }
 
     private void servesGiz() {
-        logger.info("Initializing Serves Giz...");
+        LOG.info("Initializing Serves Giz...");
         ServesGiz.init(this.context);
     }
 
     private void servesUtils() {
-        logger.info("Initializing Serves Utils...");
+        LOG.info("Initializing Serves Utils...");
         ServesUtl.init(this.context, this.wayToRun.airWays.setup);
     }
 
     private void servesWays() {
-        logger.info("Initializing Serves Ways...");
+        LOG.info("Initializing Serves Ways...");
         ServesWay.init(this.context);
     }
 
     public void start() throws Exception {
-        logger.info("Starting Server...");
-        logger.info("Server AirWays Setup: {}", this.wayToRun.airWays.setup);
+        LOG.info("Starting Server...");
+        LOG.info("Server AirWays Setup: {}", this.wayToRun.airWays.setup);
         this.server.start();
         this.server.join();
     }
 
     public void stop() throws Exception {
-        logger.info("Stopping Server...");
+        LOG.info("Stopping Server...");
         this.server.stop();
         this.server.destroy();
-        logger.info("Server stopped.");
+        LOG.info("Server stopped.");
     }
 
 }
