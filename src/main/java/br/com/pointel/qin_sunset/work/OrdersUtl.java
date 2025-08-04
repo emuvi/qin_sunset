@@ -6,9 +6,9 @@ import br.com.pointel.qin_sunset.core.WayToRun;
 import br.com.pointel.qin_sunset.swap.IssuedAnswer;
 import br.com.pointel.qin_sunset.swap.IssuedQuestion;
 
-public class OrdersUtils {
+public class OrdersUtl {
 
-    private OrdersUtils() {}
+    private OrdersUtl() {}
 
     public static String askConfig(WayToRun wayToRun, Authed authed, String name) {
         String result = null;

@@ -5,7 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import br.com.pointel.qin_sunset.core.Setup;
-import br.com.pointel.qin_sunset.work.OrdersWays;
+import br.com.pointel.qin_sunset.work.OrdersWay;
 import br.com.pointel.qin_sunset.work.Runner;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -67,7 +67,7 @@ public class ServesWay {
                     return;
                 }
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersWays.newSetup(service, wayToRun, newSetup));
+                resp.getWriter().print(OrdersWay.newSetup(service, wayToRun, newSetup));
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
         }), "/way/setup");

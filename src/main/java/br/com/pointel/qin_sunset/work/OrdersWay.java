@@ -8,9 +8,9 @@ import br.com.pointel.qin_sunset.core.AirWays;
 import br.com.pointel.qin_sunset.core.Setup;
 import br.com.pointel.qin_sunset.core.WayToRun;
 
-public class OrdersWays {
+public class OrdersWay {
 
-    private OrdersWays() {}
+    private OrdersWay() {}
     
     public static String newSetup(Service oldService, WayToRun oldWayToRun, Setup newSetup) throws IOException {
         newSetup.fixDefaults();

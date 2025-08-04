@@ -8,7 +8,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import br.com.pointel.qin_sunset.core.Setup;
 import br.com.pointel.qin_sunset.swap.IssuedQuestion;
 import br.com.pointel.qin_sunset.swap.TryAuth;
-import br.com.pointel.qin_sunset.work.OrdersUtils;
+import br.com.pointel.qin_sunset.work.OrdersUtl;
 import br.com.pointel.qin_sunset.work.Runner;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -110,7 +110,7 @@ public class ServesUtl {
                 }
                 var authed = Runner.getAuthed(wayToRun, req);
                 resp.setContentType("text/plain");
-                resp.getWriter().print(OrdersUtils.askConfig(wayToRun, authed, name));
+                resp.getWriter().print(OrdersUtl.askConfig(wayToRun, authed, name));
             }
         }), "/config/*");
     }
@@ -140,7 +140,7 @@ public class ServesUtl {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Couldn't found a issued with the token");
                     return;
                 }
-                var results = OrdersUtils.askIssued(issued, question);
+                var results = OrdersUtl.askIssued(issued, question);
                 resp.setContentType("application/json");
                 resp.getWriter().print(results.toString());
             }
