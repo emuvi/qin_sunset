@@ -66,8 +66,8 @@ public class Service {
         this.servesBas();
         this.servesReg();
         this.servesGiz();
-        this.servesUtils();
-        this.servesWays();
+        this.servesUtl();
+        this.servesWay();
     }
 
     private void servesPub() throws Exception {
@@ -106,28 +106,28 @@ public class Service {
         ServesGiz.init(this.context);
     }
 
-    private void servesUtils() {
-        LOG.info("Initializing Serves Utils...");
+    private void servesUtl() {
+        LOG.info("Initializing Serves Utl...");
         ServesUtl.init(this.context, this.wayToRun.airWays.setup);
     }
 
-    private void servesWays() {
-        LOG.info("Initializing Serves Ways...");
+    private void servesWay() {
+        LOG.info("Initializing Serves Way...");
         ServesWay.init(this.context);
     }
 
     public void start() throws Exception {
-        LOG.info("Starting Server...");
+        LOG.info("Starting...");
         LOG.info("Server AirWays Setup: {}", this.wayToRun.airWays.setup);
         this.server.start();
         this.server.join();
     }
 
     public void stop() throws Exception {
-        LOG.info("Stopping Server...");
+        LOG.info("Stopping...");
         this.server.stop();
         this.server.destroy();
-        LOG.info("Server stopped.");
+        LOG.info("Stopped.");
     }
 
 }
