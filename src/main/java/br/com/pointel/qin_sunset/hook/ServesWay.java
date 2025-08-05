@@ -1,7 +1,6 @@
 package br.com.pointel.qin_sunset.hook;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 import org.apache.commons.io.IOUtils;
@@ -9,7 +8,9 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
 import br.com.pointel.jarch.data.Bases;
+import br.com.pointel.qin_sunset.core.Groups;
 import br.com.pointel.qin_sunset.core.Setup;
+import br.com.pointel.qin_sunset.core.Users;
 import br.com.pointel.qin_sunset.work.OrdersWay;
 import br.com.pointel.qin_sunset.work.Runner;
 import jakarta.servlet.ServletException;
@@ -21,6 +22,8 @@ public class ServesWay {
     public static void init(ServletContextHandler context) {
         initSetup(context);
         initBases(context);
+        initUsers(context);
+        initGroups(context);
     }
 
     private static void initSetup(ServletContextHandler context) {
@@ -147,5 +150,131 @@ public class ServesWay {
                 resp.setStatus(HttpServletResponse.SC_OK);
             }
         }), "/way/bases");
+    }
+
+    private static void initUsers(ServletContextHandler context) {
+        context.addServlet(new ServletHolder(new HttpServlet() {
+            @Override
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
+                var authed = Runner.getAuthed(wayToRun, req);
+                if (authed == null) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+                    return;
+                }
+                if (!authed.isMaster()) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be a master user");
+                    return;
+                }
+                Users users;
+                var usersFile = wayToRun.airWays.usersFile;
+                if (usersFile.exists()) {
+                    users = Users.fromString(Files.readString(usersFile.toPath()));
+                } else {
+                    users = new Users();
+                }
+                resp.setContentType("application/json");
+                resp.getWriter().print(users.toString());
+            }
+
+            @Override
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
+                var service = Runner.getService(req);
+                if (service == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a service");
+                    return;
+                }
+                var authed = Runner.getAuthed(wayToRun, req);
+                if (authed == null) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+                    return;
+                }
+                if (!authed.isMaster()) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be a master user");
+                    return;
+                }
+                var body = IOUtils.toString(req.getReader());
+                var newUsers = Users.fromString(body);
+                if (newUsers == null) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid users");
+                    return;
+                }
+                resp.setContentType("text/plain");
+                resp.getWriter().print(OrdersWay.newUsers(service, wayToRun, newUsers));
+                resp.setStatus(HttpServletResponse.SC_OK);
+            }
+        }), "/way/users");
+    }
+
+    private static void initGroups(ServletContextHandler context) {
+        context.addServlet(new ServletHolder(new HttpServlet() {
+            @Override
+            protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
+                var authed = Runner.getAuthed(wayToRun, req);
+                if (authed == null) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+                    return;
+                }
+                if (!authed.isMaster()) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be a master user");
+                    return;
+                }
+                Groups groups;
+                var groupsFile = wayToRun.airWays.groupsFile;
+                if (groupsFile.exists()) {
+                    groups = Groups.fromString(Files.readString(groupsFile.toPath()));
+                } else {
+                    groups = new Groups();
+                }
+                resp.setContentType("application/json");
+                resp.getWriter().print(groups.toString());
+            }
+
+            @Override
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
+                var service = Runner.getService(req);
+                if (service == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a service");
+                    return;
+                }
+                var authed = Runner.getAuthed(wayToRun, req);
+                if (authed == null) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+                    return;
+                }
+                if (!authed.isMaster()) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be a master user");
+                    return;
+                }
+                var body = IOUtils.toString(req.getReader());
+                var newGroups = Groups.fromString(body);
+                if (newGroups == null) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid groups");
+                    return;
+                }
+                resp.setContentType("text/plain");
+                resp.getWriter().print(OrdersWay.newGroups(service, wayToRun, newGroups));
+                resp.setStatus(HttpServletResponse.SC_OK);
+            }
+        }), "/way/groups");
     }
 }

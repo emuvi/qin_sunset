@@ -5,7 +5,6 @@ import java.util.Objects;
 import com.google.gson.Gson;
 
 public class Allow {
-
     public AllowApp allowApp;
     public AllowDir allowDir;
     public AllowCmd allowCmd;

@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 public class Groups extends ArrayList<Group> {
-    
     public void fixDefaults() {
         for (var group : this) {
             group.fixDefaults();
         }
-        this.removeIf(entry -> entry.name.isEmpty());
+        this.removeIf(group -> group.name.isEmpty());
     }
 
     @Override
@@ -20,5 +19,4 @@ public class Groups extends ArrayList<Group> {
     public static Groups fromString(String json) {
         return new Gson().fromJson(json, Groups.class);
     }
-    
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 
 public class Users extends ArrayList<User> {
-
     public void fixDefaults() {
         var hasRoot = false;
         for (var user : this) {
@@ -21,7 +20,7 @@ public class Users extends ArrayList<User> {
             root.fixDefaults();
             this.add(root);
         }
-        this.removeIf(entry -> entry.name.isEmpty());
+        this.removeIf(user -> user.name.isEmpty());
     }
 
     @Override
@@ -32,5 +31,4 @@ public class Users extends ArrayList<User> {
     public static Users fromString(String json) {
         return new Gson().fromJson(json, Users.class);
     }
-
 }

@@ -10,7 +10,6 @@ import java.util.Objects;
 import com.google.gson.Gson;
 
 public class User {
-
     public String name;
     public String pass;
     public String home;

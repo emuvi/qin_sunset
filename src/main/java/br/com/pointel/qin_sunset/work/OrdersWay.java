@@ -11,7 +11,9 @@ import br.com.pointel.jarch.data.Bases;
 import br.com.pointel.jarch.mage.WizBase;
 import br.com.pointel.qin_sunset.Service;
 import br.com.pointel.qin_sunset.core.AirWays;
+import br.com.pointel.qin_sunset.core.Groups;
 import br.com.pointel.qin_sunset.core.Setup;
+import br.com.pointel.qin_sunset.core.Users;
 import br.com.pointel.qin_sunset.core.WayToRun;
 import jakarta.servlet.ServletException;
 
@@ -72,6 +74,62 @@ public class OrdersWay {
                 }
             }.start();
             return "Server bases updated. Service will be restarted.";
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
+
+    public static String newUsers(Service oldService, WayToRun oldWayToRun, Users newUsers) throws ServletException {
+        try {
+            Files.writeString(oldWayToRun.airWays.usersFile.toPath(), newUsers.toString(), StandardCharsets.UTF_8);
+            newUsers.fixDefaults();
+            var newAirWays = new AirWays(oldWayToRun.airWays.setup, oldWayToRun.airWays.setupFile, 
+                            oldWayToRun.airWays.bases, oldWayToRun.airWays.basesFile,
+                            newUsers, oldWayToRun.airWays.usersFile,
+                            oldWayToRun.airWays.groups, oldWayToRun.airWays.groupsFile);
+            var newWayToRun = new WayToRun(newAirWays);
+            new Thread("Service Restart") {
+                @Override
+                public void run() {
+                    try {
+                        WizBase.sleep(1000);
+                        oldService.stop();
+                        WizBase.sleep(1000);
+                        new Service(newWayToRun).start();
+                    } catch (Exception e) {
+                        LOG.error("Could not restart the service", e);
+                    }
+                }
+            }.start();
+            return "Server users updated. Service will be restarted.";
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
+
+    public static String newGroups(Service oldService, WayToRun oldWayToRun, Groups newGroups) throws ServletException {
+        try {
+            Files.writeString(oldWayToRun.airWays.groupsFile.toPath(), newGroups.toString(), StandardCharsets.UTF_8);
+            newGroups.fixDefaults();
+            var newAirWays = new AirWays(oldWayToRun.airWays.setup, oldWayToRun.airWays.setupFile, 
+                            oldWayToRun.airWays.bases, oldWayToRun.airWays.basesFile,
+                            oldWayToRun.airWays.users, oldWayToRun.airWays.usersFile,
+                            newGroups, oldWayToRun.airWays.groupsFile);
+            var newWayToRun = new WayToRun(newAirWays);
+            new Thread("Service Restart") {
+                @Override
+                public void run() {
+                    try {
+                        WizBase.sleep(1000);
+                        oldService.stop();
+                        WizBase.sleep(1000);
+                        new Service(newWayToRun).start();
+                    } catch (Exception e) {
+                        LOG.error("Could not restart the service", e);
+                    }
+                }
+            }.start();
+            return "Server groups updated. Service will be restarted.";
         } catch (Exception e) {
             throw new ServletException(e);
         }

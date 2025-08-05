@@ -9,7 +9,6 @@ import java.util.Objects;
 import com.google.gson.Gson;
 
 public class Group {
-
     public String name;
     public String home;
     public String lang;
