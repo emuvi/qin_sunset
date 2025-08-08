@@ -51,8 +51,8 @@ public class ServesDir {
                 }
                 var body = IOUtils.toString(req.getReader());
                 var where = Where.fromString(body);
-                if (where.path == null || where.path.isEmpty()) {
-                    where.path = ".";
+                if (where.path == null) {
+                    where.path = "";
                 }
                 var path = Utils.resolveFile(where.path, authed.getHome());
                 if (!authed.isAllowedDir(path.getAbsolutePath(), false)) {
