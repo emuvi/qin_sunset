@@ -2,8 +2,11 @@ package br.com.pointel.qin_sunset.work;
 
 import java.io.StringWriter;
 import java.util.Objects;
+
+import br.com.pointel.jarch.data.Heads;
 import br.com.pointel.jarch.data.Registry;
 import br.com.pointel.jarch.data.Strain;
+import br.com.pointel.jarch.data.Table;
 import br.com.pointel.jarch.data.ToDelete;
 import br.com.pointel.jarch.data.ToInsert;
 import br.com.pointel.jarch.data.ToSelect;
@@ -18,6 +21,22 @@ import jakarta.servlet.ServletException;
 public class OrdersReg {
 
     private OrdersReg() {}
+
+    public static Heads regTop(WayToRun wayToRun, String base) throws ServletException {
+        try (var eOrm = wayToRun.stores.getEOrm(base)) {
+            return eOrm.getHeads();
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
+
+    public static Table regSee(WayToRun wayToRun, Registry registry) throws ServletException {
+        try (var eSql = wayToRun.stores.getESql(registry.base)) {
+            return registry.tableHead.getTable(eSql.getLink());
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
 
     public static AllowReg regCan(Authed authed, Registry registry) {
         var result = new AllowReg();

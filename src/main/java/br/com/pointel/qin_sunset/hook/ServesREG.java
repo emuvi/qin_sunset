@@ -26,11 +26,102 @@ import jakarta.servlet.http.HttpServletResponse;
 public class ServesReg {
 
     public static void init(ServletContextHandler context) {
+        initRegTop(context);
+        initRegSee(context);
         initRegCan(context);
         initRegNew(context);
         initRegAsk(context);
         initRegSet(context);
         initRegDel(context);
+    }
+
+    private static void initRegTop(ServletContextHandler context) {
+        context.addServlet(new ServletHolder(new HttpServlet() {
+            @Override
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
+                if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesBas)) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow database access");
+                    return;
+                }
+                if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesReg)) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow register access");
+                    return;
+                }
+                var authed = Runner.getAuthed(wayToRun, req);
+                if (authed == null) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+                    return;
+                }
+                if (!authed.isMaster()) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be a master user");
+                    return;
+                }
+                var base = IOUtils.toString(req.getReader());
+                if (base == null || base.isEmpty()) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a base");
+                    return;
+                }
+                var result = OrdersReg.regTop(wayToRun, base);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
+            }
+        }), "/reg/top");
+    }
+
+    private static void initRegSee(ServletContextHandler context) {
+        context.addServlet(new ServletHolder(new HttpServlet() {
+            @Override
+            protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+                var wayToRun = Runner.getWayToRun(req);
+                if (wayToRun == null) {
+                    resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server does not have a way to run");
+                    return;
+                }
+                if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesBas)) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow database access");
+                    return;
+                }
+                if (!Boolean.TRUE.equals(wayToRun.airWays.setup.servesReg)) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Server does not allow register access");
+                    return;
+                }
+                var authed = Runner.getAuthed(wayToRun, req);
+                if (authed == null) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be logged");
+                    return;
+                }
+                if (!authed.isMaster()) {
+                    resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You must be a master user");
+                    return;
+                }
+                var body = IOUtils.toString(req.getReader());
+                var registry = Registry.fromString(body);
+                if (registry == null) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry");
+                    return;
+                }
+                if (registry.base == null || registry.base.isEmpty()) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry base");
+                    return;
+                }
+                if (registry.tableHead == null) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry table head");
+                    return;
+                }
+                if (registry.tableHead.name == null || registry.tableHead.name.isEmpty()) {
+                    resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry table head name");
+                    return;
+                }
+                var result = OrdersReg.regSee(wayToRun, registry);
+                resp.setContentType("application/json");
+                resp.getWriter().print(result.toString());
+            }
+        }), "/reg/see");
     }
 
     private static void initRegCan(ServletContextHandler context) {
