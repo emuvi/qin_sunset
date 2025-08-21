@@ -23,7 +23,7 @@ public class OrdersApp {
     public static String list(WayToRun wayToRun, Authed forAuthed) {
         var appsDir = new File(wayToRun.airWays.setup.serverFolder, "app");
         if (forAuthed.isMaster()) {
-            return Utils.listFolders(appsDir);
+            return Utils.listFolder(appsDir, true, false, null);
         }
         var result = new StringBuilder();
         for (var access : forAuthed.getAllowList()) {

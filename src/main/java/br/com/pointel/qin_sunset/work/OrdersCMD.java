@@ -19,7 +19,7 @@ public class OrdersCmd {
     public static String list(WayToRun wayToRun, Authed forAuthed) {
         var cmdsDir = new File(wayToRun.airWays.setup.serverFolder, "cmd");
         if (forAuthed.isMaster()) {
-            return Utils.listFolders(cmdsDir);
+            return Utils.listFolder(cmdsDir, false, true, null);
         }
         var result = new StringBuilder();
         for (var access : forAuthed.getAllowList()) {
@@ -33,14 +33,16 @@ public class OrdersCmd {
         return result.toString();
     }
 
-    public static Issued run(Execute execution) throws Exception {
+    public static Issued run(WayToRun wayToRun, Execute execution) throws Exception {
         var joinErrs = execution.joinErrs != null ? execution.joinErrs : false;
         var issued = new Issued(joinErrs);
         var logger = new IssuedLogger(issued, execution.logLevel);
         var pace = new Pace(logger);
         issued.setPace(pace);
         var builder = new ProcessBuilder();
-        builder.command().add(execution.name);
+        var cmdsDir = new File(wayToRun.airWays.setup.serverFolder, "cmd");
+        var cmdPath = new File(cmdsDir, execution.name);
+        builder.command().add(cmdPath.getAbsolutePath());
         if (execution.args != null) {
             builder.command().addAll(execution.args);
         }

@@ -13,11 +13,21 @@ public class Utils {
         return java.util.UUID.randomUUID().toString();
     }
 
-    public static String listFolders(File onDir) {
+    public static String listFolder(File onDir, boolean listDir, boolean listFile, String endsWith) {
         var list = new ArrayList<String>();
         if (onDir.exists()) {
             for (var inside : onDir.listFiles()) {
-                if (inside.isDirectory()) {
+                var shouldList = false;
+                if (listDir && inside.isDirectory()) {
+                    shouldList = true;
+                }
+                if (listFile && !inside.isDirectory()) {
+                    shouldList = true;
+                }
+                if (shouldList && endsWith != null) {
+                    shouldList = inside.getName().endsWith(endsWith);
+                }
+                if (shouldList) {
                     list.add(inside.getName());
                 }
             }
@@ -74,14 +84,10 @@ public class Utils {
         }
     }
 
-    private final static String[] TEXT_EXTENSIONS = new String[] {"txt", "htm", "html",
-                    "css", "log"};
-    private final static String[] IMAGE_EXTENSIONS = new String[] {"jpg", "jpeg", "gif",
-                    "png", "ico", "bmp", "svg"};
-    private final static String[] AUDIO_EXTENSIONS = new String[] {"mp3", "ogg", "wav",
-                    "midi", "mid"};
-    private final static String[] VIDEO_EXTENSIONS = new String[] {"mp4", "ogv", "avi",
-                    "mpg", "webm", "flv", "mov"};
+    private static final String[] TEXT_EXTENSIONS = new String[] {"txt", "htm", "html", "css", "log"};
+    private static final String[] IMAGE_EXTENSIONS = new String[] {"jpg", "jpeg", "gif", "png", "ico", "bmp", "svg"};
+    private static final String[] AUDIO_EXTENSIONS = new String[] {"mp3", "ogg", "wav", "midi", "mid"};
+    private static final String[] VIDEO_EXTENSIONS = new String[] {"mp4", "ogv", "avi", "mpg", "webm", "flv", "mov"};
 
     public static String getMimeType(String fileName) {
         var dot = fileName.lastIndexOf(".");

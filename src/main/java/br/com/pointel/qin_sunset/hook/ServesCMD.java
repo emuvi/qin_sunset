@@ -71,7 +71,7 @@ public class ServesCmd {
                     return;
                 }
                 try {
-                    var issued = OrdersCmd.run(execute);
+                    var issued = OrdersCmd.run(wayToRun, execute);
                     var issuedToken = authed.newIssued(issued);
                     resp.setContentType("text/plain");
                     resp.getWriter().print(issuedToken);
