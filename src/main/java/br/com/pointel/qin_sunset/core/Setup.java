@@ -11,6 +11,7 @@ public class Setup {
     public String serverHost;
     public Integer serverPort;
     public String serverFolder;
+    
     public Boolean servesPub;
     public Boolean servesApp;
     public Boolean servesDir;

@@ -63,8 +63,8 @@ public class QinSunset {
         bases.fixDefaults();
         users.fixDefaults();
         groups.fixDefaults();
-        new Service(new WayToRun(new AirWays(setup, setupFile, bases, basesFile, 
-                        users, usersFile, groups, groupsFile))).start();
+        new Service(new WayToRun(new AirWays(setup, setupFile, bases, basesFile, users, usersFile, groups, groupsFile)))
+            .start();
     }
 
     public static Options cmdOptions() {
