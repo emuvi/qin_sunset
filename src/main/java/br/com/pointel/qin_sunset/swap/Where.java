@@ -1,8 +1,9 @@
 package br.com.pointel.qin_sunset.swap;
 
-import com.google.gson.Gson;
+import br.com.pointel.jarch.data.Data;
 
-public class Where {
+public class Where implements Data {
+
     public String path;
 
     public Where(String path) {
@@ -10,11 +11,22 @@ public class Where {
     }
 
     @Override
-    public String toString() {
-        return new Gson().toJson(this);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
-    public static Where fromString(String json) {
-        return new Gson().fromJson(json, Where.class);
+    @Override
+    public int hashCode() {
+        return this.deepHash();
     }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static Where fromChars(String chars) {
+        return Data.fromChars(chars, Where.class);
+    }
+    
 }

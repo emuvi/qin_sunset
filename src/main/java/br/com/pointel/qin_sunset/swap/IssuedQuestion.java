@@ -1,8 +1,9 @@
 package br.com.pointel.qin_sunset.swap;
 
-import com.google.gson.Gson;
+import br.com.pointel.jarch.data.Data;
 
-public class IssuedQuestion {
+public class IssuedQuestion implements Data {
+
     public String token;
     public Boolean askCreatedAt;
     public Boolean askOutLines;
@@ -19,12 +20,45 @@ public class IssuedQuestion {
     public Boolean askHasErr;
     public Boolean askFinishedAt;
 
-    @Override
-    public String toString() {
-        return new Gson().toJson(this);
+
+    public IssuedQuestion() {
     }
 
-    public static IssuedQuestion fromString(String json) {
-        return new Gson().fromJson(json, IssuedQuestion.class);
+    public IssuedQuestion(String token, Boolean askCreatedAt, Boolean askOutLines, Integer askOutLinesFrom, Integer askOutLinesUntil, Boolean askOutLinesSize, Boolean askErrLines, Integer askErrLinesFrom, Integer askErrLinesUntil, Boolean askErrLinesSize, Boolean askResultCode, Boolean askIsDone, Boolean askHasOut, Boolean askHasErr, Boolean askFinishedAt) {
+        this.token = token;
+        this.askCreatedAt = askCreatedAt;
+        this.askOutLines = askOutLines;
+        this.askOutLinesFrom = askOutLinesFrom;
+        this.askOutLinesUntil = askOutLinesUntil;
+        this.askOutLinesSize = askOutLinesSize;
+        this.askErrLines = askErrLines;
+        this.askErrLinesFrom = askErrLinesFrom;
+        this.askErrLinesUntil = askErrLinesUntil;
+        this.askErrLinesSize = askErrLinesSize;
+        this.askResultCode = askResultCode;
+        this.askIsDone = askIsDone;
+        this.askHasOut = askHasOut;
+        this.askHasErr = askHasErr;
+        this.askFinishedAt = askFinishedAt;
     }
+    
+    @Override
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.deepHash();
+    }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static IssuedQuestion fromChars(String chars) {
+        return Data.fromChars(chars, IssuedQuestion.class);
+    }
+
 }

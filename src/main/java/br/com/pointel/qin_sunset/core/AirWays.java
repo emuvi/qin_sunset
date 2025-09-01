@@ -14,8 +14,7 @@ public class AirWays {
     public final Groups groups;
     public final File groupsFile;
 
-    public AirWays(Setup setup, File setupFile, Bases bases, File basesFile,
-                    Users users, File usersFile, Groups groups, File groupsFile) {
+    public AirWays(Setup setup, File setupFile, Bases bases, File basesFile, Users users, File usersFile, Groups groups, File groupsFile) {
         this.setup = setup;
         this.setupFile = setupFile;
         this.bases = bases;

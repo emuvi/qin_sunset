@@ -2,11 +2,17 @@ package br.com.pointel.qin_sunset.swap;
 
 import com.google.gson.Gson;
 
-public class PathWrite {
+import br.com.pointel.jarch.data.Data;
+
+public class PathWrite implements Data {
+
     public String path;
     public Boolean base64;
     public String data;
     public Integer rangeStart;
+
+    public PathWrite() {
+    }
 
     public PathWrite(String path, Boolean base64, String data, Integer rangeStart) {
         this.path = path;
@@ -16,11 +22,22 @@ public class PathWrite {
     }
 
     @Override
-    public String toString() {
-        return new Gson().toJson(this);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
-    public static PathWrite fromString(String json) {
-        return new Gson().fromJson(json, PathWrite.class);
+    @Override
+    public int hashCode() {
+        return this.deepHash();
     }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static PathWrite fromChars(String chars) {
+        return Data.fromChars(chars, PathWrite.class);
+    }
+    
 }

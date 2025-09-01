@@ -1,22 +1,32 @@
 package br.com.pointel.qin_sunset.core;
 
-import java.util.ArrayList;
-import com.google.gson.Gson;
+import br.com.pointel.jarch.data.Data;
+import br.com.pointel.jarch.data.DataListArray;
 
-public class Groups extends ArrayList<Group> {
+public class Groups extends DataListArray<Group> {
+    
+    @Override
     public void fixDefaults() {
-        for (var group : this) {
-            group.fixDefaults();
-        }
         this.removeIf(group -> group.name.isEmpty());
     }
 
     @Override
-    public String toString() {
-        return new Gson().toJson(this);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
-    public static Groups fromString(String json) {
-        return new Gson().fromJson(json, Groups.class);
+    @Override
+    public int hashCode() {
+        return this.deepHash();
     }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static Groups fromChars(String chars) {
+        return Data.fromChars(chars, Groups.class);
+    }
+    
 }

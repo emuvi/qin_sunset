@@ -1,10 +1,14 @@
 package br.com.pointel.qin_sunset.swap;
 
-import com.google.gson.Gson;
+import br.com.pointel.jarch.data.Data;
 
-public class PathKindName {
+public class PathKindName implements Data {
+
     public PathKind kind;
     public String name;
+
+    public PathKindName() {
+    }
 
     public PathKindName(PathKind kind, String name) {
         this.kind = kind;
@@ -12,11 +16,22 @@ public class PathKindName {
     }
 
     @Override
-    public String toString() {
-        return new Gson().toJson(this);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
-    public static PathKindName fromString(String json) {
-        return new Gson().fromJson(json, PathKindName.class);
+    @Override
+    public int hashCode() {
+        return this.deepHash();
     }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static PathKindName fromChars(String chars) {
+        return Data.fromChars(chars, PathKindName.class);
+    }
+
 }

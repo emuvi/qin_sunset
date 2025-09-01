@@ -19,20 +19,20 @@ import jakarta.servlet.ServletException;
 
 public class OrdersWay {
 
-    private static final Logger LOG = LoggerFactory.getLogger(OrdersWay.class);
+    private static final Logger log = LoggerFactory.getLogger(OrdersWay.class);
 
     private OrdersWay() {}
     
     public static String newSetup(Service oldService, WayToRun oldWayToRun, Setup newSetup) throws ServletException {
         try {
             Files.writeString(oldWayToRun.airWays.setupFile.toPath(), newSetup.toString(), StandardCharsets.UTF_8);
-            newSetup.fixDefaults();
+            newSetup.fixNullsAndEnvs();
             var newAirWays = new AirWays(newSetup, oldWayToRun.airWays.setupFile, 
                             oldWayToRun.airWays.bases, oldWayToRun.airWays.basesFile,
                             oldWayToRun.airWays.users, oldWayToRun.airWays.usersFile,
                             oldWayToRun.airWays.groups, oldWayToRun.airWays.groupsFile);
             var newWayToRun = new WayToRun(newAirWays, oldWayToRun.authedMap, oldWayToRun.stores);
-            new Thread("Service Restart") {
+            new Thread("Service Restart Setup") {
                 @Override
                 public void run() {
                     try {
@@ -41,7 +41,7 @@ public class OrdersWay {
                         WizBase.sleep(1000);
                         new Service(newWayToRun).start();
                     } catch (Exception e) {
-                        LOG.error("Could not restart the service", e);
+                        log.error("Could not restart the service from Setup update.", e);
                     }
                 }
             }.start();
@@ -54,13 +54,13 @@ public class OrdersWay {
     public static String newBases(Service oldService, WayToRun oldWayToRun, Bases newBases) throws ServletException {
         try {
             Files.writeString(oldWayToRun.airWays.basesFile.toPath(), newBases.toString(), StandardCharsets.UTF_8);
-            newBases.fixDefaults();
+            newBases.fixNullsAndEnvs();
             var newAirWays = new AirWays(oldWayToRun.airWays.setup, oldWayToRun.airWays.setupFile, 
                             newBases, oldWayToRun.airWays.basesFile,
                             oldWayToRun.airWays.users, oldWayToRun.airWays.usersFile,
                             oldWayToRun.airWays.groups, oldWayToRun.airWays.groupsFile);
             var newWayToRun = new WayToRun(newAirWays, oldWayToRun.authedMap);
-            new Thread("Service Restart") {
+            new Thread("Service Restart Bases") {
                 @Override
                 public void run() {
                     try {
@@ -69,7 +69,7 @@ public class OrdersWay {
                         WizBase.sleep(1000);
                         new Service(newWayToRun).start();
                     } catch (Exception e) {
-                        LOG.error("Could not restart the service", e);
+                        log.error("Could not restart the service from Bases update.", e);
                     }
                 }
             }.start();
@@ -82,13 +82,13 @@ public class OrdersWay {
     public static String newUsers(Service oldService, WayToRun oldWayToRun, Users newUsers) throws ServletException {
         try {
             Files.writeString(oldWayToRun.airWays.usersFile.toPath(), newUsers.toString(), StandardCharsets.UTF_8);
-            newUsers.fixDefaults();
+            newUsers.fixNullsAndEnvs();
             var newAirWays = new AirWays(oldWayToRun.airWays.setup, oldWayToRun.airWays.setupFile, 
                             oldWayToRun.airWays.bases, oldWayToRun.airWays.basesFile,
                             newUsers, oldWayToRun.airWays.usersFile,
                             oldWayToRun.airWays.groups, oldWayToRun.airWays.groupsFile);
             var newWayToRun = new WayToRun(newAirWays);
-            new Thread("Service Restart") {
+            new Thread("Service Restart Users") {
                 @Override
                 public void run() {
                     try {
@@ -97,7 +97,7 @@ public class OrdersWay {
                         WizBase.sleep(1000);
                         new Service(newWayToRun).start();
                     } catch (Exception e) {
-                        LOG.error("Could not restart the service", e);
+                        log.error("Could not restart the service from Users update.", e);
                     }
                 }
             }.start();
@@ -110,13 +110,13 @@ public class OrdersWay {
     public static String newGroups(Service oldService, WayToRun oldWayToRun, Groups newGroups) throws ServletException {
         try {
             Files.writeString(oldWayToRun.airWays.groupsFile.toPath(), newGroups.toString(), StandardCharsets.UTF_8);
-            newGroups.fixDefaults();
+            newGroups.fixNullsAndEnvs();
             var newAirWays = new AirWays(oldWayToRun.airWays.setup, oldWayToRun.airWays.setupFile, 
                             oldWayToRun.airWays.bases, oldWayToRun.airWays.basesFile,
                             oldWayToRun.airWays.users, oldWayToRun.airWays.usersFile,
                             newGroups, oldWayToRun.airWays.groupsFile);
             var newWayToRun = new WayToRun(newAirWays);
-            new Thread("Service Restart") {
+            new Thread("Service Restart Groups") {
                 @Override
                 public void run() {
                     try {
@@ -125,7 +125,7 @@ public class OrdersWay {
                         WizBase.sleep(1000);
                         new Service(newWayToRun).start();
                     } catch (Exception e) {
-                        LOG.error("Could not restart the service", e);
+                        log.error("Could not restart the service from Groups update.", e);
                     }
                 }
             }.start();

@@ -3,7 +3,7 @@ package br.com.pointel.qin_sunset.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import br.com.pointel.jarch.data.CrudDeeds;
+import br.com.pointel.jarch.data.Deeds;
 import br.com.pointel.jarch.data.Registry;
 
 public class Authed {
@@ -62,8 +62,7 @@ public class Authed {
     }
 
     public boolean isMaster() {
-        return Boolean.TRUE.equals(this.user.master)
-                        || (this.group != null && Boolean.TRUE.equals(this.group.master));
+        return Boolean.TRUE.equals(this.user.master) || (this.group != null && Boolean.TRUE.equals(this.group.master));
     }
 
     public List<Allow> getAllowList() {
@@ -130,9 +129,9 @@ public class Authed {
         return false;
     }
 
-    public AllowedReg isAllowedReg(Registry registry, CrudDeeds deed) {
+    public AllowedReg isAllowedReg(Registry registry, Deeds deeds) {
         var result = new AllowedReg(false, null);
-        if (!this.isAllowedBas(registry.base, deed.mutates)) {
+        if (!this.isAllowedBas(registry.base, deeds.mutates)) {
             return result;
         }
         if (this.isMaster()) {
@@ -145,23 +144,23 @@ public class Authed {
                 if (allow.allowReg.all != null && allow.allowReg.all) {
                     result.allowed = true;
                 }
-                switch (deed) {
-                    case INSERT:
+                switch (deeds) {
+                    case Insert:
                         if (allow.allowReg.insert != null && allow.allowReg.insert) {
                             result.allowed = true;
                         }
                         break;
-                    case SELECT:
+                    case Select:
                         if (allow.allowReg.select != null && allow.allowReg.select) {
                             result.allowed = true;
                         }
                         break;
-                    case UPDATE:
+                    case Update:
                         if (allow.allowReg.update != null && allow.allowReg.update) {
                             result.allowed = true;
                         }
                         break;
-                    case DELETE:
+                    case Delete:
                         if (allow.allowReg.delete != null && allow.allowReg.delete) {
                             result.allowed = true;
                         }

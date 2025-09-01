@@ -1,10 +1,14 @@
 package br.com.pointel.qin_sunset.swap;
 
-import com.google.gson.Gson;
+import br.com.pointel.jarch.data.Data;
 
-public class Logged {
+public class Logged implements Data {
+
     public String token;
     public String lang;
+
+    public Logged() {
+    }
 
     public Logged(String token, String lang) {
         this.token = token;
@@ -12,11 +16,22 @@ public class Logged {
     }
 
     @Override
-    public String toString() {
-        return new Gson().toJson(this);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
-    public static Logged fromString(String json) {
-        return new Gson().fromJson(json, Logged.class);
+    @Override
+    public int hashCode() {
+        return this.deepHash();
     }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static Logged fromChars(String chars) {
+        return Data.fromChars(chars, Logged.class);
+    }
+
 }

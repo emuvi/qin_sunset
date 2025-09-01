@@ -50,7 +50,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var where = Where.fromString(body);
+                var where = Where.fromChars(body);
                 if (where.path == null) {
                     where.path = "";
                 }
@@ -93,7 +93,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var where = Where.fromString(body);
+                var where = Where.fromChars(body);
                 if (where.path == null || where.path.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
                     return;
@@ -129,7 +129,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var transfer = Transfer.fromString(body);
+                var transfer = Transfer.fromChars(body);
                 if (transfer.origin == null || transfer.origin.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a origin");
                     return;
@@ -182,7 +182,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var transfer = Transfer.fromString(body);
+                var transfer = Transfer.fromChars(body);
                 if (transfer.origin == null || transfer.origin.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a origin");
                     return;
@@ -235,7 +235,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var where = Where.fromString(body);
+                var where = Where.fromChars(body);
                 if (where.path == null || where.path.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
                     return;
@@ -279,7 +279,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var pathRead = PathRead.fromString(body);
+                var pathRead = PathRead.fromChars(body);
                 if (pathRead.path == null || pathRead.path.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
                     return;
@@ -315,7 +315,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var pathWrite = PathWrite.fromString(body);
+                var pathWrite = PathWrite.fromChars(body);
                 if (pathWrite.path == null || pathWrite.path.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
                     return;
@@ -352,7 +352,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var pathWrite = PathWrite.fromString(body);
+                var pathWrite = PathWrite.fromChars(body);
                 if (pathWrite.path == null || pathWrite.path.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
                     return;
@@ -389,7 +389,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var transfer = Transfer.fromString(body);
+                var transfer = Transfer.fromChars(body);
                 if (transfer.origin == null || transfer.origin.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a origin");
                     return;
@@ -442,7 +442,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var transfer = Transfer.fromString(body);
+                var transfer = Transfer.fromChars(body);
                 if (transfer.origin == null || transfer.origin.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a origin");
                     return;
@@ -495,7 +495,7 @@ public class ServesDir {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var where = Where.fromString(body);
+                var where = Where.fromChars(body);
                 if (where.path == null || where.path.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a path");
                     return;

@@ -1,23 +1,38 @@
 package br.com.pointel.qin_sunset.swap;
 
-import java.util.List;
-import com.google.gson.Gson;
+import br.com.pointel.jarch.data.Data;
+import br.com.pointel.jarch.data.DataListArray;
 
-public class PathList {
+public class PathList implements Data {
+
     public String path;
-    public List<PathKindName> list;
+    public DataListArray<PathKindName> list;
 
-    public PathList(String path, List<PathKindName> list) {
+    public PathList() {
+    }
+
+    public PathList(String path, DataListArray<PathKindName> list) {
         this.path = path;
         this.list = list;
     }
-    
+
     @Override
-    public String toString() {
-        return new Gson().toJson(this);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
-    public static PathList fromString(String json) {
-        return new Gson().fromJson(json, PathList.class);
+    @Override
+    public int hashCode() {
+        return this.deepHash();
     }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static PathList fromChars(String chars) {
+        return Data.fromChars(chars, PathList.class);
+    }
+
 }

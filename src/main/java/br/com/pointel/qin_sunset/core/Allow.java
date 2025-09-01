@@ -2,9 +2,11 @@ package br.com.pointel.qin_sunset.core;
 
 import java.io.File;
 import java.util.Objects;
-import com.google.gson.Gson;
 
-public class Allow {
+import br.com.pointel.jarch.data.Data;
+
+public class Allow implements Data {
+
     public AllowApp allowApp;
     public AllowDir allowDir;
     public AllowCmd allowCmd;
@@ -12,56 +14,16 @@ public class Allow {
     public AllowReg allowReg;
     public AllowGiz allowGiz;
 
-    public Allow() {}
+    public Allow() {
+    }
 
-    public Allow(AllowApp allowApp, AllowDir allowDir, AllowCmd allowCmd, AllowBas allowBas,
-                    AllowReg allowReg, AllowGiz allowGiz) {
+    public Allow(AllowApp allowApp, AllowDir allowDir, AllowCmd allowCmd, AllowBas allowBas, AllowReg allowReg, AllowGiz allowGiz) {
         this.allowApp = allowApp;
         this.allowDir = allowDir;
         this.allowCmd = allowCmd;
         this.allowBas = allowBas;
         this.allowReg = allowReg;
         this.allowGiz = allowGiz;
-    }
-
-    public void fixDefaults() {
-        if (this.allowApp != null) {
-            if (this.allowApp.name == null || this.allowApp.name.isEmpty()) {
-                this.allowApp = null;
-            }
-        }
-        if (this.allowDir != null) {
-            if (this.allowDir.path == null || this.allowDir.path.isEmpty()) {
-                this.allowDir = null;
-            } else {
-                this.allowDir.path = new File(this.allowDir.path).getAbsolutePath();
-                this.allowDir.mutate = this.allowDir.mutate != null ? this.allowDir.mutate : false;
-            }
-        }
-        if (this.allowCmd != null) {
-            if (this.allowCmd.name == null || this.allowCmd.name.isEmpty()) {
-                this.allowCmd = null;
-            }
-        }
-        if (this.allowBas != null) {
-            if (this.allowBas.name == null || this.allowBas.name.isEmpty()) {
-                this.allowBas = null;
-            }
-        }
-        if (this.allowReg != null) {
-            if (this.allowReg.registry == null) {
-                this.allowReg = null;
-            } else {
-                this.allowReg.all = this.allowReg.all != null ? this.allowReg.all : false;
-                this.allowReg.insert = this.allowReg.insert != null ? this.allowReg.insert : false;
-                this.allowReg.select = this.allowReg.select != null ? this.allowReg.select : false;
-                this.allowReg.update = this.allowReg.update != null ? this.allowReg.update : false;
-                this.allowReg.delete = this.allowReg.delete != null ? this.allowReg.delete : false;
-            }
-        }
-        if (this.allowGiz != null && this.allowGiz.path.isEmpty()) {
-            this.allowGiz = null;
-        }
     }
 
     public boolean isOnSameResource(Allow than) {
@@ -87,32 +49,87 @@ public class Allow {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Allow)) {
-            return false;
-        }
-        Allow allow = (Allow) o;
-        return Objects.equals(allowApp, allow.allowApp)
-                        && Objects.equals(allowDir, allow.allowDir)
-                        && Objects.equals(allowCmd, allow.allowCmd)
-                        && Objects.equals(allowBas, allow.allowBas)
-                        && Objects.equals(allowReg, allow.allowReg)
-                        && Objects.equals(allowGiz, allow.allowGiz);
+    public void fixDefaults() {
+        fixAllowAppDefaults();
+        fixAllowDirDefaults();
+        fixAllowCmdDefaults();
+        fixAllowBasDefaults();
+        fixAllowRegDefaults();
+        fixAllowGizDefaults();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(allowApp, allowDir, allowCmd, allowBas, allowReg, allowGiz);
+        return this.deepHash();
     }
 
     @Override
     public String toString() {
-        return new Gson().toJson(this);
+        return this.toChars();
     }
 
-    public static Allow fromString(String json) {
-        return new Gson().fromJson(json, Allow.class);
+    public static Allow fromChars(String chars) {
+        return Data.fromChars(chars, Allow.class);
     }
+
+    private void fixAllowAppDefaults() {
+        if (this.allowApp != null) {
+            if (this.allowApp.name == null || this.allowApp.name.isEmpty()) {
+                this.allowApp = null;
+            }
+        }
+    }
+
+    private void fixAllowDirDefaults() {
+        if (this.allowDir != null) {
+            if (this.allowDir.path == null || this.allowDir.path.isEmpty()) {
+                this.allowDir = null;
+            } else {
+                this.allowDir.path = new File(this.allowDir.path).getAbsolutePath();
+                this.allowDir.mutate = this.allowDir.mutate != null ? this.allowDir.mutate : false;
+            }
+        }
+    }
+
+    private void fixAllowCmdDefaults() {
+        if (this.allowCmd != null) {
+            if (this.allowCmd.name == null || this.allowCmd.name.isEmpty()) {
+                this.allowCmd = null;
+            }
+        }
+    }
+
+    private void fixAllowBasDefaults() {
+        if (this.allowBas != null) {
+            if (this.allowBas.name == null || this.allowBas.name.isEmpty()) {
+                this.allowBas = null;
+            }
+        }
+    }
+
+    private void fixAllowRegDefaults() {
+        if (this.allowReg != null) {
+            if (this.allowReg.registry == null) {
+                this.allowReg = null;
+            } else {
+                this.allowReg.all = this.allowReg.all != null ? this.allowReg.all : false;
+                this.allowReg.insert = this.allowReg.insert != null ? this.allowReg.insert : false;
+                this.allowReg.select = this.allowReg.select != null ? this.allowReg.select : false;
+                this.allowReg.update = this.allowReg.update != null ? this.allowReg.update : false;
+                this.allowReg.delete = this.allowReg.delete != null ? this.allowReg.delete : false;
+            }
+        }
+    }
+
+    private void fixAllowGizDefaults() {
+        if (this.allowGiz != null && (this.allowGiz.path == null || this.allowGiz.path.isEmpty())) {
+            this.allowGiz = null;
+        }
+    }
+    
 }

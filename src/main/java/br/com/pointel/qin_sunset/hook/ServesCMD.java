@@ -61,7 +61,7 @@ public class ServesCmd {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var execute = Execute.fromString(body);
+                var execute = Execute.fromChars(body);
                 if (execute.name == null || execute.name.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a executable");
                     return;

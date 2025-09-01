@@ -61,7 +61,7 @@ public class ServesUtl {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var tryAuth = TryAuth.fromString(body);
+                var tryAuth = TryAuth.fromChars(body);
                 var logged = Runner.tryEnter(tryAuth, wayToRun, req);
                 if (logged == null) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "The user and/or pass is incorrect.");
@@ -130,7 +130,7 @@ public class ServesUtl {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var question = IssuedQuestion.fromString(body);
+                var question = IssuedQuestion.fromChars(body);
                 if (question.token == null || question.token.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide the issued token");
                     return;

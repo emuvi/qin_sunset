@@ -1,9 +1,16 @@
 package br.com.pointel.qin_sunset.core;
 
-import java.util.ArrayList;
-import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Users extends ArrayList<User> {
+import br.com.pointel.jarch.data.Data;
+import br.com.pointel.jarch.data.DataListArray;
+
+public class Users extends DataListArray<User> {
+
+    private static Logger log = LoggerFactory.getLogger(Users.class);
+
+    @Override
     public void fixDefaults() {
         var hasRoot = false;
         for (var user : this) {
@@ -17,18 +24,33 @@ public class Users extends ArrayList<User> {
             root.name = "root";
             root.pass = "14e32f44d229cdb580e90db646f87d78062b79d4";
             root.master = true;
-            root.fixDefaults();
+            try {
+                root.fixNulls();
+            } catch (Exception e) {
+                log.error("Error on fixing root user", e);
+            }
             this.add(root);
         }
         this.removeIf(user -> user.name.isEmpty());
     }
 
     @Override
-    public String toString() {
-        return new Gson().toJson(this);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
-    public static Users fromString(String json) {
-        return new Gson().fromJson(json, Users.class);
+    @Override
+    public int hashCode() {
+        return this.deepHash();
     }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static Users fromChars(String chars) {
+        return Data.fromChars(chars, Users.class);
+    }
+
 }

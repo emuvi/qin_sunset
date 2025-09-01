@@ -1,9 +1,11 @@
 package br.com.pointel.qin_sunset.swap;
 
 import java.util.List;
-import com.google.gson.Gson;
 
-public class Execute {
+import br.com.pointel.jarch.data.Data;
+
+public class Execute implements Data {
+
     public String name;
     public List<String> args;
     public List<String> inputs;
@@ -35,11 +37,22 @@ public class Execute {
     }
 
     @Override
-    public String toString() {
-        return new Gson().toJson(this);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
-    public static Execute fromString(String json) {
-        return new Gson().fromJson(json, Execute.class);
+    @Override
+    public int hashCode() {
+        return this.deepHash();
     }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static Execute fromChars(String chars) {
+        return Data.fromChars(chars, Execute.class);
+    }
+
 }

@@ -11,6 +11,8 @@ import java.util.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
+
+import br.com.pointel.jarch.data.DataListArray;
 import br.com.pointel.qin_sunset.swap.PathKind;
 import br.com.pointel.qin_sunset.swap.PathList;
 import br.com.pointel.qin_sunset.swap.PathKindName;
@@ -22,9 +24,9 @@ public class OrdersDir {
     private OrdersDir() {}
 
     public static PathList dirList(File path) {
-        var list = new ArrayList<PathKindName>();
+        var list = new DataListArray<PathKindName>();
         for (var inside : path.listFiles()) {
-            list.add(new PathKindName(inside.isDirectory() ? PathKind.FOLDER : PathKind.FILE, inside.getName()));
+            list.add(new PathKindName(inside.isDirectory() ? PathKind.Folder : PathKind.File, inside.getName()));
         }
         return new PathList(path.getAbsolutePath(), list);
     }

@@ -47,7 +47,7 @@ public class ServesWay {
                 Setup setup;
                 var setupFile = wayToRun.airWays.setupFile;
                 if (setupFile.exists()) {
-                    setup = Setup.fromString(Files.readString(setupFile.toPath()));
+                    setup = Setup.fromChars(Files.readString(setupFile.toPath()));
                 } else {
                     setup = new Setup();
                 }
@@ -77,7 +77,7 @@ public class ServesWay {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var newSetup = Setup.fromString(body);
+                var newSetup = Setup.fromChars(body);
                 if (newSetup == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid setup");
                     return;
@@ -110,7 +110,7 @@ public class ServesWay {
                 Bases bases;
                 var basesFile = wayToRun.airWays.basesFile;
                 if (basesFile.exists()) {
-                    bases = Bases.fromString(Files.readString(basesFile.toPath()));
+                    bases = Bases.fromChars(Files.readString(basesFile.toPath()));
                 } else {
                     bases = new Bases();
                 }
@@ -140,7 +140,7 @@ public class ServesWay {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var newBases = Bases.fromString(body);
+                var newBases = Bases.fromChars(body);
                 if (newBases == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid bases");
                     return;
@@ -173,7 +173,7 @@ public class ServesWay {
                 Users users;
                 var usersFile = wayToRun.airWays.usersFile;
                 if (usersFile.exists()) {
-                    users = Users.fromString(Files.readString(usersFile.toPath()));
+                    users = Users.fromChars(Files.readString(usersFile.toPath()));
                 } else {
                     users = new Users();
                 }
@@ -203,7 +203,7 @@ public class ServesWay {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var newUsers = Users.fromString(body);
+                var newUsers = Users.fromChars(body);
                 if (newUsers == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid users");
                     return;
@@ -236,7 +236,7 @@ public class ServesWay {
                 Groups groups;
                 var groupsFile = wayToRun.airWays.groupsFile;
                 if (groupsFile.exists()) {
-                    groups = Groups.fromString(Files.readString(groupsFile.toPath()));
+                    groups = Groups.fromChars(Files.readString(groupsFile.toPath()));
                 } else {
                     groups = new Groups();
                 }
@@ -266,7 +266,7 @@ public class ServesWay {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var newGroups = Groups.fromString(body);
+                var newGroups = Groups.fromChars(body);
                 if (newGroups == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid groups");
                     return;

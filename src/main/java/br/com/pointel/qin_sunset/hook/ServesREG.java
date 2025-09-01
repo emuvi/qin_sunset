@@ -2,10 +2,12 @@ package br.com.pointel.qin_sunset.hook;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import br.com.pointel.jarch.data.CrudDeeds;
+
+import br.com.pointel.jarch.data.Deeds;
 import br.com.pointel.jarch.data.Order;
 import br.com.pointel.jarch.data.Registry;
 import br.com.pointel.jarch.data.ToDelete;
@@ -100,7 +102,7 @@ public class ServesReg {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var registry = Registry.fromString(body);
+                var registry = Registry.fromChars(body);
                 if (registry == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry");
                     return;
@@ -147,7 +149,7 @@ public class ServesReg {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var registry = Registry.fromString(body);
+                var registry = Registry.fromChars(body);
                 if (registry == null) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a registry");
                     return;
@@ -194,7 +196,7 @@ public class ServesReg {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var toInsert = ToInsert.fromString(body);
+                var toInsert = ToInsert.fromChars(body);
                 if (toInsert.base == null || toInsert.base.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a base");
                     return;
@@ -207,7 +209,7 @@ public class ServesReg {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head name");
                     return;
                 }
-                var allowedReg = authed.isAllowedReg(toInsert.getRegistry(), CrudDeeds.INSERT);
+                var allowedReg = authed.isAllowedReg(toInsert.getRegistry(), Deeds.Insert);
                 if (!allowedReg.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access this operation");
                     return;
@@ -242,7 +244,7 @@ public class ServesReg {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var toSelect = ToSelect.fromString(body);
+                var toSelect = ToSelect.fromChars(body);
                 if (toSelect.base == null || toSelect.base.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a base");
                     return;
@@ -255,7 +257,7 @@ public class ServesReg {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head name");
                     return;
                 }
-                var allowedReg = authed.isAllowedReg(toSelect.getRegistry(), CrudDeeds.SELECT);
+                var allowedReg = authed.isAllowedReg(toSelect.getRegistry(), Deeds.Select);
                 if (!allowedReg.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to this operation");
                     return;
@@ -328,7 +330,7 @@ public class ServesReg {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var toUpdate = ToUpdate.fromString(body);
+                var toUpdate = ToUpdate.fromChars(body);
                 if (toUpdate.base == null || toUpdate.base.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a base");
                     return;
@@ -341,7 +343,7 @@ public class ServesReg {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head name");
                     return;
                 }
-                var allowed = authed.isAllowedReg(toUpdate.getRegistry(), CrudDeeds.UPDATE);
+                var allowed = authed.isAllowedReg(toUpdate.getRegistry(), Deeds.Update);
                 if (!allowed.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to this operation");
                     return;
@@ -376,7 +378,7 @@ public class ServesReg {
                     return;
                 }
                 var body = IOUtils.toString(req.getReader());
-                var toDelete = ToDelete.fromString(body);
+                var toDelete = ToDelete.fromChars(body);
                 if (toDelete.base == null || toDelete.base.isEmpty()) {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a base");
                     return;
@@ -390,7 +392,7 @@ public class ServesReg {
                     resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "You must provide a table head name");
                     return;
                 }
-                var allowed = authed.isAllowedReg(toDelete.getRegistry(), CrudDeeds.DELETE);
+                var allowed = authed.isAllowedReg(toDelete.getRegistry(), Deeds.Delete);
                 if (!allowed.allowed) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN, "You don't have access to this operation");
                     return;

@@ -1,10 +1,14 @@
 package br.com.pointel.qin_sunset.swap;
 
-import com.google.gson.Gson;
+import br.com.pointel.jarch.data.Data;
 
-public class Transfer {
+public class Transfer implements Data {
+
     public String origin;
     public String destiny;
+
+    public Transfer() {
+    }
 
     public Transfer(String origin, String destiny) {
         this.origin = origin;
@@ -12,11 +16,22 @@ public class Transfer {
     }
 
     @Override
-    public String toString() {
-        return new Gson().toJson(this);
+    public boolean equals(Object that) {
+        return this.deepEquals(that);
     }
 
-    public static Transfer fromString(String json) {
-        return new Gson().fromJson(json, Transfer.class);
+    @Override
+    public int hashCode() {
+        return this.deepHash();
     }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static Transfer fromChars(String chars) {
+        return Data.fromChars(chars, Transfer.class);
+    }
+    
 }

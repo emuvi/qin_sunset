@@ -1,25 +1,36 @@
 package br.com.pointel.qin_sunset.swap;
 
-public enum QinConstants {
+import br.com.pointel.jarch.data.Data;
 
-    DEV_TOOLS("DevTools"),
+public enum QinConstants implements Data {
 
-    QIN_BASES("QinBases"),
+    DevTools("DevTools"),
 
-    QIN_BASE_SELECTED("QinBaseSelected"),
+    QinBases("QinBases"),
 
-    QIN_SETUP("QinSetup"),
+    QinBaseSelected("QinBaseSelected"),
 
-    LANG_PT_BR("pt-BR");
+    QinSetup("QinSetup"),
 
-    private final String name;
+    LangPtBr("pt-BR");
 
-    private QinConstants(String name) {
-        this.name = name;
+    private final String value;
+
+    private QinConstants(String value) {
+        this.value = value;
     }
 
-    public String getName() {
-        return name;
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return this.toChars();
+    }
+
+    public static QinConstants fromChars(String chars) {
+        return Data.fromChars(chars, QinConstants.class);
     }
 
 }
