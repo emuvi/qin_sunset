@@ -80,7 +80,7 @@ public class OrdersReg {
 
     public static String regNew(WayToRun wayToRun, ToInsert toInsert, Strain strain) throws ServletException {
         try (var eOrm = wayToRun.stores.getEOrm(toInsert.base)) {
-            return eOrm.insert(toInsert.insert, strain);
+            return eOrm.insert(toInsert.insert, strain).id;
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -88,8 +88,8 @@ public class OrdersReg {
 
     public static String regAsk(WayToRun wayToRun, ToSelect toSelect, Strain strain) throws ServletException {
         try (var eOrm = wayToRun.stores.getEOrm(toSelect.base)) {
-            var result = eOrm.select(toSelect.select, strain);
-            var maker = new CSVMaker(result, toSelect.select.fieldList);
+            var resultSet = eOrm.select(toSelect.select, strain).resultSet;
+            var maker = new CSVMaker(resultSet, toSelect.select.fieldList);
             var build = new StringWriter();
             try (var write = new CSVWrite(build)) {
                 String[] line;

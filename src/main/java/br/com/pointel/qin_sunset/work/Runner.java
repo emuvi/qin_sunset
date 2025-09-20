@@ -1,7 +1,7 @@
 package br.com.pointel.qin_sunset.work;
 
 import java.util.Objects;
-import br.com.pointel.jarch.mage.WizChars;
+import br.com.pointel.jarch.mage.WizString;
 import br.com.pointel.qin_sunset.Service;
 import br.com.pointel.qin_sunset.core.Authed;
 import br.com.pointel.qin_sunset.core.Group;
@@ -26,7 +26,7 @@ public class Runner {
                             && Objects.equals(user.pass, tryAuth.pass)) {
                 var token = req.getSession().getId();
                 Group group = null;
-                if (WizChars.isNotEmpty(user.group)) {
+                if (WizString.isNotEmpty(user.group)) {
                     for (var airCfgGroup : wayToRun.airWays.groups) {
                         if (Objects.equals(user.group, airCfgGroup.name)) {
                             group = airCfgGroup;

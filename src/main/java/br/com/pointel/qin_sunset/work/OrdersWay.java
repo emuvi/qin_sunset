@@ -1,6 +1,5 @@
 package br.com.pointel.qin_sunset.work;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -8,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.pointel.jarch.data.Bases;
-import br.com.pointel.jarch.mage.WizBase;
+import br.com.pointel.jarch.mage.WizThread;
 import br.com.pointel.qin_sunset.Service;
 import br.com.pointel.qin_sunset.core.AirWays;
 import br.com.pointel.qin_sunset.core.Groups;
@@ -36,9 +35,9 @@ public class OrdersWay {
                 @Override
                 public void run() {
                     try {
-                        WizBase.sleep(1000);
+                        WizThread.sleep(1000);
                         oldService.stop();
-                        WizBase.sleep(1000);
+                        WizThread.sleep(1000);
                         new Service(newWayToRun).start();
                     } catch (Exception e) {
                         log.error("Could not restart the service from Setup update.", e);
@@ -64,9 +63,9 @@ public class OrdersWay {
                 @Override
                 public void run() {
                     try {
-                        WizBase.sleep(1000);
+                        WizThread.sleep(1000);
                         oldService.stop();
-                        WizBase.sleep(1000);
+                        WizThread.sleep(1000);
                         new Service(newWayToRun).start();
                     } catch (Exception e) {
                         log.error("Could not restart the service from Bases update.", e);
@@ -92,9 +91,9 @@ public class OrdersWay {
                 @Override
                 public void run() {
                     try {
-                        WizBase.sleep(1000);
+                        WizThread.sleep(1000);
                         oldService.stop();
-                        WizBase.sleep(1000);
+                        WizThread.sleep(1000);
                         new Service(newWayToRun).start();
                     } catch (Exception e) {
                         log.error("Could not restart the service from Users update.", e);
@@ -120,9 +119,9 @@ public class OrdersWay {
                 @Override
                 public void run() {
                     try {
-                        WizBase.sleep(1000);
+                        WizThread.sleep(1000);
                         oldService.stop();
-                        WizBase.sleep(1000);
+                        WizThread.sleep(1000);
                         new Service(newWayToRun).start();
                     } catch (Exception e) {
                         log.error("Could not restart the service from Groups update.", e);
