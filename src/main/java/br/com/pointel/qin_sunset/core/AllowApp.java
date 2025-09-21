@@ -14,6 +14,11 @@ public class AllowApp implements Data {
     }
 
     @Override
+    public AllowApp clone() {
+        return (AllowApp) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

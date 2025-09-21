@@ -39,6 +39,11 @@ public class AllowReg implements Data {
     }
 
     @Override
+    public AllowReg clone() {
+        return (AllowReg) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

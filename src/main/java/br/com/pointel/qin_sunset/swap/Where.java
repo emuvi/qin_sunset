@@ -11,6 +11,11 @@ public class Where implements Data {
     }
 
     @Override
+    public Where clone() {
+        return (Where) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

@@ -45,7 +45,7 @@ public class OrdersGiz {
                 synchronized (script) {
                     try {
                         var binding = script.getBinding();
-                        binding.setVariable("args", execute.args);
+                        binding.setVariable("args", execute.argList);
                         var out = new IssuedWriter(issued, Destiny.OUT);
                         var err = new IssuedWriter(issued, Destiny.ERR);
                         binding.setProperty("out", out);

@@ -36,6 +36,11 @@ public class IssuedAnswer implements Data {
     }
 
     @Override
+    public IssuedAnswer clone() {
+        return (IssuedAnswer) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

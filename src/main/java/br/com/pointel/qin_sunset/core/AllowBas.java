@@ -16,6 +16,11 @@ public class AllowBas implements Data {
     }
 
     @Override
+    public AllowBas clone() {
+        return (AllowBas) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

@@ -16,6 +16,11 @@ public class Logged implements Data {
     }
 
     @Override
+    public Logged clone() {
+        return (Logged) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

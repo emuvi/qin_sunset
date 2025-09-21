@@ -59,6 +59,11 @@ public class Allow implements Data {
     }
 
     @Override
+    public Allow clone() {
+        return (Allow) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

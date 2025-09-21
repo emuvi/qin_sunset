@@ -16,6 +16,11 @@ public class TryAuth implements Data {
     }
 
     @Override
+    public TryAuth clone() {
+        return (TryAuth) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

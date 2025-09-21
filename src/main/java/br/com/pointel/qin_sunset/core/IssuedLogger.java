@@ -36,16 +36,13 @@ public class IssuedLogger extends MarkerIgnoringBase {
     }
 
     private String log(String level, String msg) {
-        return String.format("<%s> %d [%s] - %s", Thread.currentThread().getName(),
-                        new Date()
-                                        .getTime(), level, msg);
+        return String.format("<%s> %d [%s] - %s", 
+                Thread.currentThread().getName(), new Date().getTime(), level, msg);
     }
 
     private String log(String level, Throwable t) {
-        return String.format("<%s> %d [%s] - %s", Thread.currentThread().getName(),
-                        new Date()
-                                        .getTime(), level,
-                        t.getMessage());
+        return String.format("<%s> %d [%s] - %s", 
+                Thread.currentThread().getName(), new Date().getTime(), level, t.getMessage());
     }
 
     @Override

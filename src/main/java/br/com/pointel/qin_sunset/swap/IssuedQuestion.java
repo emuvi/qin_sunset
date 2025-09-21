@@ -41,6 +41,11 @@ public class IssuedQuestion implements Data {
         this.askHasErr = askHasErr;
         this.askFinishedAt = askFinishedAt;
     }
+
+    @Override
+    public IssuedQuestion clone() {
+        return (IssuedQuestion) this.deepClone();
+    }
     
     @Override
     public boolean equals(Object that) {

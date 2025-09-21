@@ -43,19 +43,18 @@ public class OrdersCmd {
         var cmdsDir = new File(wayToRun.airWays.setup.serverFolder, "cmd");
         var cmdPath = new File(cmdsDir, execution.name);
         builder.command().add(cmdPath.getAbsolutePath());
-        if (execution.args != null) {
-            builder.command().addAll(execution.args);
+        if (execution.argList != null) {
+            builder.command().addAll(execution.argList);
         }
         builder.redirectErrorStream(false);
         var process = builder.start();
-        if (execution.inputs != null) {
-            new Thread() {
+        if (execution.inputList != null) {
+            new Thread("Cmd " + execution.name + " Input") {
                 @Override
                 public void run() {
                     try {
-                        var writer = new BufferedWriter(new OutputStreamWriter(process
-                                        .getOutputStream()));
-                        for (var input : execution.inputs) {
+                        var writer = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
+                        for (var input : execution.inputList) {
                             writer.write(input);
                             writer.newLine();
                             writer.flush();
@@ -63,13 +62,12 @@ public class OrdersCmd {
                     } catch (Exception e) {
                         issued.addErrLine("Exception on put Input: " + e.getMessage());
                     }
-                };
+                }
             }.start();
         }
-        new Thread() {
+        new Thread("Cmd " + execution.name + " Output") {
             public void run() {
-                var reader = new BufferedReader(new InputStreamReader(process
-                                .getInputStream()));
+                var reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 try {
                     String line;
                     while ((line = reader.readLine()) != null) {
@@ -78,12 +76,12 @@ public class OrdersCmd {
                 } catch (Exception e) {
                     issued.addErrLine("Exception on get Output: " + e.getMessage());
                 }
-            };
+            }
         }.start();
-        new Thread() {
+        new Thread("Cmd " + execution.name + " Error") {
+            @Override
             public void run() {
-                var reader = new BufferedReader(new InputStreamReader(process
-                                .getErrorStream()));
+                var reader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
                 try {
                     String line;
                     while ((line = reader.readLine()) != null) {
@@ -92,9 +90,10 @@ public class OrdersCmd {
                 } catch (Exception e) {
                     issued.addErrLine("Exception on get Error: " + e.getMessage());
                 }
-            };
+            }
         }.start();
-        new Thread() {
+        new Thread("Cmd " + execution.name + " Result") {
+            @Override
             public void run() {
                 try {
                     var resultCode = process.waitFor();
@@ -104,7 +103,7 @@ public class OrdersCmd {
                 } finally {
                     issued.setDone();
                 }
-            };
+            }
         }.start();
         return issued;
     }

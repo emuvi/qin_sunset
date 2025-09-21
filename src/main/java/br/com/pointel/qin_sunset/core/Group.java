@@ -51,6 +51,11 @@ public class Group implements Data {
     }
 
     @Override
+    public Group clone() {
+        return (Group) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

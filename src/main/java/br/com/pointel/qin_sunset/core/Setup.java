@@ -62,6 +62,11 @@ public class Setup implements Data {
     }
 
     @Override
+    public Setup clone() {
+        return (Setup) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

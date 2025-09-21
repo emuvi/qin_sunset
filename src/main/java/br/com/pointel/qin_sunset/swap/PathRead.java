@@ -22,6 +22,11 @@ public class PathRead implements Data {
     }
 
     @Override
+    public PathRead clone() {
+        return (PathRead) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

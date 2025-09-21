@@ -14,6 +14,11 @@ public class AllowGiz implements Data {
     }
 
     @Override
+    public AllowGiz clone() {
+        return (AllowGiz) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

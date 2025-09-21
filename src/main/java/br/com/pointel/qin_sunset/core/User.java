@@ -59,6 +59,11 @@ public class User implements Data {
     }
 
     @Override
+    public User clone() {
+        return (User) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

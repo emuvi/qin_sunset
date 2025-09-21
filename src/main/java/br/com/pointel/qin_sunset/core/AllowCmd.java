@@ -18,6 +18,11 @@ public class AllowCmd implements Data {
     }
 
     @Override
+    public AllowCmd clone() {
+        return (AllowCmd) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

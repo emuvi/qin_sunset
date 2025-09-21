@@ -16,6 +16,11 @@ public class Transfer implements Data {
     }
 
     @Override
+    public Transfer clone() {
+        return (Transfer) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

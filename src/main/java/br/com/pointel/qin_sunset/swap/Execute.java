@@ -7,8 +7,8 @@ import br.com.pointel.jarch.data.Data;
 public class Execute implements Data {
 
     public String name;
-    public List<String> args;
-    public List<String> inputs;
+    public List<String> argList;
+    public List<String> inputList;
     public Boolean joinErrs;
     public Integer logLevel;
 
@@ -16,24 +16,29 @@ public class Execute implements Data {
         this(name, null, null, null, null);
     }
 
-    public Execute(String name, List<String> args) {
-        this(name, args, null, null, null);
+    public Execute(String name, List<String> argList) {
+        this(name, argList, null, null, null);
     }
 
-    public Execute(String name, List<String> args, List<String> inputs) {
-        this(name, args, inputs, null, null);
+    public Execute(String name, List<String> argList, List<String> inputList) {
+        this(name, argList, inputList, null, null);
     }
 
-    public Execute(String name, List<String> args, List<String> inputs, Boolean joinErrs) {
-        this(name, args, inputs, joinErrs, null);
+    public Execute(String name, List<String> argList, List<String> inputList, Boolean joinErrs) {
+        this(name, argList, inputList, joinErrs, null);
     }
 
-    public Execute(String name, List<String> args, List<String> inputs, Boolean joinErrs, Integer logLevel) {
+    public Execute(String name, List<String> argList, List<String> inputList, Boolean joinErrs, Integer logLevel) {
         this.name = name;
-        this.args = args;
-        this.inputs = inputs;
+        this.argList = argList;
+        this.inputList = inputList;
         this.joinErrs = joinErrs;
         this.logLevel = logLevel;
+    }
+
+    @Override
+    public Execute clone() {
+        return (Execute) this.deepClone();
     }
 
     @Override

@@ -16,6 +16,11 @@ public class PathKindName implements Data {
     }
 
     @Override
+    public PathKindName clone() {
+        return (PathKindName) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

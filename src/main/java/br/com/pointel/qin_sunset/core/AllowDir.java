@@ -16,6 +16,11 @@ public class AllowDir implements Data {
     }
 
     @Override
+    public AllowDir clone() {
+        return (AllowDir) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }

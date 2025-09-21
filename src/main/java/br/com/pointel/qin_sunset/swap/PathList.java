@@ -17,6 +17,11 @@ public class PathList implements Data {
     }
 
     @Override
+    public PathList clone() {
+        return (PathList) this.deepClone();
+    }
+
+    @Override
     public boolean equals(Object that) {
         return this.deepEquals(that);
     }
