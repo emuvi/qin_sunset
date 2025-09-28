@@ -7,14 +7,14 @@ import br.com.pointel.jarch.data.Data;
 public class AllowCmd implements Data {
 
     public String name;
-    public List<String> args;
+    public List<String> argList;
 
     public AllowCmd() {
     }
 
-    public AllowCmd(String name, List<String> args) {
+    public AllowCmd(String name, List<String> argList) {
         this.name = name;
-        this.args = args;
+        this.argList = argList;
     }
 
     @Override
