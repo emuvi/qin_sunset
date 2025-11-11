@@ -46,16 +46,18 @@ public class OrdersGiz {
                     try {
                         var binding = script.getBinding();
                         binding.setVariable("args", execute.argList);
-                        var out = new IssuedWriter(issued, Destiny.OUT);
-                        var err = new IssuedWriter(issued, Destiny.ERR);
-                        binding.setProperty("out", out);
-                        binding.setProperty("err", err);
-                        binding.setProperty("pace", pace);
-                        var result = script.run();
-                        if (result instanceof Integer resultCode) {
-                            issued.setResultCode(resultCode);
-                        } else {
-                            issued.setResultCode(0);
+                        try (var out = new IssuedWriter(issued, Destiny.OUT);
+                                var err = new IssuedWriter(issued, Destiny.ERR);) {
+                            binding.setProperty("out", out);
+                            binding.setProperty("err", err);
+                            binding.setProperty("pace", pace);
+                            var result = script.run();
+                                
+                            if (result instanceof Integer resultCode) {
+                                issued.setResultCode(resultCode);
+                            } else {
+                                issued.setResultCode(0);
+                            }
                         }
                     } catch (Exception e) {
                         issued.addErrLine(e.getMessage());
