@@ -19,6 +19,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class ServesWay {
+
+    private ServesWay() {}
+
     public static void init(ServletContextHandler context) {
         initSetup(context);
         initBases(context);

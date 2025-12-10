@@ -27,6 +27,8 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class ServesReg {
 
+    private ServesReg() {}
+
     public static void init(ServletContextHandler context) {
         initRegTop(context);
         initRegSee(context);

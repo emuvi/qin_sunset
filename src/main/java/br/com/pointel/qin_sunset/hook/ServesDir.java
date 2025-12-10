@@ -17,6 +17,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class ServesDir {
+
+    private ServesDir() {}
+
     public static void init(ServletContextHandler context) {
         initDirList(context);
         initDirNew(context);
