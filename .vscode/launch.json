@@ -10,7 +10,7 @@
             "request": "launch",
             "mainClass": "br.com.pointel.qin_sunset.QinSunset",
             "projectName": "qin_sunset",
-            "cwd": "C:\\Users\\emuvi\\Coder\\Pointel\\Test"
+            "cwd": "${workspaceFolder}\\..\\..\\Test"
         }
     ]
 }
