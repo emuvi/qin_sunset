@@ -11,7 +11,7 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import br.com.pointel.qin_sunset.core.WayToRun;
-import br.com.pointel.qin_sunset.hook.ServesApp;
+import br.com.pointel.qin_sunset.hook.ServesApp2;
 import br.com.pointel.qin_sunset.hook.ServesBas;
 import br.com.pointel.qin_sunset.hook.ServesCmd;
 import br.com.pointel.qin_sunset.hook.ServesDir;
@@ -78,7 +78,7 @@ public class Service {
 
     private void servesApp() {
         log.info("Initializing Serves App...");
-        ServesApp.init(this.context);
+        ServesApp2.init(this.context);
     }
 
     private void servesDir() {
