@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class ServesApp2 {
+public class ServesApp {
     public static void init(ServletContextHandler context) {
         initList(context);
         initGet(context);
