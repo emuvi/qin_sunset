@@ -1,8 +1,6 @@
 package br.com.pointel.qin_sunset.swap;
 
-import br.com.pointel.jarch.data.Data;
-
-public enum QinConstants implements Data {
+public enum QinConstants {
 
     DevTools("DevTools"),
 
@@ -22,15 +20,6 @@ public enum QinConstants implements Data {
 
     public String getValue() {
         return value;
-    }
-
-    @Override
-    public String toString() {
-        return this.toChars();
-    }
-
-    public static QinConstants fromChars(String chars) {
-        return Data.fromChars(chars, QinConstants.class);
     }
 
 }

@@ -14,9 +14,9 @@ import br.com.pointel.jarch.data.ToDelete;
 import br.com.pointel.jarch.data.ToInsert;
 import br.com.pointel.jarch.data.ToSelect;
 import br.com.pointel.jarch.data.ToUpdate;
-import br.com.pointel.qin_sunset.core.AllConfigs;
 import br.com.pointel.qin_sunset.core.Authed;
 import br.com.pointel.qin_sunset.core.WayToRun;
+import br.com.pointel.qin_sunset.swap.QinConfigs;
 import br.com.pointel.qin_sunset.work.OrdersReg;
 import br.com.pointel.qin_sunset.work.OrdersUtl;
 import br.com.pointel.qin_sunset.work.Runner;
@@ -271,8 +271,7 @@ public class ServesReg {
             }
 
             private void applyAlwaysOrderByIfHas(WayToRun wayToRun, Authed authed, ToSelect toSelect) {
-                var always_order = OrdersUtl.askConfig(wayToRun, authed, AllConfigs.ALWAYS_ORDER_BY_IF_HAS
-                                .toString());
+                var always_order = OrdersUtl.askConfig(wayToRun, authed, QinConfigs.AlwaysOrderByIfHas.toString());
                 if (always_order != null && !always_order.isEmpty()) {
                     var source = toSelect.select.tableHead.getCatalogSchemaName();
                     for (var always_order_by : always_order.split(",")) {
