@@ -117,8 +117,6 @@ public class Service {
     }
 
     public void start() throws Exception {
-        log.info("Starting...");
-        log.info("Server AirWays Setup: {}", this.wayToRun.airWays.setup);
         this.server.start();
         this.server.join();
     }

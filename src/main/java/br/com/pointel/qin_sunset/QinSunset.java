@@ -17,6 +17,7 @@ import br.com.pointel.qin_sunset.core.Groups;
 import br.com.pointel.qin_sunset.core.Setup;
 import br.com.pointel.qin_sunset.core.Users;
 import br.com.pointel.qin_sunset.core.WayToRun;
+import br.com.pointel.qin_sunset.work.OrdersWay;
 
 public class QinSunset {
 
@@ -31,7 +32,6 @@ public class QinSunset {
             formatter.printHelp("qin_sunset", options);
             return;
         }
-        log.info("Started.");
         Setup setup;
         var setupFile = new File("setup.json");
         if (setupFile.exists()) {
@@ -61,15 +61,9 @@ public class QinSunset {
         } else {
             groups = new Groups();
         }
-        setup.fixNullsAndEnvs();
-        bases.fixNullsAndEnvs();
-        users.fixNullsAndEnvs();
-        groups.fixNullsAndEnvs();
-        log.info("Bases: {}", bases.toString());
-        log.info("Users: {}", users.toString());
-        log.info("Groups: {}", groups.toString());
-        new Service(new WayToRun(new AirWays(setup, setupFile, bases, basesFile, users, usersFile, groups, groupsFile)))
-                .start();
+        var airWays = new AirWays(setup, setupFile, bases, basesFile, users, usersFile, groups, groupsFile);
+        var wayToRun = new WayToRun(airWays);
+        OrdersWay.startService(wayToRun);
     }
 
     public static Options cmdOptions() {
