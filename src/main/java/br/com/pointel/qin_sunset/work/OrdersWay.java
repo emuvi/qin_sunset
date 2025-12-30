@@ -132,14 +132,18 @@ public class OrdersWay {
 
     public static void startService(WayToRun wayToRun) throws Exception {
         log.info("Starting...");
+        wayToRun.airWays.setup.fixNulls();
+        wayToRun.airWays.bases.fixNulls();
+        wayToRun.airWays.users.fixNulls();
+        wayToRun.airWays.groups.fixNulls();
         log.info("Setup: {}", wayToRun.airWays.setup);
         log.info("Bases: {}", wayToRun.airWays.bases);
         log.info("Users: {}", wayToRun.airWays.users);
         log.info("Groups: {}", wayToRun.airWays.groups);
-        wayToRun.airWays.setup.fixNullsAndEnvs();
-        wayToRun.airWays.bases.fixNullsAndEnvs();
-        wayToRun.airWays.users.fixNullsAndEnvs();
-        wayToRun.airWays.groups.fixNullsAndEnvs();
+        wayToRun.airWays.setup.fixEnvs();
+        wayToRun.airWays.bases.fixEnvs();
+        wayToRun.airWays.users.fixEnvs();
+        wayToRun.airWays.groups.fixEnvs();
         new Service(wayToRun).start();
     }
 
