@@ -8,7 +8,7 @@
             "type": "java",
             "name": "QinSunset",
             "request": "launch",
-            "mainClass": "br.com.pointel.qin_sunset.QinSunset",
+            "mainClass": "com.vidlus.qin_sunset.QinSunset",
             "projectName": "qin_sunset",
             "cwd": "${workspaceFolder}\\..\\..\\Test"
         }

@@ -3,13 +3,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>br.com.pointel</groupId>
+    <groupId>com.vidlus</groupId>
     <artifactId>qin_sunset</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
     <name>QinSunset</name>
     <url>https://github.com/emuvi/qin_sunset</url>
-    <description>QinSunset (Qinpel Server) is a command program that servers public files, graphical user interfaces, file system access with authorization, command programs dispatchers and monitoring, databases queries and scripts execution. It is the base of the Pointel platform and the backend of the Qinpel, the Quick Interface for Power Intelligence.</description>
+    <description>QinSunset (Qinpel Server) is a command program that servers public files, graphical user interfaces, file system access with authorization, command programs dispatchers and monitoring, databases queries and scripts execution. It is the base of the Vidlus information platform and the backend of the Qinpel, the Quick Interface to Power Intelligence.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,7 +35,7 @@
             <version>42.7.5</version>
         </dependency>
         <dependency>
-            <groupId>br.com.pointel</groupId>
+            <groupId>com.vidlus</groupId>
             <artifactId>jarch</artifactId>
             <version>0.1.0</version>
         </dependency>
